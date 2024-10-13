@@ -7,6 +7,7 @@ import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home.jsx";
 import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart.jsx";
+import CartsContextProvider from "./context/CartsContextProvider.jsx";
 
 const ROUTES = createBrowserRouter([
   {
@@ -22,6 +23,8 @@ const ROUTES = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={ROUTES} />
+    <CartsContextProvider>
+      <RouterProvider router={ROUTES} />
+    </CartsContextProvider>
   </StrictMode>
 );
