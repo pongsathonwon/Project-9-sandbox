@@ -55,4 +55,19 @@
   .footer-copyright-lg {
     @apply flex-row justify-between;
   }
+
+  .listitem {
+    @apply h-12 w-64 flex items-center justify-between;
+    &:hover {
+      @apply bg-secondary-100;
+    }
+  }
+
+  .listitem:has(a.active) {
+    @apply bg-primary-700;
+  }
+
+  .navlink:has(a.active) {
+    @apply text-primary-700;
+  }
 }
