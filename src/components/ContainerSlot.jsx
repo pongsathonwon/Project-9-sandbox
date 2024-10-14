@@ -12,7 +12,9 @@ function ContainerSlot({
 }) {
   return (
     <div className="flex flex-col gap-16">
-      <h5 className={POSITION[containerLabelPosition]}>{containerLabel}</h5>
+      <h5 className={`${POSITION[containerLabelPosition]} capitalize`}>
+        {containerLabel}
+      </h5>
       <div className="flex gap-10 overflow-x-auto">{children}</div>
     </div>
   );
