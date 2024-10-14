@@ -13,9 +13,9 @@ const ROUTES = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", children: <Home /> },
-      { path: "/clothing/:type", children: <Clothing /> },
-      { path: "/cart", children: <Cart /> },
+      { path: "/", element: <Home /> },
+      { path: "/clothing/:type", element: <Clothing /> },
+      { path: "/cart", element: <Cart /> },
     ],
   },
 ]);
