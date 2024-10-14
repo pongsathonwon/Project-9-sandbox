@@ -9,9 +9,7 @@ const DIRECTION = {
 
 function Arrow({ direction = "up" }) {
   return (
-    <div
-      className={`flex items-center justify-center w-10 aspect-square ${DIRECTION[direction]}`}
-    >
+    <div className={`squre-group ${DIRECTION[direction]}`}>
       <svg
         width="15"
         height="9"

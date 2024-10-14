@@ -53,10 +53,7 @@ function Navbar({ children }) {
           </ul>
         </div>
         {/* cart */}
-        <NavLink
-          to={"/cart"}
-          className="w-10 aspect-square text-white flex justify-center items-center"
-        >
+        <NavLink to={"/cart"} className="squre-group text-white">
           <CartIcon />
         </NavLink>
       </div>

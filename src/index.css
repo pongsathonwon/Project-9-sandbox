@@ -38,6 +38,9 @@
   .caption {
     @apply text-xs font-normal;
   }
+  .squre-group {
+    @apply w-10 aspect-square flex items-center justify-center;
+  }
 }
 
 @layer components {
