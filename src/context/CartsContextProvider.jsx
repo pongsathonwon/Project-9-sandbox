@@ -5,6 +5,17 @@ import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
 
 const CartContext = React.createContext(null);
 
+const CartContextMutation = React.createContext(null);
+
+export const useCartMutation = () => {
+  const ctx = React.useContext(CartContextMutation);
+  if (!ctx)
+    throw new Error(
+      "useCartMutation must be used in CartContextMutationProvider"
+    );
+  return ctx;
+};
+
 export const useCartContext = () => {
   const ctx = React.useContext(CartContext);
   if (!ctx)
@@ -16,6 +27,7 @@ function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError } =
     useBaseState();
   const [cartId, setCartId] = React.useState("0tvpnVxMsRvjAgiTEpmU");
+  const isEmptyCart = !data || data.length === 0;
   //load cart
   const loadCart = async (cart) => {
     setLoading();
@@ -24,7 +36,6 @@ function CartsContextProvider({ children }) {
       setCartId(id);
       setSuccess(items);
     } catch (err) {
-      console.log(err);
       setError(err);
     }
   };
@@ -42,7 +53,7 @@ function CartsContextProvider({ children }) {
   //delete from existing cart
   const deleteCart = async (itemId) => {
     try {
-      const data = await deleteData(`carts/${cartId}/items/${itemId}`, {});
+      await deleteData(`carts/${cartId}/items/${itemId}`, {});
       await loadCart(cartId);
     } catch (err) {
       setError(err.message);
@@ -66,21 +77,14 @@ function CartsContextProvider({ children }) {
     if (!cartId) return;
     loadCart(cartId);
   }, []);
-  //ask TA if post, delete, patch return total cart or not then revist this logic
+
   return (
-    <CartContext.Provider
-      value={{
-        isLoading,
-        erorr,
-        data,
-        setCartId,
-        addNewCart,
-        deleteCart,
-        updateCartByItem,
-        loadCart,
-      }}
-    >
-      {children}
+    <CartContext.Provider value={{ isLoading, erorr, data, isEmptyCart }}>
+      <CartContextMutation.Provider
+        value={{ addNewCart, deleteCart, updateCartByItem }}
+      >
+        {children}
+      </CartContextMutation.Provider>
     </CartContext.Provider>
   );
 }
