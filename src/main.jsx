@@ -8,6 +8,7 @@ import Home from "./pages/Home.jsx";
 import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart.jsx";
 import CartsContextProvider from "./context/CartsContextProvider.jsx";
+import ProductDetail from "./pages/ProductDetail.jsx";
 
 const ROUTES = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const ROUTES = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/clothing/:type", element: <Clothing /> },
+      { path: "/productdetail/:id", element: <ProductDetail /> },
       { path: "/cart", element: <Cart /> },
     ],
   },

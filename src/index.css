@@ -15,7 +15,7 @@
     @apply text-[64px] leading-[1.4375] font-bold;
   }
   h3 {
-    @apply text-5xl leading-normal font-bold;
+    @apply text-5xl leading-[4.5rem] font-bold;
   }
   h4 {
     @apply text-[40px] leading-normal font-bold;
@@ -24,7 +24,10 @@
     @apply text-[32px] leading-normal font-bold;
   }
   h6 {
-    @apply text-2xl font-bold;
+    @apply text-2xl leading-8 font-bold;
+  }
+  p {
+    @apply text-base leading-5 font-normal;
   }
 }
 
