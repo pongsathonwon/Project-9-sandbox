@@ -7,15 +7,17 @@ import Layout from "./pages/Layout.jsx";
 import Home from "./pages/Home.jsx";
 import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart.jsx";
+import ProductDetail from "./pages/ProductDetail.jsx";
 
 const ROUTES = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", children: <Home /> },
-      { path: "/clothing/:type", children: <Clothing /> },
-      { path: "/cart", children: <Cart /> },
+      { path: "/", element: <Home /> },
+      { path: "/clothing/:type", element: <Clothing /> },
+      { path: "/productdetail/:id", element: <ProductDetail /> },
+      { path: "/cart", element: <Cart /> },
     ],
   },
 ]);
