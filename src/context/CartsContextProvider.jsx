@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { deleteData, getData, postData, updateData } from "../utils/apiHandler";
 import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
@@ -6,7 +6,7 @@ import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
 const CartContext = React.createContext(null);
 
 export const useCartContext = () => {
-  const ctx = useContext(CartContext);
+  const ctx = React.useContext(CartContext);
   if (!ctx)
     throw new Error("useCartContext must be used in CartContextProvider");
   return ctx;
@@ -15,15 +15,26 @@ export const useCartContext = () => {
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError } =
     useBaseState();
-  const [requiredRefetch, setRequiredRefetch] = React.useState(false);
-  const [cartId, setCartId] = React.useState(null);
+  const [cartId, setCartId] = React.useState("0tvpnVxMsRvjAgiTEpmU");
+  //load cart
+  const loadCart = async (cart) => {
+    setLoading();
+    try {
+      const { id, items } = await getData(`carts/${cart}`);
+      setCartId(id);
+      setSuccess(items);
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
+  };
   //add item to new cart
   const addNewCart = async (body) => {
-    const validatedBody = checkAddCartBody(body);
+    const validated = checkAddCartBody(body);
     try {
-      const { id } = await postData("carts", validatedBody);
+      const { id, items } = await postData("carts", { items: validated });
       setCartId(id);
-      setRequiredRefetch(true);
+      setSuccess(items);
     } catch (err) {
       setError(err.message);
     }
@@ -31,8 +42,8 @@ function CartsContextProvider({ children }) {
   //delete from existing cart
   const deleteCart = async (itemId) => {
     try {
-      await deleteData(`carts/${cartId}/items/${itemId}`);
-      setRequiredRefetch(true);
+      const data = await deleteData(`carts/${cartId}/items/${itemId}`, {});
+      await loadCart(cartId);
     } catch (err) {
       setError(err.message);
     }
@@ -41,32 +52,21 @@ function CartsContextProvider({ children }) {
   const updateCartByItem = async (itemId, body) => {
     const validatedBody = checkUpdateCartBody(body);
     try {
-      await updateData(`carts/${cartId}/items/${itemId}`, validatedBody);
-      setRequiredRefetch(true);
+      const { items } = await updateData(
+        `carts/${cartId}/items/${itemId}`,
+        validatedBody
+      );
+      setSuccess(items);
     } catch (err) {
       setError(err);
     }
   };
-  //ask TA if post, delete, patch return total cart or not then revist this logic
+
   React.useEffect(() => {
-    if (!requiredRefetch || !cartId) return;
-    const controller = new AbortController();
-    const signal = controller.signal;
-    (async () => {
-      setLoading();
-      try {
-        const { data } = await getData(`carts/${id}`, { signal });
-        setSuccess(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setRequiredRefetch(false);
-      }
-    })();
-    return () => {
-      controller.abort();
-    };
-  }, [requiredRefetch, cartId]);
+    if (!cartId) return;
+    loadCart(cartId);
+  }, []);
+  //ask TA if post, delete, patch return total cart or not then revist this logic
   return (
     <CartContext.Provider
       value={{
@@ -77,6 +77,7 @@ function CartsContextProvider({ children }) {
         addNewCart,
         deleteCart,
         updateCartByItem,
+        loadCart,
       }}
     >
       {children}
