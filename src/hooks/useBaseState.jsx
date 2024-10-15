@@ -25,11 +25,11 @@ function useBaseState() {
     error: null,
     data: null,
   });
-  const setLoading = () => dispatch({ action: ACTION_TYPES.loading });
+  const setLoading = () => dispatch({ type: ACTION_TYPES.loading });
   const setSuccess = (value) =>
-    dispatch({ action: ACTION_TYPES.success, payload: value });
+    dispatch({ type: ACTION_TYPES.success, payload: value });
   const setError = (err) =>
-    dispatch({ action: ACTION_TYPES.error, payload: err });
+    dispatch({ type: ACTION_TYPES.error, payload: err });
   return { isLoading, erorr, data, setLoading, setSuccess, setError };
 }
 
