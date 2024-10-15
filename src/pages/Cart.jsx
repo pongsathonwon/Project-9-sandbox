@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useCartContext } from "../context/CartsContextProvider";
+import ContainerSlot from "../components/ContainerSlot";
 
 const ItemCard = () => {};
 
@@ -139,6 +140,7 @@ const LeftCardSection = () => {
 };
 
 function Cart() {
+  const { data } = useCartContext();
   return (
     <section className="px-4 lg:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
       <div className="flex flex-col gap-10">
@@ -150,7 +152,9 @@ function Cart() {
           <LeftCardSection />
         </div>
       </div>
-      <div>alsolike</div>
+      {(!data || data.length === 0) && (
+        <ContainerSlot containerLabel="people also like these"></ContainerSlot>
+      )}
     </section>
   );
 }
