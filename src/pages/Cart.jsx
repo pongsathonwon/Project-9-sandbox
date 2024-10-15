@@ -86,7 +86,10 @@ const RightCardSection = () => {
               <div className="flex flex-col justify-between">
                 <div className="flex justify-between">
                   <h6>{id}</h6>
-                  <button className="" onClick={() => deleteCart(id)}>
+                  <button
+                    className="squre-group"
+                    onClick={() => deleteCart(id)}
+                  >
                     <DeleteIcon />
                   </button>
                 </div>
