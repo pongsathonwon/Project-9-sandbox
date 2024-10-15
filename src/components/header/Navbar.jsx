@@ -1,12 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { genClothingList, navlist } from "./navlist";
+import { useCartContext } from "../../context/CartsContextProvider";
 
 const CartIcon = () => {
-  // use Cart logic here
+  const { data } = useCartContext();
   return (
     <>
-      <div className="w-1.5 aspect-square rounded-full bg-danger absolute z-10 translate-x-2 -translate-y-2"></div>
+      {data && data.length !== 0 && (
+        <div className="w-1.5 aspect-square rounded-full bg-danger absolute z-10 translate-x-2 -translate-y-2"></div>
+      )}
       <svg
         className="relative"
         width="29"
