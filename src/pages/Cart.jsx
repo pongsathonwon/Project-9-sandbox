@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
-import { useCartContext } from "../context/CartsContextProvider";
+import {
+  useCartContext,
+  useCartMutation,
+} from "../context/CartsContextProvider";
 import ContainerSlot from "../components/ContainerSlot";
+import useItemState from "../hooks/useItemState";
 
 const DeleteIcon = () => {
   return (
@@ -50,9 +54,83 @@ const SummarySection = ({ children }) => {
   );
 };
 
-const RightCardSection = () => {
-  const { data, error, deleteCart, updateCartByItem } = useCartContext();
-  if (!data || data.length === 0) {
+const CartItem = ({
+  name,
+  skuCode,
+  quantity,
+  price,
+  promotionalPrice,
+  size,
+  color,
+  colorList,
+  sizeList,
+  remains,
+}) => {
+  const { deleteCart, updateCartByItem } = useCartMutation();
+  const { curColor, curSize, curSkuCode, curRemains, changeColor, changeSize } =
+    useItemState({
+      curColor: color,
+      curSize: size,
+      changeRemainFn: (color, size) => ({ remains: 10, skuCode: "sku-code-1" }),
+    });
+  return (
+    <div className="flex gap-10">
+      <img className="w-[209px] aspect-square" />
+      <div className="flex flex-col justify-between">
+        <div className="flex justify-between">
+          <h6>{name}</h6>
+          <button
+            className="squre-group"
+            onClick={async () => await deleteCart(id)}
+          >
+            <DeleteIcon />
+          </button>
+        </div>
+        <div className="flex justify-between">
+          {/* color dropdown */}
+          <select value={curColor}>
+            {colorList.map(({ color: currentColor }) => (
+              <option key={`${name}_${currentColor}`} value={currentColor}>
+                {currentColor}
+              </option>
+            ))}
+          </select>
+          {/* size dropdown */}
+          <select value={curSize}>
+            {sizeList.map((s) => (
+              <option key={`${name}_${s}`} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+          {/* amount dropdown */}
+          <select
+            value={quantity}
+            onChange={async ({ target }) =>
+              await updateCartByItem(id, {
+                skuCode,
+                quantity: Number(target.value),
+              })
+            }
+          >
+            {[...Array(curRemains)].map((_, i) => (
+              <option key={`${id}-${i}`} value={i}>
+                {i}
+              </option>
+            ))}
+          </select>
+          <span className="text-2xl font-bold mt-auto">
+            THB: {price * quantity}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LeftCardSection = () => {
+  const { data, isEmptyCart } = useCartContext();
+  if (isEmptyCart) {
     return (
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">
         <h6>Items</h6>
@@ -80,39 +158,8 @@ const RightCardSection = () => {
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">
         <h6>Items</h6>
         <div className="flex flex-col items-center gap-6">
-          {data.map(({ id, quantity, skuCode }) => (
-            <div key={id} className="flex gap-10">
-              <img className="w-[209px] aspect-square" />
-              <div className="flex flex-col justify-between">
-                <div className="flex justify-between">
-                  <h6>{id}</h6>
-                  <button
-                    className="squre-group"
-                    onClick={() => deleteCart(id)}
-                  >
-                    <DeleteIcon />
-                  </button>
-                </div>
-                <div className="flex justify-between">
-                  <select
-                    value={quantity}
-                    onChange={async ({ target }) =>
-                      await updateCartByItem(id, {
-                        skuCode,
-                        quantity: Number(target.value),
-                      })
-                    }
-                  >
-                    {[...Array(5)].map((_, i) => (
-                      <option key={`${id}-${i}`} value={i}>
-                        {i}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="text-2xl font-bold mt-auto">THB: price</span>
-                </div>
-              </div>
-            </div>
+          {data.map((d) => (
+            <CartItem key={d.name} {...d} />
           ))}
         </div>
       </div>
@@ -120,7 +167,7 @@ const RightCardSection = () => {
   }
 };
 
-const LeftCardSection = () => {
+const RightCardSection = () => {
   return (
     <div className="lg:w-2/5 p-6 flex flex-col gap-10">
       <div className="flex flex-col gap-6">
@@ -168,19 +215,19 @@ const LeftCardSection = () => {
 };
 
 function Cart() {
-  const { data } = useCartContext();
+  const { isEmptyCart } = useCartContext();
   return (
     <section className="px-4 lg:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
       <div className="flex flex-col gap-10">
         <h5>My cart</h5>
         <div className="flex flex-col gap-10 lg:flex-row">
           {/* left section */}
-          <RightCardSection />
-          {/* right section */}
           <LeftCardSection />
+          {/* right section */}
+          <RightCardSection />
         </div>
       </div>
-      {(!data || data.length === 0) && (
+      {!isEmptyCart && (
         <ContainerSlot containerLabel="people also like these"></ContainerSlot>
       )}
     </section>
