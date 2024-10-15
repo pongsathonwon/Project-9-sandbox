@@ -7,27 +7,30 @@ const ITEM_ACTION = {
 
 const reducer = (state, { type, payload }) => {
   if (type === ITEM_ACTION.changeColor) {
-    return { ...state, color: payload };
+    return { ...state, curColor: payload };
   }
   if (type === ITEM_ACTION.changeSize) {
-    return { ...state, size: payload };
+    return { ...state, curSize: payload };
   }
   throw new Error("no such action");
 };
 
-function useItemState({ color, size, changeRemainFn }) {
+function useItemState({ curColor, curSize, changeRemainFn }) {
   if (!color || !size || !changeRemainFn)
     throw new Error("useItemState required initial state");
   const [state, dispatch] = React.useReducer(reducer, {
-    color,
-    size,
+    curColor,
+    curSize,
   });
   const changeColor = (color) =>
     dispatch({ type: ITEM_ACTION.changeColor, payload: color });
   const changeSize = (size) =>
     dispatch({ type: ITEM_ACTION.changeSize, payload: size });
-  const endpointResult = changeRemainFn(state.color, state.size);
-  return { ...state, endpointResult, changeColor, changeSize };
+  const { remains: curRemains, skuCode: curSkuCode } = changeRemainFn(
+    state.curColor,
+    state.curSize
+  );
+  return { ...state, curRemains, curSkuCode, changeColor, changeSize };
 }
 
 export default useItemState;
