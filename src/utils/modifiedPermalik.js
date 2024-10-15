@@ -13,27 +13,38 @@
         id, name, description, 
         price, promotionalPrice, rating 
         categories, collection, imageUrls
-        modifiedVarient: {color: {color, colorCode}[], size: size[]}
-        endpointResult: {remains, skuCode} || (size, color) => {remains, skuCode}
+        color: {color, colorCode}[], size: size[]
+        endpointResult: (size, color) => {remains, skuCode}
     }
 */
-
-export const conbineExtractFn = (varients) => {
-  const extractPossibleColor = varients.map(({ color, colorCode }) => ({
-    color,
-    colorCode,
-  }));
-  const extractPossibleSize = varients.map(({ size }) => size);
-  return {
-    color: extractPossibleColor,
-    size: extractPossibleSize,
-  };
+// prevVarient = {
+//   color: [
+//     {color, colorCode}
+//   ],
+//   size: [xl m l],
+//
+// }
+reducerFn = (prevVarient, curVarient) => {
+  const { color, colorCode, size } = curVarient;
+  prevVarient.modifiedVarint.color = [
+    ...prevVarient.modifiedVarint.color,
+    { color, colorCode },
+  ];
+  prevVarient.modifiedVarint.size = [...prevVarient.modifiedVarint.size, size];
+  return prevVarient;
 };
 
-export const filterProductAmount = (color, size) => (varients) => {
-  const [{ remains, skuCode }] = varients
+const filterProductAmount = (varients) => (color, size) => {
+  const filterResult = varients
     .filter((varient) => varient.color === color && varient.size === size)
     .map(({ remains, skuCode }) => ({ remains, skuCode }));
-  if (!remains || !skuCode) throw new Error("no requested product");
+  if (filterResult.remains || filterResult.skuCode || filterResult.length === 0)
+    throw new Error("no requested product");
   return { remains, skuCode };
+};
+
+export const transformer = (varients) => {
+  const { color, size } = varients.reduce(reducerFn, { color: [], size: [] });
+  const endpointResult = filterProductAmount(varients);
+  return { color, size, endpointResult };
 };
