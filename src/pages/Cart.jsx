@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useCartContext } from "../context/CartsContextProvider";
+
+const ItemCard = () => {};
 
 const SummaryRow = ({
   name,
@@ -22,28 +25,70 @@ const SummarySection = ({ children }) => {
 };
 
 const RightCardSection = () => {
-  return (
-    <div className="lg:w-3/5 p-4 flex flex-col gap-6">
-      <h6>Items</h6>
-      <div className="flex flex-col items-center gap-6">
-        <div className="flex flex-col gap-2 items-center text-center">
-          <img
-            className="w-[261px] md:w-[403px] aspect-square"
-            srcSet="empty-cart-small.png 261w, empty-cart-large.png 403w"
-            sizes="(max-width:768px) 261w, 403w"
-            src="empty-cart-small.png"
-            alt="card placeholder"
-          />
-          <h5>Your cart is empty</h5>
-          <p className="text-xl">
-            Look like you have not added anything to your carts yet. <br />
-            Go ahead & explore stuff
-          </p>
+  const { data, error, deleteCart, updateCartByItem } = useCartContext();
+  if (!data || data.length === 0) {
+    return (
+      <div className="lg:w-3/5 p-4 flex flex-col gap-6">
+        <h6>Items</h6>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col gap-2 items-center text-center">
+            <img
+              className="w-[261px] md:w-[403px] aspect-square"
+              srcSet="empty-cart-small.png 261w, empty-cart-large.png 403w"
+              sizes="(max-width:768px) 261w, 403w"
+              src="empty-cart-small.png"
+              alt="card placeholder"
+            />
+            <h5>Your cart is empty</h5>
+            <p className="text-xl">
+              Look like you have not added anything to your carts yet. <br />
+              Go ahead & explore stuff
+            </p>
+          </div>
+          <button>continue shopping</button>
         </div>
-        <button>continue shopping</button>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="lg:w-3/5 p-4 flex flex-col gap-6">
+        <h6>Items</h6>
+        <div className="flex flex-col items-center gap-6">
+          {data.map(({ id, quantity, skuCode }) => (
+            <div key={id} className="flex gap-10">
+              <img className="w-[209px] aspect-square" />
+              <div className="flex flex-col justify-between">
+                <div className="flex justify-between">
+                  <h6>{id}</h6>
+                  <button className="" onClick={() => deleteCart(id)}>
+                    delete
+                  </button>
+                </div>
+                <div className="flex justify-between">
+                  <select
+                    value={quantity}
+                    onChange={async ({ target }) =>
+                      await updateCartByItem(id, {
+                        skuCode,
+                        quantity: Number(target.value),
+                      })
+                    }
+                  >
+                    {[...Array(5)].map((_, i) => (
+                      <option key={`${id}-${i}`} value={i}>
+                        {i}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-2xl font-bold mt-auto">THB: price</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 };
 
 const LeftCardSection = () => {
