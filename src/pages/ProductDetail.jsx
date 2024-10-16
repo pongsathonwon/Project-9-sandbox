@@ -47,26 +47,30 @@ const ShowColorVariant = ({ color, colorCode, selectColor }) => {
       className=" flex flex-col items-center gap-2 w-full"
       onClick={selectColor}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="55"
-        height="54"
-        viewBox="0 0 55 54"
-        fill={colorCode}
-        className="border border-[#E1E1E1] focus:border-[#C1CD00]"
+      <div
+        className="border-[3px] border-[#E1E1E1] active:border-[#C1CD00] focus:border-[#C1CD00]"
+        tabIndex="0"
       >
-        <rect x="1" y="0.5" width="53" height="53" />
-        <line x1="8" y1="1" x2="8" y2="53" stroke="white" />
-        <line x1="18" y1="1" x2="18" y2="53" stroke="white" />
-        <line x1="28" y1="1" x2="28" y2="53" stroke="white" />
-        <line x1="38" y1="1" x2="38" y2="53" stroke="white" />
-        <line x1="48" y1="1" x2="48" y2="53" stroke="white" />
-        <line x1="53.5" y1="7.5" x2="1.5" y2="7.5" stroke="white" />
-        <line x1="53.5" y1="17.5" x2="1.5" y2="17.5" stroke="white" />
-        <line x1="53.5" y1="27.5" x2="1.5" y2="27.5" stroke="white" />
-        <line x1="53.5" y1="37.5" x2="1.5" y2="37.5" stroke="white" />
-        <line x1="53.5" y1="47.5" x2="1.5" y2="47.5" stroke="white" />
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="55"
+          height="54"
+          viewBox="0 0 55 54"
+          fill={colorCode}
+        >
+          <rect x="1" y="0.5" width="53" height="53" />
+          <line x1="8" y1="1" x2="8" y2="53" stroke="white" />
+          <line x1="18" y1="1" x2="18" y2="53" stroke="white" />
+          <line x1="28" y1="1" x2="28" y2="53" stroke="white" />
+          <line x1="38" y1="1" x2="38" y2="53" stroke="white" />
+          <line x1="48" y1="1" x2="48" y2="53" stroke="white" />
+          <line x1="53.5" y1="7.5" x2="1.5" y2="7.5" stroke="white" />
+          <line x1="53.5" y1="17.5" x2="1.5" y2="17.5" stroke="white" />
+          <line x1="53.5" y1="27.5" x2="1.5" y2="27.5" stroke="white" />
+          <line x1="53.5" y1="37.5" x2="1.5" y2="37.5" stroke="white" />
+          <line x1="53.5" y1="47.5" x2="1.5" y2="47.5" stroke="white" />
+        </svg>
+      </div>
 
       <p className="text-secondary-900  font-normal font-['Poppins']">
         {color}
@@ -107,13 +111,7 @@ function ProductDetail() {
       "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FBqfHyqnV26GqYMnSBbbH-trendy-man-in-autumn-jacket-holding-backpack-and-c-2023-11-27-05-00-33-utc.png?alt=media&token=10e098e7-4fb5-461c-b89a-e8b6e457f64f",
     ],
     variants: [
-      {
-        skuCode: "C0100407",
-        color: "Green",
-        size: "M",
-        remains: 15,
-        colorCode: "#008000",
-      },
+     
       {
         skuCode: "C0100404",
         color: "Khaki",
@@ -339,7 +337,7 @@ function ProductDetail() {
           </div>
           {/* Color */}
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 ">
               <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
                 Color
               </h5>
@@ -375,7 +373,8 @@ function ProductDetail() {
                     return (
                       <div
                         key={index}
-                        className="flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 "
+                        className=" flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
+                        tabIndex="0"
                         onClick={() => {
                           setSelectedProduct((prev) => {
                             return {
