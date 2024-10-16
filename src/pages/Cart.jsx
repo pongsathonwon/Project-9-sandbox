@@ -55,6 +55,7 @@ const SummarySection = ({ children }) => {
 };
 
 const CartItem = ({
+  id,
   name,
   skuCode,
   quantity,
@@ -62,21 +63,21 @@ const CartItem = ({
   promotionalPrice,
   size,
   color,
-  colorList,
-  sizeList,
+  colorList = ["Brown"],
+  sizeList = ["36"],
   remains,
 }) => {
   const { deleteCart, updateCartByItem } = useCartMutation();
   const { curColor, curSize, curSkuCode, curRemains, changeColor, changeSize } =
     useItemState({
-      curColor: color,
-      curSize: size,
+      curColor: "Brown",
+      curSize: "36",
       changeRemainFn: (color, size) => ({ remains: 10, skuCode: "sku-code-1" }),
     });
   return (
     <div className="flex gap-10">
       <img className="w-[209px] aspect-square" />
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between flex-1">
         <div className="flex justify-between">
           <h6>{name}</h6>
           <button
@@ -88,7 +89,10 @@ const CartItem = ({
         </div>
         <div className="flex justify-between">
           {/* color dropdown */}
-          <select value={curColor}>
+          <select
+            value={curColor}
+            onChange={({ target }) => changeColor(target.value)}
+          >
             {colorList.map(({ color: currentColor }) => (
               <option key={`${name}_${currentColor}`} value={currentColor}>
                 {currentColor}
@@ -96,7 +100,10 @@ const CartItem = ({
             ))}
           </select>
           {/* size dropdown */}
-          <select value={curSize}>
+          <select
+            value={curSize}
+            onChange={({ target }) => changeSize(target.value)}
+          >
             {sizeList.map((s) => (
               <option key={`${name}_${s}`} value={s}>
                 {s}
@@ -130,6 +137,7 @@ const CartItem = ({
 
 const LeftCardSection = () => {
   const { data, isEmptyCart } = useCartContext();
+  console.log(data);
   if (isEmptyCart) {
     return (
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">
@@ -157,9 +165,9 @@ const LeftCardSection = () => {
     return (
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">
         <h6>Items</h6>
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col gap-6">
           {data.map((d) => (
-            <CartItem key={d.name} {...d} />
+            <CartItem key={d.id} {...d} />
           ))}
         </div>
       </div>
