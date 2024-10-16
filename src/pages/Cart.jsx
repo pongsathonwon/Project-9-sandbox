@@ -41,8 +41,8 @@ const SummaryRow = ({
 }) => {
   return (
     <div className="flex justify-between items-center">
-      <span className={`${leftClassname} capitalize`}>{name}</span>
-      <span className={`${rightClassname} text-secondary-700`}>{price}</span>
+      <span className={`capitalize ${leftClassname}`}>{name}</span>
+      <span className={rightClassname}>{price}</span>
     </div>
   );
 };
@@ -63,17 +63,29 @@ const CartItem = ({
   promotionalPrice,
   size,
   color,
-  colorList = ["Brown"],
-  sizeList = ["36"],
   remains,
+  possibleSize,
+  possibleColor,
+  variants,
 }) => {
+  const variantsRef = React.useMemo(() => variants, [skuCode]);
+  const finderFn = React.useCallback(
+    (color, size) =>
+      variantsRef[
+        variants.findIndex(
+          (variant) => variant.color === color && variant.size === size
+        )
+      ],
+    [variantsRef]
+  );
   const { deleteCart, updateCartByItem } = useCartMutation();
   const { curColor, curSize, curSkuCode, curRemains, changeColor, changeSize } =
     useItemState({
       curColor: "Brown",
       curSize: "36",
-      changeRemainFn: (color, size) => ({ remains: 10, skuCode: "sku-code-1" }),
+      changeRemainFn: finderFn,
     });
+  console.log(curRemains);
   return (
     <div className="flex gap-10">
       <img className="w-[209px] aspect-square" />
@@ -93,9 +105,9 @@ const CartItem = ({
             value={curColor}
             onChange={({ target }) => changeColor(target.value)}
           >
-            {colorList.map(({ color: currentColor }) => (
-              <option key={`${name}_${currentColor}`} value={currentColor}>
-                {currentColor}
+            {possibleColor.map((c) => (
+              <option key={`${name}_${c}`} value={c}>
+                {c}
               </option>
             ))}
           </select>
@@ -104,7 +116,7 @@ const CartItem = ({
             value={curSize}
             onChange={({ target }) => changeSize(target.value)}
           >
-            {sizeList.map((s) => (
+            {possibleSize(curColor).map((s) => (
               <option key={`${name}_${s}`} value={s}>
                 {s}
               </option>
@@ -115,19 +127,19 @@ const CartItem = ({
             value={quantity}
             onChange={async ({ target }) =>
               await updateCartByItem(id, {
-                skuCode,
+                skuCode: curSkuCode,
                 quantity: Number(target.value),
               })
             }
           >
             {[...Array(curRemains)].map((_, i) => (
-              <option key={`${id}-${i}`} value={i}>
-                {i}
+              <option key={`${id}-${i}`} value={i + 1}>
+                {i + 1}
               </option>
             ))}
           </select>
           <span className="text-2xl font-bold mt-auto">
-            THB: {price * quantity}
+            THB: {promotionalPrice * quantity}
           </span>
         </div>
       </div>
@@ -176,42 +188,59 @@ const LeftCardSection = () => {
 };
 
 const RightCardSection = () => {
+  const SHIPPING_FEE = 0;
+  const { summaryList, subtotal, isEmptyCart } = useCartContext();
   return (
     <div className="lg:w-2/5 p-6 flex flex-col gap-10">
       <div className="flex flex-col gap-6">
+        {/* summary header */}
         <SummaryRow
           name="summary"
-          price="0 items"
-          leftClassname={"text-2xl font-bold"}
-          rightClassname={"text-xl font-bold"}
+          price={`${subtotal.total} items`}
+          leftClassname={"text-2xl font-semi"}
+          rightClassname={"text-xl font-semi"}
         />
+        {/* summary items */}
         <SummarySection>
-          <SummaryRow
-            name={"no item"}
-            price={0}
-            leftClassname="text-secondary-500"
-            rightClassname="text-secondary-500"
-          />
+          {summaryList.map(({ name, sum, quantity }) => (
+            <SummaryRow
+              key={name}
+              name={`${name} ${quantity === 1 ? "" : "X" + quantity}`}
+              price={sum}
+              leftClassname={isEmptyCart ? "text-secondary-500" : ""}
+              rightClassname="text-secondary-500"
+            />
+          ))}
         </SummarySection>
+        {/* summary shipping */}
         <SummarySection>
           <SummaryRow
-            name={"subtotal"}
-            price={0}
-            leftClassname="text-secondary-500"
+            name="subtotal"
+            price={subtotal.subtotal}
+            leftClassname={isEmptyCart ? "text-secondary-500" : ""}
             rightClassname="text-secondary-500"
           />{" "}
           <SummaryRow
             name={"shipping fee"}
-            price={0}
-            leftClassname="text-secondary-500"
+            price={SHIPPING_FEE}
+            leftClassname={isEmptyCart ? "text-secondary-500" : ""}
             rightClassname="text-secondary-500"
           />
         </SummarySection>
+        {/* summary total */}
         <SummaryRow
           name={"Total"}
-          price={0}
-          leftClassname="font-bold text-xl text-secondary-500"
-          rightClassname="font-bold text-xl text-secondary-500"
+          price={SHIPPING_FEE + subtotal.subtotal}
+          leftClassname={
+            isEmptyCart
+              ? "font-bold text-xl text-secondary-500"
+              : "font-bold text-xl "
+          }
+          rightClassname={
+            isEmptyCart
+              ? "font-bold text-xl text-secondary-500"
+              : "font-bold text-xl "
+          }
         />
       </div>
       <div className="flex flex-col gap-4">
@@ -223,7 +252,8 @@ const RightCardSection = () => {
 };
 
 function Cart() {
-  const { isEmptyCart } = useCartContext();
+  const { isEmptyCart, isLoading } = useCartContext();
+  if (isLoading) return <div>loading...</div>;
   return (
     <section className="px-4 lg:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
       <div className="flex flex-col gap-10">
