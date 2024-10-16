@@ -16,7 +16,7 @@ const reducer = (state, { type, payload }) => {
 };
 
 function useItemState({ curColor, curSize, changeRemainFn }) {
-  if (!color || !size || !changeRemainFn)
+  if (!curColor || !curSize || !changeRemainFn)
     throw new Error("useItemState required initial state");
   const [state, dispatch] = React.useReducer(reducer, {
     curColor,
