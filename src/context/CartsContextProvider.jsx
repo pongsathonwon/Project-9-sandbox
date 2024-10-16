@@ -2,6 +2,7 @@ import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { deleteData, getData, postData, updateData } from "../utils/apiHandler";
 import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
+import { transformer } from "../utils/modifiedPermalik";
 
 const CartContext = React.createContext(null);
 
@@ -26,7 +27,7 @@ export const useCartContext = () => {
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError } =
     useBaseState();
-  const [cartId, setCartId] = React.useState("0tvpnVxMsRvjAgiTEpmU");
+  const [cartId, setCartId] = React.useState("E7wSPZbIQWerYZtdQp8X");
   const isEmptyCart = !data || data.length === 0;
   //load cart
   const loadCart = async (cart) => {
@@ -34,6 +35,7 @@ function CartsContextProvider({ children }) {
     try {
       const { id, items } = await getData(`carts/${cart}`);
       setCartId(id);
+      await getPermalinkRes(items);
       setSuccess(items);
     } catch (err) {
       setError(err);
@@ -70,6 +72,26 @@ function CartsContextProvider({ children }) {
       setSuccess(items);
     } catch (err) {
       setError(err);
+    }
+  };
+
+  //permalink logic
+  const getPermalinkRes = async (carts) => {
+    if (!carts || carts.length === 0) return;
+    try {
+      const permalinkList = carts.map(({ productPermalink }) =>
+        getData(`products/${productPermalink}`)
+      );
+      const resResult = await Promise.all(permalinkList);
+      console.log("succes get permalink");
+      console.info(resResult);
+      const dataResult = resResult.map((res) => ({
+        ...res,
+        ...transformer(res.variants),
+      }));
+      console.info(dataResult);
+    } catch (error) {
+      console.error(error);
     }
   };
 
