@@ -29,14 +29,26 @@ function CartsContextProvider({ children }) {
     useBaseState();
   const [cartId, setCartId] = React.useState("E7wSPZbIQWerYZtdQp8X");
   const isEmptyCart = !data || data.length === 0;
+  const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
+    name,
+    quantity,
+    sum: promotionalPrice * quantity,
+  })) ?? [{ name: "no items", quantity: 0, sum: 0 }];
+  const subtotal = summaryList.reduce(
+    ({ total, subtotal }, { quantity, sum }) => ({
+      total: total + quantity,
+      subtotal: subtotal + sum,
+    }),
+    { total: 0, subtotal: 0 }
+  );
   //load cart
   const loadCart = async (cart) => {
     setLoading();
     try {
       const { id, items } = await getData(`carts/${cart}`);
       setCartId(id);
-      await getPermalinkRes(items);
-      setSuccess(items);
+      const modItems = await getPermalinkRes(items);
+      setSuccess(modItems);
     } catch (err) {
       setError(err);
     }
@@ -90,6 +102,8 @@ function CartsContextProvider({ children }) {
         ...transformer(res.variants),
       }));
       console.info(dataResult);
+      const mergeResult = dataResult.map((d, i) => ({ ...d, ...carts[i] }));
+      return mergeResult;
     } catch (error) {
       console.error(error);
     }
@@ -101,7 +115,9 @@ function CartsContextProvider({ children }) {
   }, []);
 
   return (
-    <CartContext.Provider value={{ isLoading, erorr, data, isEmptyCart }}>
+    <CartContext.Provider
+      value={{ isLoading, erorr, data, isEmptyCart, summaryList, subtotal }}
+    >
       <CartContextMutation.Provider
         value={{ addNewCart, deleteCart, updateCartByItem }}
       >
