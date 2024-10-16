@@ -67,6 +67,7 @@ const CartItem = ({
   possibleSize,
   possibleColor,
   variants,
+  imageUrls,
 }) => {
   const variantsRef = React.useMemo(() => variants, [skuCode]);
   const finderFn = React.useCallback(
@@ -88,7 +89,7 @@ const CartItem = ({
   console.log(curRemains);
   return (
     <div className="flex gap-10">
-      <img className="w-[209px] aspect-square" />
+      <img className="w-[209px] aspect-square" src={imageUrls[0]} />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex justify-between">
           <h6>{name}</h6>
@@ -197,7 +198,7 @@ const RightCardSection = () => {
         <SummaryRow
           name="summary"
           price={`${subtotal.total} items`}
-          leftClassname={"text-2xl font-semi"}
+          leftClassname={"text-2xl font-bold text-black"}
           rightClassname={"text-xl font-semi"}
         />
         {/* summary items */}
@@ -208,7 +209,9 @@ const RightCardSection = () => {
               name={`${name} ${quantity === 1 ? "" : "X" + quantity}`}
               price={sum}
               leftClassname={isEmptyCart ? "text-secondary-500" : ""}
-              rightClassname="text-secondary-500"
+              rightClassname={
+                isEmptyCart ? "text-secondary-500" : "text-secondary-700"
+              }
             />
           ))}
         </SummarySection>
@@ -218,13 +221,17 @@ const RightCardSection = () => {
             name="subtotal"
             price={subtotal.subtotal}
             leftClassname={isEmptyCart ? "text-secondary-500" : ""}
-            rightClassname="text-secondary-500"
+            rightClassname={
+              isEmptyCart ? "text-secondary-500" : "text-secondary-700"
+            }
           />{" "}
           <SummaryRow
             name={"shipping fee"}
             price={SHIPPING_FEE === 0 ? "Free" : SHIPPING_FEE}
             leftClassname={isEmptyCart ? "text-secondary-500" : ""}
-            rightClassname="text-secondary-500"
+            rightClassname={
+              isEmptyCart ? "text-secondary-500" : "text-secondary-700"
+            }
           />
         </SummarySection>
         {/* summary total */}
