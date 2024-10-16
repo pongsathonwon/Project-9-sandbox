@@ -88,8 +88,11 @@ const CartItem = ({
     });
   console.log(curRemains);
   return (
-    <div className="flex gap-10">
-      <img className="w-[209px] aspect-square" src={imageUrls[0]} />
+    <div className="flex flex-col lg:flex-row gap-10">
+      <img
+        className="w-[162px] w-max-[209px] aspect-square mx-auto lg:mx-0"
+        src={imageUrls[0]}
+      />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex justify-between">
           <h6>{name}</h6>
@@ -100,45 +103,61 @@ const CartItem = ({
             <DeleteIcon />
           </button>
         </div>
-        <div className="flex justify-between">
-          {/* color dropdown */}
-          <select
-            value={curColor}
-            onChange={({ target }) => changeColor(target.value)}
-          >
-            {possibleColor.map((c) => (
-              <option key={`${name}_${c}`} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          {/* size dropdown */}
-          <select
-            value={curSize}
-            onChange={({ target }) => changeSize(target.value)}
-          >
-            {possibleSize(curColor).map((s) => (
-              <option key={`${name}_${s}`} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-          {/* amount dropdown */}
-          <select
-            value={quantity}
-            onChange={async ({ target }) =>
-              await updateCartByItem(id, {
-                skuCode: curSkuCode,
-                quantity: Number(target.value),
-              })
-            }
-          >
-            {[...Array(curRemains)].map((_, i) => (
-              <option key={`${id}-${i}`} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
+        <div className="flex flex-col lg:flex-row justify-between">
+          <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 xl:gap-4">
+            {/* color dropdown */}
+            <div className="flex flex-col gap-2">
+              <span className="text-secondary-700">color</span>
+              <select
+                className="h-[54px]"
+                value={curColor}
+                onChange={({ target }) => changeColor(target.value)}
+              >
+                {possibleColor.map((c) => (
+                  <option key={`${name}_${c}`} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex gap-4 lg:gap-2 xl:gap-4">
+              {/* size dropdown */}
+              <div className="flex flex-col gap-2">
+                <span className="text-secondary-700">size</span>
+                <select
+                  className="h-[54px]"
+                  value={curSize}
+                  onChange={({ target }) => changeSize(target.value)}
+                >
+                  {possibleSize(curColor).map((s) => (
+                    <option key={`${name}_${s}`} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* amount dropdown */}
+              <div className="flex flex-col gap-2">
+                <span className="text-secondary-700">quantity</span>
+                <select
+                  className="h-[54px]"
+                  value={quantity}
+                  onChange={async ({ target }) =>
+                    await updateCartByItem(id, {
+                      skuCode: curSkuCode,
+                      quantity: Number(target.value),
+                    })
+                  }
+                >
+                  {[...Array(curRemains)].map((_, i) => (
+                    <option key={`${id}-${i}`} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
           <span className="text-2xl font-bold mt-auto">
             THB: {promotionalPrice * quantity}
           </span>
@@ -176,7 +195,7 @@ const LeftCardSection = () => {
     );
   } else {
     return (
-      <div className="lg:w-3/5 p-4 flex flex-col gap-6">
+      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
         <h6>Items</h6>
         <div className="flex flex-col gap-6">
           {data.map((d) => (
@@ -192,7 +211,7 @@ const RightCardSection = () => {
   const SHIPPING_FEE = 0;
   const { summaryList, subtotal, isEmptyCart } = useCartContext();
   return (
-    <div className="lg:w-2/5 p-6 flex flex-col gap-10">
+    <div className="p-6 flex flex-col gap-10 lg:w-1/3">
       <div className="flex flex-col gap-6">
         {/* summary header */}
         <SummaryRow
@@ -262,7 +281,7 @@ function Cart() {
   const { isEmptyCart, isLoading } = useCartContext();
   if (isLoading) return <div>loading...</div>;
   return (
-    <section className="px-4 lg:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
+    <section className="px-4 lg:px-16 xl:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
       <div className="flex flex-col gap-10">
         <h5>My cart</h5>
         <div className="flex flex-col gap-10 lg:flex-row">
