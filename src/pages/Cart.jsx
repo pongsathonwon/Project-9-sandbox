@@ -222,7 +222,7 @@ const RightCardSection = () => {
           />{" "}
           <SummaryRow
             name={"shipping fee"}
-            price={SHIPPING_FEE}
+            price={SHIPPING_FEE === 0 ? "Free" : SHIPPING_FEE}
             leftClassname={isEmptyCart ? "text-secondary-500" : ""}
             rightClassname="text-secondary-500"
           />
