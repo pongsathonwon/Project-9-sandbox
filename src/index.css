@@ -63,17 +63,17 @@
   }
 
   .listitem {
-    @apply h-12 w-64 flex items-center justify-between;
+    @apply h-12 w-64 flex items-center justify-between p-2.5;
     &:hover {
       @apply bg-secondary-100;
     }
   }
 
   .listitem:has(a.active) {
-    @apply bg-primary-700;
+    @apply bg-primary-500;
   }
 
   .navlink:has(a.active) {
-    @apply text-primary-700;
+    @apply text-primary-500;
   }
 }

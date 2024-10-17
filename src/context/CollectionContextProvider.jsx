@@ -1,6 +1,7 @@
 import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { getData } from "../utils/apiHandler";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const CollectionContext = React.createContext(null);
 
@@ -24,10 +25,16 @@ function CollectionContextProvider({ children }) {
     })) ?? [];
   React.useEffect(() => {
     setLoading();
+    const localData = loadLocal(LOCALSTORAGE_KEY.collections);
+    if (localData) {
+      setSuccess(localData);
+      return;
+    }
     (async () => {
       try {
         const resData = await getData("collections");
         setSuccess(resData);
+        saveToLocal(LOCALSTORAGE_KEY.collections)(resData, 3);
       } catch (error) {
         setError(erorr);
       }
