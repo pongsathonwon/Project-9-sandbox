@@ -16,6 +16,12 @@ export const useCollectionContext = () => {
 function CollectionContextProvider({ children }) {
   const { data, erorr, isLoading, setError, setLoading, setSuccess } =
     useBaseState();
+
+  const possibleList =
+    data.map(({ name, permalink }) => ({
+      label: name,
+      path: permalink,
+    })) ?? [];
   React.useEffect(() => {
     setLoading();
     (async () => {
@@ -29,7 +35,7 @@ function CollectionContextProvider({ children }) {
   }, []);
   return (
     <CollectionContext.Provider
-      value={{ collectionList: data, erorr, isLoading }}
+      value={{ collectionList: data, possibleList, erorr, isLoading }}
     >
       {children}
     </CollectionContext.Provider>
