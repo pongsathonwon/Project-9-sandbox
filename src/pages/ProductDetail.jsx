@@ -9,7 +9,7 @@ const NextLeft = ({ moveleft }) => {
       height="31"
       viewBox="0 0 31 31"
       fill="none"
-      className="absolute top-1/2 left-2 transform -translate-y-1/2"
+      className="absolute top-1/2 left-2 transform -translate-y-1/2 cursor-pointer hover:opacity-70 hover:scale-110"
       onClick={moveleft}
     >
       <circle opacity="0.3" cx="15.4262" cy="15.5356" r="15.391" fill="white" />
@@ -29,7 +29,7 @@ const NextRight = ({ moveright }) => {
       height="31"
       viewBox="0 0 31 31"
       fill="none"
-      className="absolute top-1/2 right-2 transform -translate-y-1/2"
+      className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer hover:opacity-70 hover:scale-110 "
       onClick={moveright}
     >
       <circle opacity="0.3" cx="15.4262" cy="15.5356" r="15.391" fill="white" />
@@ -41,16 +41,17 @@ const NextRight = ({ moveright }) => {
   );
 };
 
-const ShowColorVariant = ({ color, colorCode, selectColor }) => {
+const ShowColorVariant = ({
+  color,
+  colorCode,
+  setselectColor,
+  selectColor,
+}) => {
+
+  const border_color = selectColor ? "border-[#C1CD00]" : "border-[#E1E1E1]";
   return (
-    <div
-      className=" flex flex-col items-center gap-2 w-full"
-      onClick={selectColor}
-    >
-      <div
-        className="border-[3px] border-[#E1E1E1] active:border-[#C1CD00] focus:border-[#C1CD00]"
-        tabIndex="0"
-      >
+    <div className=" flex flex-col items-center gap-2 w-full">
+      <div className={`border-[2px] ${border_color} `} onClick={setselectColor}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="55"
@@ -91,6 +92,7 @@ function numberWithCommas(x) {
 }
 
 function ProductDetail() {
+  // must have the productdetail object
   const [productdetail, setProductDetail] = React.useState({
     id: "kb1yxnG2jd3pAEy225M5",
     name: "City Essentials Blazer",
@@ -111,7 +113,6 @@ function ProductDetail() {
       "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FBqfHyqnV26GqYMnSBbbH-trendy-man-in-autumn-jacket-holding-backpack-and-c-2023-11-27-05-00-33-utc.png?alt=media&token=10e098e7-4fb5-461c-b89a-e8b6e457f64f",
     ],
     variants: [
-     
       {
         skuCode: "C0100404",
         color: "Khaki",
@@ -144,7 +145,7 @@ function ProductDetail() {
         skuCode: "C0100405",
         color: "Green",
         size: "L",
-        remains: 58,
+        remains: 9,
         colorCode: "#008000",
       },
       {
@@ -191,6 +192,25 @@ function ProductDetail() {
       },
     ],
   });
+  // must have the selectedImage state
+  const [selectedImage, setSelectedImage] = React.useState(0);
+  // must have the isDiscount state
+  const [isDiscount, setIsDiscount] = React.useState(
+    productdetail.promotionalPrice < productdetail.price
+      ? parseInt(
+          (1 - productdetail.promotionalPrice / productdetail.price) * 100
+        )
+      : 0
+  );
+
+  // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
+  const [productChoice, setPoductChoice] = React.useState({
+    color: [],
+    colorCode: [],
+    size: [],
+  });
+
+  const [selectedProduct, setSelectedProduct] = React.useState({});
 
   const weight_size = {
     XS: 1,
@@ -212,26 +232,33 @@ function ProductDetail() {
     });
   }, []);
 
-  const [selectedImage, setSelectedImage] = React.useState(0);
+  React.useEffect(() => {
+    setPoductChoice((prev) => {
+      return {
+        ...prev,
+        color: getUniqueValue(productdetail.variants, "color"),
+        colorCode: getUniqueValue(productdetail.variants, "colorCode"),
+        size: getUniqueValue(productdetail.variants, "size"),
+      };
+    });
+  }, [productdetail]);
 
-  const [isDiscount, setIsDiscount] = React.useState(
-    productdetail.promotionalPrice !== productdetail.price
-  );
+  React.useEffect(() => {
+    setSelectedProduct((prev) => {
+      return {
+        ...prev,
+        color: productChoice.color[0],
+        size: productChoice.size[0],
+      };
+    });
+  }, [productChoice]);
 
-  // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
-  const [productChoice, setPoductChoice] = React.useState({
-    color: getUniqueValue(productdetail.variants, "color"),
-    colorCode: getUniqueValue(productdetail.variants, "colorCode"),
-  });
-
-  const [selectedProduct, setSelectedProduct] = React.useState(
-    productdetail.variants[0]
-  );
+  console.log(selectedProduct);
 
   return (
     <>
       {/* Preview of product */}
-      <body className=" px-4 pt-6  pb-24 flex flex-col items-center gap-10 ">
+      <div className=" px-4 pt-6  pb-24 flex flex-col items-center gap-10 ">
         <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem]">
           <div className="w-full h-[21.4375rem] col-span-4 relative">
             <img
@@ -239,6 +266,11 @@ function ProductDetail() {
               alt="product"
               className="object-cover object-top  w-full h-full select-none"
             />
+            {isDiscount && (
+              <div className="absolute top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50">
+                -{isDiscount}%
+              </div>
+            )}
             <NextLeft
               moveleft={() => {
                 // if the selected image is the first image, then set the selected image to the last image
@@ -267,7 +299,7 @@ function ProductDetail() {
               return (
                 <div
                   key={index}
-                  className="w-full h-[80px] col-span-1 bg-secondary-700"
+                  className="w-full h-[80px] col-span-1 bg-secondary-700 select-none"
                   onClick={() => {
                     setSelectedImage(index);
                   }}
@@ -335,65 +367,126 @@ function ProductDetail() {
 
             <StarRating rating={productdetail.ratings} />
           </div>
-          {/* Color */}
+          {/* Color, Size, Quantity */}
           <div className="flex flex-col gap-6">
+            {/* Color Select*/}
             <div className="flex flex-col gap-2 ">
               <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
                 Color
               </h5>
               <div className=" grid grid-cols-3  gap-2">
                 {productChoice.color.map((color, index) => {
-                  return (
-                    <>
+                  if (
+                    productdetail.variants.find(
+                      (variant) =>
+                        variant.color === color &&
+                        variant.size === selectedProduct.size
+                    )?.remains > 0
+                  ) {
+                    return (
                       <ShowColorVariant
                         key={index}
                         color={color}
                         colorCode={productChoice.colorCode[index]}
-                        selectColor={() => {
+                        setselectColor={() => {
                           setSelectedProduct((prev) => {
                             return {
                               ...prev,
                               color: color,
+                              skuCode: productdetail.variants.find(
+                                (variant) =>
+                                  variant.color === color &&
+                                  variant.size === selectedProduct.size
+                              ).skuCode,
                             };
                           });
                         }}
+                        selectColor={selectedProduct.color === color}
                       />
-                    </>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
-                Size
-              </h5>
-              <div className=" grid grid-cols-5  gap-2">
-                {productdetail.variants.map((variant, index) => {
-                  if (variant.color === selectedProduct.color) {
+                    );
+                  } else {
                     return (
-                      <div
-                        key={index}
-                        className=" flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
-                        tabIndex="0"
-                        onClick={() => {
-                          setSelectedProduct((prev) => {
-                            return {
-                              ...prev,
-                              size: variant.size,
-                            };
-                          });
-                        }}
-                      >
-                        {variant.size}
+                      <div key={index} className="opacity-30">
+                        <ShowColorVariant
+                          color={color}
+                          colorCode={productChoice.colorCode[index]}
+                        />
                       </div>
                     );
                   }
                 })}
               </div>
             </div>
+            {/* Size Select */}
+            <div className="flex flex-col gap-2">
+              <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
+                Size
+              </h5>
+              <div className=" grid grid-cols-5  gap-2">
+                {productChoice.size.map((size, index) => {
+                     
+                        const border_color =
+                          selectedProduct.size === size
+                            ? "border-[#C1CD00]"
+                            : "border-[#E1E1E1]";
+                            if (
+                              productdetail.variants.find(
+                                (variant) =>
+                                  variant.color === selectedProduct.color &&
+                                  variant.size === size
+                              )?.remains > 0
+                            ){
+                        return (
+                          <button
+                            key={index}
+                            className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                            onClick={() => {
+                              setSelectedProduct((prev) => {
+                                return {
+                                  ...prev,
+                                  size: size,
+                                  skuCode: productdetail.variants.find(
+                                    (variant) =>
+                                      variant.color === selectedProduct.color &&
+                                      variant.size === size
+                                  )?.skuCode,
+                                };
+                              });
+                            }}
+                          >
+                            {size}
+                          </button>
+                        );} else {
+                          return (
+                            <button
+                              key={index}
+                              className={` opacity-30 flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                            >
+                              {size}
+                            </button>
+                          );
+                        }
+                      
+                    })}
+              </div>
+            </div>
+            {/* Quantity Select */}
+            <div className="flex flex-col gap-2">
+              <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
+                Qty.
+              </h5>
+              <input
+                type="number"
+                min={0}
+                className="w-full h-[54px] border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
+              />
+            </div>
+            <button className=" bg-secondary-900 text-secondary-50 font-light font-['Poppins'] h-[54px] hover:bg-primary-700 focus:outline-none">
+              Add to Cart
+            </button>
           </div>
         </div>
-      </body>
+      </div>
     </>
   );
 }
