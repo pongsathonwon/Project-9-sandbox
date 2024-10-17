@@ -18,7 +18,7 @@ function CollectionContextProvider({ children }) {
     useBaseState();
 
   const possibleList =
-    data.map(({ name, permalink }) => ({
+    data?.map(({ name, permalink }) => ({
       label: name,
       path: permalink,
     })) ?? [];
