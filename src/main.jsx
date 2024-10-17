@@ -8,7 +8,7 @@ import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import CartsContextProvider from "./context/CartsContextProvider.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
-import CartsContextProvider from "./context/CartsContextProvider.jsx";
+import CollectionContextProvider from "./context/CollectionContextProvider.jsx";
 
 const ROUTES = createBrowserRouter([
   {
@@ -25,8 +25,10 @@ const ROUTES = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CartsContextProvider>
-      <RouterProvider router={ROUTES} />
-    </CartsContextProvider>
+    <CollectionContextProvider>
+      <CartsContextProvider>
+        <RouterProvider router={ROUTES} />
+      </CartsContextProvider>
+    </CollectionContextProvider>
   </StrictMode>
 );
