@@ -27,7 +27,7 @@ function CollectionContextProvider({ children }) {
     })();
   }, []);
   return (
-    <CollectionContext.Provider value={{}}>
+    <CollectionContext.Provider value={{ data, erorr, isLoading }}>
       {children}
     </CollectionContext.Provider>
   );
