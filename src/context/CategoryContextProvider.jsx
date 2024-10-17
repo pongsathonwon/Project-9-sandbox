@@ -1,6 +1,7 @@
 import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { getData } from "../utils/apiHandler";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const CategoryContext = React.createContext(null);
 
@@ -22,14 +23,20 @@ function CategoryContextProvider({ children }) {
     [];
   React.useEffect(() => {
     setLoading();
-    async () => {
+    const localData = loadLocal(LOCALSTORAGE_KEY.categories);
+    if (localData) {
+      setSuccess(localData);
+      return;
+    }
+    (async () => {
       try {
         const resData = await getData("categories");
         setSuccess(resData);
+        saveToLocal(LOCALSTORAGE_KEY.categories)(resData, 3);
       } catch (error) {
         setError(erorr);
       }
-    };
+    })();
   }, []);
   return (
     <CategoryContext.Provider
