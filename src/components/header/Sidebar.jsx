@@ -16,7 +16,6 @@ const LayoutSidebar = ({ zIndex = "z-20", children }) => {
 };
 
 function Sidebar({ isShow, onClick }) {
-  const navigate = useNavigate();
   const { type } = useParams();
   console.log(type);
   return (
@@ -38,21 +37,22 @@ function Sidebar({ isShow, onClick }) {
           {type ? (
             <>
               <Arrow direction="left" />
-              {type}
+              {navlist.find(({ path }) => path === type).label}
             </>
           ) : (
             <span className="text-lg ml-4">home</span>
           )}
         </button>
+
         <div className=" bg-white z-20 rounded-r-2xl pt-5">
           <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
-            {navlist.map((n) => (
-              <ListItem key={n}>
+            {navlist.map(({ label, path }) => (
+              <ListItem key={path}>
                 <Link
                   className="flex items-center justify-between w-full"
-                  to={genClothingList(n)}
+                  to={genClothingList(path)}
                 >
-                  {n} <Arrow direction="right" />
+                  {label} <Arrow direction="right" />
                 </Link>
               </ListItem>
             ))}

@@ -8,7 +8,6 @@ import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import CartsContextProvider from "./context/CartsContextProvider.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
-import CartsContextProvider from "./context/CartsContextProvider.jsx";
 
 const ROUTES = createBrowserRouter([
   {

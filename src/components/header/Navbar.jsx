@@ -48,9 +48,9 @@ function Navbar({ children }) {
             </NavLink>
           </div>
           <ul className="hidden text-white gap-6 text-base items-center capitalize md:flex">
-            {navlist.map((n) => (
-              <li className="navlink" key={n}>
-                <NavLink to={genClothingList(n)}>{n}</NavLink>
+            {navlist.map(({ label, path }) => (
+              <li className="navlink" key={path}>
+                <NavLink to={genClothingList(path)}>{label}</NavLink>
               </li>
             ))}
           </ul>
