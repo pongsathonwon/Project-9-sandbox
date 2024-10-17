@@ -1,6 +1,7 @@
 import React from "react";
 import { SummaryRow, SummarySection } from "./Summary";
 import { useCartContext } from "../../context/CartsContextProvider";
+import CartBtn from "./CartBtn";
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
@@ -65,8 +66,12 @@ function RightCartSession() {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <button>checkout</button>
-        <button>continue shoping</button>
+        <CartBtn disabled={isEmptyCart} btnLabel="Checkout" />
+        <CartBtn
+          disabled={isEmptyCart}
+          severity="secondary"
+          btnLabel="Continue shopping"
+        />
       </div>
     </div>
   );

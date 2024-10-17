@@ -1,6 +1,8 @@
 import React from "react";
 import { useCartContext } from "../../context/CartsContextProvider";
 import CartItem from "./CartItem";
+import CartBtn from "./CartBtn";
+import { Link } from "react-router-dom";
 
 function LeftCartSession() {
   const { data, isEmptyCart } = useCartContext();
@@ -23,7 +25,9 @@ function LeftCartSession() {
               Go ahead & explore stuff
             </p>
           </div>
-          <button>continue shopping</button>
+          <Link to="/clothing/all-items" replace={true}>
+            <CartBtn btnLabel="Continue shopping" />
+          </Link>
         </div>
       </div>
     );
