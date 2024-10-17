@@ -10,12 +10,15 @@ function Navbar({ children }) {
         <div className="flex">
           <div className="flex items-center gap-2 md:gap-4 md:mr-10">
             {children}
-            <img
-              src="storefront.png"
-              alt="storefront-logo"
-              className="w-[37px] aspect-square"
-            />
-            <NavLink className="text-lg font-semibold text-white" to={"/"}>
+            <NavLink
+              className="text-lg font-semibold text-white flex gap-2 md:gap-4 items-center"
+              to={"/"}
+            >
+              <img
+                src="storefront.png"
+                alt="storefront-logo"
+                className="w-[37px] aspect-square"
+              />
               WDB
             </NavLink>
           </div>

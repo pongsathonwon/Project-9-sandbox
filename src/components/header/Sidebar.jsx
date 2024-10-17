@@ -5,24 +5,21 @@ import Arrow from "../Icon/Arrow";
 import { useCategoryContext } from "../../context/CategoryContextProvider";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
 
-const ListItem = ({ lsitLabel, children }) => {
+const ExpandableButton = ({ labelText, children }) => {
   const [open, setOpen] = React.useState(false);
   return (
-    <li className="w-64 flex flex-col">
+    <div className="relative w-full h-full" onBlur={() => setOpen((p) => !p)}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="h-12 flex justify-between items-center my-auto bg-white"
+        className="capitalize text-lg font-semibold w-full h-full text-start flex justify-between items-center"
       >
-        {lsitLabel} <Arrow direction={open ? "down" : "right"} />
+        {labelText}
+        <Arrow direction={open ? "down" : "up"} />
       </button>
-      <div
-        className={`transition-all duration-300 ${
-          open ? "" : "-translate-y-full scale-y-0 -z-10"
-        }`}
-      >
+      <ul className={`${open ? "" : "scale-y-0 duration-300 origin-top"}`}>
         {children}
-      </div>
-    </li>
+      </ul>
+    </div>
   );
 };
 
@@ -34,6 +31,7 @@ function Sidebar({ isShow, onClick }) {
   const { possibleList } = useCollectionContext();
   console.table(possibleList);
   const [secondary, setSecondary] = React.useState(null);
+  const [teriary, setTeriary] = React.useState(null);
   return (
     <div
       className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 ${
@@ -44,8 +42,8 @@ function Sidebar({ isShow, onClick }) {
         <div className="h-full relative">
           {/* primary sidebar */}
           <div
-            className={`absolute duration-300 ${
-              secondary ? "-translate-x-full" : ""
+            className={`absolute duration-300 h-screen ${
+              secondary || teriary ? "-translate-x-full" : ""
             }`}
           >
             <button
@@ -57,21 +55,24 @@ function Sidebar({ isShow, onClick }) {
             <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
               {navlist.map(({ label, path }) => (
                 <li className="w-64 flex items-center h-12" key={path}>
-                  <button onClick={() => setSecondary(label)}>{label}</button>
+                  <button
+                    onClick={() => setSecondary(label)}
+                    className="w-full h-full text-start capitalize"
+                  >
+                    {label}
+                  </button>
                 </li>
               ))}
             </ul>
           </div>
           {/* secondary sidebar */}
           <div
-            className={`aboslute duration-300 ${
-              secondary ? "" : "-translate-x-full"
+            className={`aboslute duration-300 h-screen ${
+              secondary && !teriary ? "" : "-translate-x-full"
             }`}
           >
             <button
-              className={`font-bold capitalize flex gap-8 items-center w-full px-4 h-12 ${
-                type ? "border-b border-secondary-300 text-2xl" : "text-lg"
-              }`}
+              className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
               onClick={() => setSecondary(null)}
             >
               <Arrow direction="left" />
@@ -81,7 +82,45 @@ function Sidebar({ isShow, onClick }) {
               {secondaryNavlist(secondary)?.map(({ label, path }) => (
                 <li key={path} className="listitem">
                   <NavLink
-                    className="flex w-64 h-12 items-center justify-between"
+                    className="flex w-64 h-12 items-center justify-between font-normal"
+                    to={genClothingList(path)}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+              <li className="px-2.5 h-12">
+                <ExpandableButton labelText="Collections">
+                  {possibleList.map(({ label, path }) => (
+                    <li
+                      key={path}
+                      className="h-12 full flex items-center pl-4 hover:bg-none text-base font-normal"
+                    >
+                      <button onClick={() => setTeriary(label)}>{label}</button>
+                    </li>
+                  ))}
+                </ExpandableButton>
+              </li>
+            </ul>
+          </div>
+          {/* teriary sidebar */}
+          <div
+            className={`aboslute duration-300 h-screen -translate-y-full ${
+              teriary ? "" : "-translate-x-full"
+            }`}
+          >
+            <button
+              className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
+              onClick={() => setTeriary(null)}
+            >
+              <Arrow direction="left" />
+              {teriary}
+            </button>
+            <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
+              {secondaryNavlist(secondary)?.map(({ label, path }) => (
+                <li key={path} className="listitem">
+                  <NavLink
+                    className="flex w-64 h-12 items-center justify-between font-normal"
                     to={genClothingList(path)}
                   >
                     {label}

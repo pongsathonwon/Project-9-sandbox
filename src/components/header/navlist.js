@@ -11,5 +11,4 @@ export const secondaryNavlist = (priamry) => [
   { label: "shirts", path: `${priamry}-shirt` },
   { label: "shoes", path: `${priamry}-shoes` },
   { label: "accessories", path: `${priamry}-accessories` },
-  { label: "collections", path: `&collections` },
 ];
