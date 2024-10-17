@@ -17,7 +17,8 @@ function CollectionContextProvider({ children }) {
   const { data, erorr, isLoading, setError, setLoading, setSuccess } =
     useBaseState();
   React.useEffect(() => {
-    setLoading(async () => {
+    setLoading();
+    (async () => {
       try {
         const resData = await getData("collections");
         setSuccess(resData);
