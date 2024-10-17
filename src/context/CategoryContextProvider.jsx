@@ -13,7 +13,7 @@ export const useCategoryContext = () => {
   return ctx;
 };
 
-function CategoryContextProvider({ childern }) {
+function CategoryContextProvider({ children }) {
   const { data, isLoading, erorr, setSuccess, setLoading, setError } =
     useBaseState();
 
@@ -35,7 +35,7 @@ function CategoryContextProvider({ childern }) {
     <CategoryContext.Provider
       value={{ categoryList: data, erorr, isLoading, possibleCategoryList }}
     >
-      {childern}
+      {children}
     </CategoryContext.Provider>
   );
 }
