@@ -2,7 +2,6 @@ import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { deleteData, getData, postData, updateData } from "../utils/apiHandler";
 import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
-import { transformer } from "../utils/modifiedPermalik";
 
 const CartContext = React.createContext(null);
 
@@ -27,7 +26,7 @@ export const useCartContext = () => {
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError } =
     useBaseState();
-  const [cartId, setCartId] = React.useState("E7wSPZbIQWerYZtdQp8X");
+  const [cartId, setCartId] = React.useState("mqoGNJ9284nUUkKo1bnd");
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
     name,
@@ -42,13 +41,15 @@ function CartsContextProvider({ children }) {
     { total: 0, subtotal: 0 }
   );
   //load cart
-  const loadCart = async (cart) => {
-    setLoading();
+  const loadCart = async (cartid) => {
     try {
-      const { id, items } = await getData(`carts/${cart}`);
+      setLoading();
+      const { id, items } = await getData(`carts/${cartid}`);
       setCartId(id);
-      const modItems = await getPermalinkRes(items);
-      setSuccess(modItems);
+      const finalResult = await Promise.all(
+        items.map((item) => getByPermalink(item))
+      );
+      setSuccess(finalResult);
     } catch (err) {
       setError(err);
     }
@@ -57,9 +58,13 @@ function CartsContextProvider({ children }) {
   const addNewCart = async (body) => {
     const validated = checkAddCartBody(body);
     try {
+      setLoading();
       const { id, items } = await postData("carts", { items: validated });
       setCartId(id);
-      setSuccess(items);
+      const finalResult = await Promise.all(
+        items.map((item) => getByPermalink(item))
+      );
+      setSuccess(finalResult);
     } catch (err) {
       setError(err.message);
     }
@@ -77,33 +82,33 @@ function CartsContextProvider({ children }) {
   const updateCartByItem = async (itemId, body) => {
     const validatedBody = checkUpdateCartBody(body);
     try {
+      setLoading();
       const { items } = await updateData(
         `carts/${cartId}/items/${itemId}`,
         validatedBody
       );
-      setSuccess(items);
+      const finalResult = await Promise.all(
+        items.map((item) => getByPermalink(item))
+      );
+      setSuccess(finalResult);
     } catch (err) {
       setError(err);
     }
   };
 
   //permalink logic
-  const getPermalinkRes = async (carts) => {
-    if (!carts || carts.length === 0) return;
+  const getByPermalink = async (cart) => {
     try {
-      const permalinkList = carts.map(({ productPermalink }) =>
-        getData(`products/${productPermalink}`)
-      );
-      const resResult = await Promise.all(permalinkList);
+      const permalinkData = await getData(`products/${cart.productPermalink}`);
       console.log("succes get permalink");
-      console.info(resResult);
-      const dataResult = resResult.map((res) => ({
-        ...res,
-        ...transformer(res.variants),
-      }));
-      console.info(dataResult);
-      const mergeResult = dataResult.map((d, i) => ({ ...d, ...carts[i] }));
-      return mergeResult;
+      const [initial] = permalinkData.variants.filter(
+        (data) => data.skuCode === cart.skuCode
+      );
+      const colorList = permalinkData.variants.reduce(
+        (prev, { color }) => (prev.includes(color) ? prev : [...prev, color]),
+        []
+      );
+      return { ...permalinkData, colorList, ...cart, ...initial };
     } catch (error) {
       console.error(error);
     }

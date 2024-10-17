@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   useCartContext,
   useCartMutation,
-} from "../context/CartsContextProvider";
-import ContainerSlot from "../components/ContainerSlot";
-import useItemState from "../hooks/useItemState";
+} from "../../context/CartsContextProvider";
+import ContainerSlot from "../../components/ContainerSlot";
 
 const DeleteIcon = () => {
   return (
@@ -57,41 +56,34 @@ const SummarySection = ({ children }) => {
 const CartItem = ({
   id,
   name,
-  skuCode,
   quantity,
-  price,
   promotionalPrice,
-  size,
-  color,
-  remains,
-  possibleSize,
-  possibleColor,
   variants,
   imageUrls,
+  color,
+  size,
+  colorList,
+  isLoading,
 }) => {
-  const variantsRef = React.useMemo(() => variants, [skuCode]);
-  const finderFn = React.useCallback(
-    (color, size) =>
-      variantsRef[
-        variants.findIndex(
-          (variant) => variant.color === color && variant.size === size
-        )
-      ],
-    [variantsRef]
-  );
+  if (isLoading) return <div>loading item...</div>;
   const { deleteCart, updateCartByItem } = useCartMutation();
-  const { curColor, curSize, curSkuCode, curRemains, changeColor, changeSize } =
-    useItemState({
-      curColor: "Brown",
-      curSize: "36",
-      changeRemainFn: finderFn,
-    });
-  console.log(curRemains);
+  const [curColor, setCurColor] = React.useState(color);
+  const [curSize, setCurSize] = React.useState(size);
+  const { remains, skuCode } = variants.find(
+    ({ color, size, remains }) =>
+      color === curColor && size === curSize && remains !== 0
+  ) ?? { remains: 0, skuCode: "" };
+  const sizeList = variants
+    .filter(({ color, remains }) => color === curColor && remains !== 0)
+    .map(({ size }) => size)
+    .sort();
+  console.log("name:", name, "-", "id:", id);
+
   return (
     <div className="flex flex-col lg:flex-row gap-10">
       <img
         className="w-[162px] w-max-[209px] aspect-square mx-auto lg:mx-0"
-        src={imageUrls[0]}
+        src={imageUrls[0] ?? ""}
       />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex justify-between">
@@ -111,9 +103,9 @@ const CartItem = ({
               <select
                 className="h-[54px]"
                 value={curColor}
-                onChange={({ target }) => changeColor(target.value)}
+                onChange={({ target }) => setCurColor(target.value)}
               >
-                {possibleColor.map((c) => (
+                {colorList.map((c) => (
                   <option key={`${name}_${c}`} value={c}>
                     {c}
                   </option>
@@ -127,9 +119,9 @@ const CartItem = ({
                 <select
                   className="h-[54px]"
                   value={curSize}
-                  onChange={({ target }) => changeSize(target.value)}
+                  onChange={({ target }) => setCurSize(target.value)}
                 >
-                  {possibleSize(curColor).map((s) => (
+                  {sizeList.map((s) => (
                     <option key={`${name}_${s}`} value={s}>
                       {s}
                     </option>
@@ -144,12 +136,12 @@ const CartItem = ({
                   value={quantity}
                   onChange={async ({ target }) =>
                     await updateCartByItem(id, {
-                      skuCode: curSkuCode,
+                      skuCode,
                       quantity: Number(target.value),
                     })
                   }
                 >
-                  {[...Array(curRemains)].map((_, i) => (
+                  {[...Array(remains ?? 0)].map((_, i) => (
                     <option key={`${id}-${i}`} value={i + 1}>
                       {i + 1}
                     </option>
@@ -198,7 +190,7 @@ const LeftCardSection = () => {
       <div className="p-4 flex flex-col gap-6 lg:w-2/3">
         <h6>Items</h6>
         <div className="flex flex-col gap-6">
-          {data.map((d) => (
+          {data?.map((d) => (
             <CartItem key={d.id} {...d} />
           ))}
         </div>
