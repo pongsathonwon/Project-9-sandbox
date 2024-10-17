@@ -100,7 +100,6 @@ function CartsContextProvider({ children }) {
   const getByPermalink = async (cart) => {
     try {
       const permalinkData = await getData(`products/${cart.productPermalink}`);
-      console.log("succes get permalink");
       const [initial] = permalinkData.variants.filter(
         (data) => data.skuCode === cart.skuCode
       );
