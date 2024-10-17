@@ -9,7 +9,9 @@ const DIRECTION = {
 
 function Arrow({ direction = "up" }) {
   return (
-    <div className={`squre-group ${DIRECTION[direction]}`}>
+    <div
+      className={`squre-group transition-all duration-300 ${DIRECTION[direction]}`}
+    >
       <svg
         width="15"
         height="9"

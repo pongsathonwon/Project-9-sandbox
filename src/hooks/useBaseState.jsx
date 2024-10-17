@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const ACTION_TYPES = {
   loading: "LOADING",
@@ -8,7 +8,7 @@ const ACTION_TYPES = {
 
 const reducer = (state, { type, payload }) => {
   if (type === ACTION_TYPES.loading) {
-    return { ...state, isLoading: true, erorr: null, data: null };
+    return { ...state, isLoading: true, erorr: null };
   }
   if (type === ACTION_TYPES.success) {
     return { ...state, isLoading: false, erorr: null, data: payload };
