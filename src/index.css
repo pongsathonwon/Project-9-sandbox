@@ -76,6 +76,21 @@
   .navlink:has(a.active) {
     @apply text-primary-500;
   }
+
+  ::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 }
 
 .border-focus-primary:focus {
