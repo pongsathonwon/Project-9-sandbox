@@ -17,7 +17,10 @@ function Dropdown({ setselectedProduct, selectedProduct }) {
 
   //console.log("Dropdown ", selectedProduct);
   return (
-    <div className="w-full flex flex-col xl:w-[14rem] 2xl:w-[8.6875rem]" onClick={() => setToggle(!toggle)}>
+    <div
+      className="w-full flex flex-col xl:w-[14rem] 2xl:w-[8.6875rem]"
+      onClick={() => setToggle(!toggle)}
+    >
       <div
         className=" flex justify-between items-center px-[10px] py-[7px] border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
         tabIndex={0}
