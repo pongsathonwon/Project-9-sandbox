@@ -77,3 +77,7 @@
     @apply text-primary-500;
   }
 }
+
+.border-focus-primary:focus {
+  @apply border-primary;
+}
