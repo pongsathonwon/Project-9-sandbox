@@ -1,6 +1,5 @@
 import React from "react";
 import Dropdownbutt from "./Dropdownbutt";
-import "./Dropdown.css";
 
 function Dropdown({ setselectedProduct, selectedProduct }) {
   const [selectedQuantity, setselectedQuantity] = React.useState(
