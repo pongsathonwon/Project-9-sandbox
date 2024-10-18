@@ -1,5 +1,6 @@
 import React from "react";
 import StarRating from "../components/StarRating";
+import Dropdown from "./ProductDtail/Dropdown";
 
 const NextLeft = ({ moveleft }) => {
   return (
@@ -47,7 +48,6 @@ const ShowColorVariant = ({
   setselectColor,
   selectColor,
 }) => {
-
   const border_color = selectColor ? "border-[#C1CD00]" : "border-[#E1E1E1]";
   return (
     <div className=" flex flex-col items-center gap-2 w-full">
@@ -202,6 +202,7 @@ function ProductDetail() {
         )
       : 0
   );
+  const [favorite, setFavorite] = React.useState(false);
 
   // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
   const [productChoice, setPoductChoice] = React.useState({
@@ -244,12 +245,9 @@ function ProductDetail() {
   }, [productdetail]);
 
   React.useEffect(() => {
-    setSelectedProduct((prev) => {
-      return {
-        ...prev,
-        color: productChoice.color[0],
-        size: productChoice.size[0],
-      };
+    setSelectedProduct({
+      ...productdetail.variants[0],
+      quantity: 1,
     });
   }, [productChoice]);
 
@@ -258,13 +256,13 @@ function ProductDetail() {
   return (
     <>
       {/* Preview of product */}
-      <div className=" px-4 pt-6  pb-24 flex flex-col items-center gap-10 ">
+      <div className=" px-4 pt-6  pb-24 flex flex-col items-center gap-10 select-none">
         <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem]">
           <div className="w-full h-[21.4375rem] col-span-4 relative">
             <img
               src={productdetail.imageUrls[selectedImage]}
               alt="product"
-              className="object-cover object-top  w-full h-full select-none"
+              className="object-cover object-top  w-full h-full"
             />
             {isDiscount && (
               <div className="absolute top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50">
@@ -299,7 +297,7 @@ function ProductDetail() {
               return (
                 <div
                   key={index}
-                  className="w-full h-[80px] col-span-1 bg-secondary-700 select-none"
+                  className="w-full h-[80px] col-span-1 bg-secondary-700"
                   onClick={() => {
                     setSelectedImage(index);
                   }}
@@ -328,11 +326,13 @@ function ProductDetail() {
                   width="40"
                   height="40"
                   viewBox="0 0 40 40"
-                  fill="none"
+                  onClick={() => setFavorite(!favorite)}
+                  
+                  className= {"cursor-pointer"}
                 >
                   <path
                     d="M24.6584 12.709C25.9871 12.709 26.9655 13.0337 27.6491 13.7002C28.3198 14.3581 28.6488 15.298 28.6488 16.5798C28.6488 17.8572 27.9011 19.25 26.4314 20.724L19.6768 27.2266L12.9007 20.6898L12.8494 20.6385L12.7896 20.5873C12.7896 20.5873 12.7384 20.5446 12.6145 20.4164C12.5675 20.3694 12.4222 20.2113 12.0633 19.7584C11.8112 19.4423 11.5805 19.1133 11.384 18.7844C11.2131 18.4981 11.0508 18.1264 10.9012 17.6863C10.773 17.2975 10.709 16.9258 10.709 16.5798C10.709 15.298 11.0337 14.3581 11.7087 13.7002C12.3923 13.0337 13.3707 12.709 14.6994 12.709C15.007 12.709 15.3317 12.7645 15.6649 12.8756C16.0366 12.9995 16.3827 13.1661 16.6989 13.3755C17.0919 13.6361 17.4337 13.8796 17.7072 14.0975C17.9763 14.3111 18.2327 14.5418 18.4719 14.7811L19.681 15.9902L20.8901 14.7811C21.1294 14.5418 21.39 14.3111 21.6549 14.0975C21.9326 13.8753 22.2744 13.6318 22.6674 13.3755C22.9836 13.1704 23.3297 12.9995 23.6971 12.8799C24.0261 12.7645 24.3551 12.709 24.6584 12.709ZM24.6584 11C24.1671 11 23.6629 11.0854 23.1502 11.2563C22.6375 11.4272 22.159 11.6579 21.719 11.9485C21.2789 12.239 20.8986 12.5124 20.5825 12.7645C20.2663 13.0209 19.963 13.29 19.6768 13.5763C19.3905 13.29 19.0872 13.0209 18.771 12.7645C18.4549 12.5082 18.0746 12.239 17.6345 11.9485C17.1945 11.6579 16.716 11.4272 16.2033 11.2563C15.6906 11.0854 15.1864 11 14.6951 11C12.9135 11 11.5207 11.4913 10.5124 12.4783C9.50414 13.4652 9 14.8324 9 16.5798C9 17.1138 9.09399 17.6607 9.28198 18.2247C9.46997 18.7886 9.67931 19.2714 9.91857 19.6687C10.1578 20.066 10.427 20.4548 10.7303 20.8308C11.0337 21.2068 11.2516 21.4674 11.3926 21.6127C11.5335 21.7537 11.6403 21.8605 11.7215 21.9246L19.1598 29.1022C19.3008 29.2432 19.476 29.3158 19.6853 29.3158C19.8904 29.3158 20.0656 29.2432 20.2108 29.1022L27.6363 21.9502C29.4563 20.1301 30.3663 18.3443 30.3663 16.584C30.3663 14.8366 29.8622 13.4695 28.8539 12.4825C27.8328 11.4913 26.44 11 24.6584 11Z"
-                    fill="#222222"
+                    fill={favorite ? "#FF000D" : "#222222"}
                   />
                 </svg>
               </div>
@@ -390,14 +390,16 @@ function ProductDetail() {
                         colorCode={productChoice.colorCode[index]}
                         setselectColor={() => {
                           setSelectedProduct((prev) => {
+                            const product = productdetail.variants.find(
+                              (variant) =>
+                                variant.color === color &&
+                                variant.size === selectedProduct.size
+                            );
                             return {
                               ...prev,
                               color: color,
-                              skuCode: productdetail.variants.find(
-                                (variant) =>
-                                  variant.color === color &&
-                                  variant.size === selectedProduct.size
-                              ).skuCode,
+                              skuCode: product.skuCode,
+                              remains: product.remains,
                             };
                           });
                         }}
@@ -424,50 +426,51 @@ function ProductDetail() {
               </h5>
               <div className=" grid grid-cols-5  gap-2">
                 {productChoice.size.map((size, index) => {
-                     
-                        const border_color =
-                          selectedProduct.size === size
-                            ? "border-[#C1CD00]"
-                            : "border-[#E1E1E1]";
-                            if (
-                              productdetail.variants.find(
-                                (variant) =>
-                                  variant.color === selectedProduct.color &&
-                                  variant.size === size
-                              )?.remains > 0
-                            ){
-                        return (
-                          <button
-                            key={index}
-                            className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
-                            onClick={() => {
-                              setSelectedProduct((prev) => {
-                                return {
-                                  ...prev,
-                                  size: size,
-                                  skuCode: productdetail.variants.find(
-                                    (variant) =>
-                                      variant.color === selectedProduct.color &&
-                                      variant.size === size
-                                  )?.skuCode,
-                                };
-                              });
-                            }}
-                          >
-                            {size}
-                          </button>
-                        );} else {
-                          return (
-                            <button
-                              key={index}
-                              className={` opacity-30 flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
-                            >
-                              {size}
-                            </button>
-                          );
-                        }
-                      
-                    })}
+                  const border_color =
+                    selectedProduct.size === size
+                      ? "border-[#C1CD00]"
+                      : "border-[#E1E1E1]";
+                  if (
+                    productdetail.variants.find(
+                      (variant) =>
+                        variant.color === selectedProduct.color &&
+                        variant.size === size
+                    )?.remains > 0
+                  ) {
+                    return (
+                      <button
+                        key={index}
+                        className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                        onClick={() => {
+                          setSelectedProduct((prev) => {
+                            const product = productdetail.variants.find(
+                              (variant) =>
+                                variant.color === selectedProduct.color &&
+                                variant.size === size
+                            );
+                            return {
+                              ...prev,
+                              size: size,
+                              skuCode: product.skuCode,
+                              remains: product.remains,
+                            };
+                          });
+                        }}
+                      >
+                        {size}
+                      </button>
+                    );
+                  } else {
+                    return (
+                      <button
+                        key={index}
+                        className={` opacity-30 flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                      >
+                        {size}
+                      </button>
+                    );
+                  }
+                })}
               </div>
             </div>
             {/* Quantity Select */}
@@ -475,10 +478,24 @@ function ProductDetail() {
               <h5 className=" font-normal text-lg font-['Poppins'] text-secondary-700">
                 Qty.
               </h5>
-              <input
-                type="number"
-                min={0}
-                className="w-full h-[54px] border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
+
+              {/* <select className="w-full h-[54px] max-h-[108px] border border-[#E1E1E1] focus:outline-none focus:border-[#C1CD00] active:border-[#C1CD00]"
+                >
+                  {Array.from(
+                    { length: selectedProduct.remains },
+                    (_, i) => i + 1
+                  ).map((quantity) => {
+                    return (
+                      <option key={quantity} value={quantity}>
+                        {quantity}
+                      </option>
+                    );
+                  })}
+                </select> */}
+
+              <Dropdown
+                setselectedProduct={setSelectedProduct}
+                selectedProduct={selectedProduct}
               />
             </div>
             <button className=" bg-secondary-900 text-secondary-50 font-light font-['Poppins'] h-[54px] hover:bg-primary-700 focus:outline-none">
