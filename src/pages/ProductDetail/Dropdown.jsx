@@ -2,13 +2,18 @@ import React from "react";
 import Dropdownbutt from "./Dropdownbutt";
 
 function Dropdown({ setselectedProduct, selectedProduct }) {
-  const [selectedQuantity, setselectedQuantity] = React.useState(
-    selectedProduct.quantity || 1
-  );
+  const [selectedQuantity, setselectedQuantity] = React.useState(1);
   const [toggle, setToggle] = React.useState(false);
   React.useEffect(() => {
     setselectedProduct((prev) => ({ ...prev, quantity: selectedQuantity }));
   }, [selectedQuantity]);
+
+  React.useEffect(() => {
+    if (selectedProduct.quantity > selectedProduct.remains) {
+      setselectedQuantity(1);
+      setselectedProduct((prev) => ({ ...prev, quantity: 1 }));
+    }
+  }, [selectedProduct]);
 
   //console.log("Dropdown ", selectedProduct);
   return (

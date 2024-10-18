@@ -1,6 +1,6 @@
 import React from "react";
-import StarRating from "../components/StarRating";
-import Dropdown from "./ProductDtail/Dropdown";
+import StarRating from "../../components/StarRating";
+import Dropdown from "./Dropdown";
 
 const NextLeft = ({ moveleft }) => {
   return (
