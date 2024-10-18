@@ -41,6 +41,12 @@
   .caption {
     @apply text-xs font-normal;
   }
+   ::-webkit-scrollbar {
+    @apply w-1;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-secondary-500 rounded-sm;
+  }
 }
 
 @layer components {
