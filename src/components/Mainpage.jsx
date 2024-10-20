@@ -57,10 +57,10 @@ const Mainpage = () => {
                     "linear-gradient(180deg, rgba(0, 0, 0, 0) 41.5%, rgba(0, 0, 0, 0.8) 100%)",
                 }}
               >
-                <div className="self-stretch h-8 text-center text-[#ffffff] text-2xl font-bold font-poppins leading-loose">
+                <div className="self-stretch h-8 text-center text-[#ffffffda] text-2xl font-bold font-poppins leading-loose">
                   Cozy Breeze
                 </div>
-                <div className="self-stretch text-center text-[#ffffff] text-base font-normal font-poppins leading-tight">
+                <div className="self-stretch text-center text-[#ffffffda] text-base font-normal font-poppins leading-tight">
                   Embrace the season with our carefully curated selection of
                   garments, each piece thoughtfully designed to blend fashion
                   and functionality. From cozy knits to elegant outerwear, our
@@ -68,7 +68,7 @@ const Mainpage = () => {
                   fashion.
                 </div>
                 <div className="h-[54px] px-2.5 py-[7px] bg-[#222222] flex justify-center items-center gap-2">
-                  <div className="text-[#ffffff] text-base font-normal font-poppins leading-tight">
+                  <div className="text-[#ffffffda] text-base font-normal font-poppins leading-tight">
                     View more
                   </div>
                 </div>
@@ -88,17 +88,17 @@ const Mainpage = () => {
                     "linear-gradient(180deg, rgba(0, 0, 0, 0) 41.5%, rgba(0, 0, 0, 0.8) 100%)",
                 }}
               >
-                <div className="self-stretch h-8 text-center text-[#ffffff] text-2xl font-bold font-poppins leading-loose">
+                <div className="self-stretch h-8 text-center text-[#ffffffda] text-2xl font-bold font-poppins leading-loose">
                   Flexi Move
                 </div>
-                <div className="self-stretch text-center text-[#ffffff] text-base font-normal font-poppins leading-tight">
+                <div className="self-stretch text-center text-[#ffffffda] text-base font-normal font-poppins leading-tight">
                   Step into a world where fashion meets functionality with our
                   latest Sneaker Collection. Designed for those who appreciate
                   the perfect fusion of style and comfort, our curated selection
                   of sneakers is a celebration of urban chic.
                 </div>
                 <div className="h-[54px] px-2.5 py-[7px] bg-[#222222] flex justify-center items-center gap-2">
-                  <div className="text-[#ffffff] text-base font-normal font-poppins leading-tight">
+                  <div className="text-[#ffffffda] text-base font-normal font-poppins leading-tight">
                     View more
                   </div>
                 </div>
