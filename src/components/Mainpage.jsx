@@ -1,5 +1,7 @@
 import React from "react";
 import headerPicture from "../assets/mainpage-photo/header-picture.png"; // Import the image
+import cozyImage from "../assets/mainpage-photo/Cozy.jpg"; // Import cozy image
+import flexiImage from "../assets/mainpage-photo/Flexi.jpg"; // Import flexi image
 import StarRating from "./StarRating"; // Import the StarRating component
 
 const Mainpage = () => {
@@ -36,18 +38,29 @@ const Mainpage = () => {
               comfort and fashion, as we present you with the must-have
               ensembles to make a statement in the chilly months ahead. Welcome
               to a winter wardrobe that seamlessly combines coziness with chic
-              aesthetics
+              aesthetics.
             </div>
           </div>
           {/* Right Column (Two Cards) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Cozy Breeze Card */}
             <div className="relative">
-              <div className="h-[462px] p-4 bg-gradient-to-b from-black to-black flex flex-col justify-end items-center gap-4">
-                <div className="self-stretch h-8 text-center text-white text-2xl font-bold font-poppins leading-loose">
+              <img
+                className="w-full h-[462px] object-cover rounded-lg"
+                src={cozyImage}
+                alt="Cozy Breeze"
+              />
+              <div
+                className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end items-center gap-4"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 41.5%, rgba(0, 0, 0, 0.8) 100%)",
+                }}
+              >
+                <div className="self-stretch h-8 text-center text-[#ffffff] text-2xl font-bold font-poppins leading-loose">
                   Cozy Breeze
                 </div>
-                <div className="self-stretch text-center text-white text-base font-normal font-poppins leading-tight">
+                <div className="self-stretch text-center text-[#ffffff] text-base font-normal font-poppins leading-tight">
                   Embrace the season with our carefully curated selection of
                   garments, each piece thoughtfully designed to blend fashion
                   and functionality. From cozy knits to elegant outerwear, our
@@ -55,7 +68,7 @@ const Mainpage = () => {
                   fashion.
                 </div>
                 <div className="h-[54px] px-2.5 py-[7px] bg-[#222222] flex justify-center items-center gap-2">
-                  <div className="text-white text-base font-normal font-poppins leading-tight">
+                  <div className="text-[#ffffff] text-base font-normal font-poppins leading-tight">
                     View more
                   </div>
                 </div>
@@ -63,18 +76,29 @@ const Mainpage = () => {
             </div>
             {/* Flexi Move Card */}
             <div className="relative">
-              <div className="h-[462px] p-4 bg-gradient-to-b from-black to-black flex flex-col justify-end items-center gap-4">
-                <div className="self-stretch h-8 text-center text-white text-2xl font-bold font-poppins leading-loose">
+              <img
+                className="w-full h-[462px] object-cover rounded-lg"
+                src={flexiImage}
+                alt="Flexi Move"
+              />
+              <div
+                className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end items-center gap-4"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 41.5%, rgba(0, 0, 0, 0.8) 100%)",
+                }}
+              >
+                <div className="self-stretch h-8 text-center text-[#ffffff] text-2xl font-bold font-poppins leading-loose">
                   Flexi Move
                 </div>
-                <div className="self-stretch text-center text-white text-base font-normal font-poppins leading-tight">
+                <div className="self-stretch text-center text-[#ffffff] text-base font-normal font-poppins leading-tight">
                   Step into a world where fashion meets functionality with our
                   latest Sneaker Collection. Designed for those who appreciate
                   the perfect fusion of style and comfort, our curated selection
                   of sneakers is a celebration of urban chic.
                 </div>
                 <div className="h-[54px] px-2.5 py-[7px] bg-[#222222] flex justify-center items-center gap-2">
-                  <div className="text-white text-base font-normal font-poppins leading-tight">
+                  <div className="text-[#ffffff] text-base font-normal font-poppins leading-tight">
                     View more
                   </div>
                 </div>
