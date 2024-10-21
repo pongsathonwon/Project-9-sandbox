@@ -1,6 +1,11 @@
 import React from "react";
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
-import { genClothingList, navlist, secondaryNavlist } from "./navlist";
+import {
+  genClothingList,
+  navlist,
+  secondaryNavlist,
+  tertiaryNavlist,
+} from "./navlist";
 import Arrow from "../Icon/Arrow";
 import { useCategoryContext } from "../../context/CategoryContextProvider";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
@@ -24,14 +29,9 @@ const ExpandableButton = ({ labelText, children }) => {
 };
 
 function Sidebar({ isShow, onClick }) {
-  const { type } = useParams();
-  console.log(type);
-  const { possibleCategoryList } = useCategoryContext();
-  console.table(possibleCategoryList);
-  const { possibleList } = useCollectionContext();
-  console.table(possibleList);
+  const { possibleCollectionList } = useCollectionContext();
   const [secondary, setSecondary] = React.useState(null);
-  const [teriary, setTeriary] = React.useState(null);
+  const [tertiary, setTertiary] = React.useState(null);
   return (
     <div
       className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
@@ -43,7 +43,7 @@ function Sidebar({ isShow, onClick }) {
           {/* primary sidebar */}
           <div
             className={`absolute duration-300 h-screen ${
-              secondary || teriary ? "-translate-x-full" : ""
+              secondary || tertiary ? "-translate-x-full" : ""
             }`}
           >
             <button
@@ -68,7 +68,7 @@ function Sidebar({ isShow, onClick }) {
           {/* secondary sidebar */}
           <div
             className={`aboslute duration-300 h-screen ${
-              secondary && !teriary ? "" : "-translate-x-full"
+              secondary && !tertiary ? "" : "-translate-x-full"
             }`}
           >
             <button
@@ -91,33 +91,35 @@ function Sidebar({ isShow, onClick }) {
               ))}
               <li className="px-2.5 h-12">
                 <ExpandableButton labelText="Collections">
-                  {possibleList.map(({ label, path }) => (
+                  {possibleCollectionList.map(({ label, path }) => (
                     <li
                       key={path}
                       className="h-12 full flex items-center pl-4 hover:bg-none text-base font-normal"
                     >
-                      <button onClick={() => setTeriary(label)}>{label}</button>
+                      <button onClick={() => setTertiary({ label, path })}>
+                        {label}
+                      </button>
                     </li>
                   ))}
                 </ExpandableButton>
               </li>
             </ul>
           </div>
-          {/* teriary sidebar */}
+          {/* tertiary sidebar */}
           <div
             className={`aboslute duration-300 h-screen -translate-y-full ${
-              teriary ? "" : "-translate-x-full"
+              tertiary ? "" : "-translate-x-full"
             }`}
           >
             <button
               className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
-              onClick={() => setTeriary(null)}
+              onClick={() => setTertiary(null)}
             >
               <Arrow direction="left" />
-              {teriary}
+              {tertiary?.label}
             </button>
             <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
-              {secondaryNavlist(secondary)?.map(({ label, path }) => (
+              {tertiaryNavlist(tertiary?.path)?.map(({ label, path }) => (
                 <li key={path} className="listitem">
                   <NavLink
                     className="flex w-64 h-12 items-center justify-between font-normal"
