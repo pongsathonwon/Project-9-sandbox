@@ -60,20 +60,22 @@ function CartItem({
             </div>
             <div className="flex gap-4 lg:gap-2 xl:gap-4">
               {/* size dropdown */}
-              <div className="flex flex-col gap-2">
-                <span className="text-secondary-700">size</span>
-                <select
-                  className="h-[54px]"
-                  value={curSize}
-                  onChange={({ target }) => setCurSize(target.value)}
-                >
-                  {sizeList.map((s) => (
-                    <option key={`${name}_${s}`} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              {sizeList[0] !== "" && (
+                <div className="flex flex-col gap-2">
+                  <span className="text-secondary-700">size</span>
+                  <select
+                    className="h-[54px]"
+                    value={curSize}
+                    onChange={({ target }) => setCurSize(target.value)}
+                  >
+                    {sizeList.map((s) => (
+                      <option key={`${name}_${s}`} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
               {/* amount dropdown */}
               <div className="flex flex-col gap-2">
                 <span className="text-secondary-700">quantity</span>
