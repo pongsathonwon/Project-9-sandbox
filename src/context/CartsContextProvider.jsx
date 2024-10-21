@@ -23,10 +23,12 @@ export const useCartContext = () => {
   return ctx;
 };
 
+const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
+
 function CartsContextProvider({ children }) {
-  const { isLoading, erorr, data, setLoading, setSuccess, setError } =
+  const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState("mqoGNJ9284nUUkKo1bnd");
+  const [cartId, setCartId] = React.useState(null);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
@@ -119,6 +121,11 @@ function CartsContextProvider({ children }) {
     } catch (err) {
       setError(err);
     }
+  };
+  //claer cart on checkout
+  const checkout = () => {
+    setCartId(null);
+    setEmpty();
   };
 
   //permalink logic
