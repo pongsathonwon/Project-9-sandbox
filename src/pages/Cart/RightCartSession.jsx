@@ -1,11 +1,20 @@
 import React from "react";
 import { SummaryRow, SummarySection } from "./Summary";
-import { useCartContext } from "../../context/CartsContextProvider";
+import {
+  useCartContext,
+  useCartMutation,
+} from "../../context/CartsContextProvider";
 import CartBtn from "./CartBtn";
+import { Link } from "react-router-dom";
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
   const { summaryList, subtotal, isEmptyCart } = useCartContext();
+  const { checkout } = useCartMutation();
+  const handleCheckout = () => {
+    console.log(summaryList);
+    checkout();
+  };
   return (
     <div className="p-6 flex flex-col gap-10 lg:w-1/3">
       <div className="flex flex-col gap-6">
@@ -66,12 +75,14 @@ function RightCartSession() {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <CartBtn disabled={isEmptyCart} btnLabel="Checkout" />
         <CartBtn
           disabled={isEmptyCart}
-          severity="secondary"
-          btnLabel="Continue shopping"
+          btnLabel="Checkout"
+          onClick={handleCheckout}
         />
+        <Link to="/clothing/all-items" replace={true}>
+          <CartBtn severity="secondary" btnLabel="Continue shopping" />
+        </Link>
       </div>
     </div>
   );
