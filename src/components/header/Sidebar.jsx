@@ -34,11 +34,11 @@ function Sidebar({ isShow, onClick }) {
   const [teriary, setTeriary] = React.useState(null);
   return (
     <div
-      className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
         isShow ? "" : "-translate-x-full"
       }`}
     >
-      <div className="bg-white rounded-r-2xl pt-5 z-20">
+      <div className="bg-white rounded-r-2xl pt-5">
         <div className="h-full relative">
           {/* primary sidebar */}
           <div
