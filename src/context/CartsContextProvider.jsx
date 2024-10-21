@@ -155,7 +155,7 @@ function CartsContextProvider({ children }) {
       value={{ isLoading, erorr, data, isEmptyCart, summaryList, subtotal }}
     >
       <CartContextMutation.Provider
-        value={{ addCart, deleteCart, updateCartByItem }}
+        value={{ addCart, deleteCart, updateCartByItem, checkout }}
       >
         {children}
       </CartContextMutation.Provider>
