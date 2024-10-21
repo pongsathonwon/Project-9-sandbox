@@ -30,7 +30,7 @@ function RightCartSession() {
           {summaryList.map(({ name, sum, quantity }) => (
             <SummaryRow
               key={name}
-              name={`${name} ${quantity === 1 ? "" : "X" + quantity}`}
+              name={`${name} ${quantity <= 1 ? "" : "X" + quantity}`}
               price={sum}
               leftClassname={isEmptyCart ? "text-secondary-500" : ""}
               rightClassname={
