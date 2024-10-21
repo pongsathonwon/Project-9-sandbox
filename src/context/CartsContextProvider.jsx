@@ -27,6 +27,7 @@ function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError } =
     useBaseState();
   const [cartId, setCartId] = React.useState("mqoGNJ9284nUUkKo1bnd");
+  // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
     name,
@@ -56,9 +57,9 @@ function CartsContextProvider({ children }) {
   };
   //add item to new cart
   const addNewCart = async (body) => {
-    const validated = checkAddCartBody(body);
     try {
       setLoading();
+      const validated = checkAddCartBody(body);
       const { id, items } = await postData("carts", { items: validated });
       setCartId(id);
       const finalResult = await Promise.all(
@@ -68,6 +69,30 @@ function CartsContextProvider({ children }) {
     } catch (err) {
       setError(err.message);
     }
+  };
+  //add item to existing cart
+  const addExistCart = async (body) => {
+    try {
+      setLoading();
+      const validated = checkAddCartBody(body);
+      const { id, items } = await postData(`carts/${cartId}/items`, {
+        items: validated,
+      });
+      setCartId(id);
+      const finalResult = await Promise.all(
+        items.map((item) => getByPermalink(item))
+      );
+      setSuccess(finalResult);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  const addCart = async (body) => {
+    if (cartId) {
+      await addExistCart(body);
+      return;
+    }
+    await addNewCart(body);
   };
   //delete from existing cart
   const deleteCart = async (itemId) => {
@@ -123,7 +148,7 @@ function CartsContextProvider({ children }) {
       value={{ isLoading, erorr, data, isEmptyCart, summaryList, subtotal }}
     >
       <CartContextMutation.Provider
-        value={{ addNewCart, deleteCart, updateCartByItem }}
+        value={{ addCart, deleteCart, updateCartByItem }}
       >
         {children}
       </CartContextMutation.Provider>
