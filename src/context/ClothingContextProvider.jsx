@@ -1,9 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useBaseState from "../hooks/useBaseState";
 import { getData } from "../utils/apiHandler";
-import usePagination from "../hooks/usePagination";
 
 const ClothingContext = createContext(null);
+export const useClothingContext = () => {
+  const ctx = useContext(ClothingContext);
+  if (!ctx)
+    throw new Error("useClothContext must be used in ColthContextProvider");
+  return ctx;
+};
 
 const PRODUCT_ENDPOINT = "products";
 
@@ -29,22 +34,37 @@ function ClothingContextProvider({ children }) {
   const [max, setMax] = useState(0);
   const [cursor, setCursor] = useState(null);
 
-  const {
-    getQueryParams,
-    startAfter,
-    setStartAfter,
-    categories,
-    setCategories,
-    collection,
-    setCollection,
-    sortParams,
-    setSortParams,
-    sortMode,
-    setSortMode,
-  } = usePagination();
+  const [categories, setCategories] = useState(null);
+  const [collection, setCollection] = useState(null);
+  const [sortParams, setSortParams] = useState(SORT_PARAMS.ratings);
+  const [sortMode, setSortMode] = useState(SORT_MODES.desc);
+  const [limit, setLimit] = useState(6);
+  const [startAfter, setStartAfter] = useState(null);
+  const [curPage, setCurPage] = useState(0);
+  const getQueryParams = () => {
+    const sort = `${sortParams}:${sortMode}`;
+    const baseObject = { sort, limit };
+    if (collection) {
+      baseObject.collection = collection;
+    }
+    if (categories) {
+      baseObject.categories = categories;
+    }
+    if (startAfter) {
+      baseObject.startAfter = startAfter;
+    }
+    console.log(baseObject);
+    return baseObject;
+  };
   const currentParams = getQueryParams();
+
+  const setQuery = (newCat = null, newCol = null) => {
+    setCategories(newCat);
+    setCollection(newCol);
+  };
   // computed state
   const pageNumber = Math.ceil(max / limit);
+  const isLastPage = pageNumber === curPage;
 
   const nextPage = () => {
     setStartAfter(cursor);
@@ -55,24 +75,20 @@ function ClothingContextProvider({ children }) {
     setSortMode(newSortMode);
   };
 
-  const setQuery = (newCategories = null, newCollection = null) => {
-    setCategories(newCategories);
-    setCollection(newCollection);
-  };
-
   const loadProduct = async (signal) => {
     setLoading();
     try {
       const {
-        data,
+        data: ResData,
         pagination: { total, nextCursor },
       } = await getData(PRODUCT_ENDPOINT, {
         params: currentParams,
         signal,
       });
-      setSuccess(data);
-      setStartAfter(nextCursor);
+      setSuccess(ResData);
+      setCursor(nextCursor);
       setMax(total);
+      setCurPage((p) => p + 1);
     } catch (error) {
       setError(erorr);
     }
@@ -87,21 +103,24 @@ function ClothingContextProvider({ children }) {
   // update state; change q sring => change pagination
   useEffect(() => {
     setMax(0);
+    setCurPage(0);
   }, [collection, categories]);
   //update state; change sort => change startAfter
   useEffect(() => {
     setStartAfter(null);
+    setCurPage(0);
   }, [sortMode, sortParams, collection, categories]);
   return (
     <ClothingContext.Provider
       value={{
         data,
-        max,
-        currentParams,
+        sortMode,
+        sortParams,
         isLoading,
         erorr,
         setQuery,
         nextPage,
+        isLastPage,
       }}
     >
       {children}
