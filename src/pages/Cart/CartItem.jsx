@@ -30,7 +30,7 @@ function CartItem({
     .map(({ size }) => size)
     .sort();
 
-  if (true) {
+  if (isLoading) {
     return (
       <Skeleton className="flex flex-col lg:flex-row gap-10">
         <Skeleton
