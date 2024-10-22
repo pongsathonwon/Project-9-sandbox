@@ -1,7 +1,8 @@
 import React from "react";
+import Mainpage from "../components/Mainpage";
 
 function Home() {
-  return <div>Home</div>;
+  return <Mainpage />;
 }
 
 export default Home;

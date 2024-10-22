@@ -7,7 +7,7 @@ import Home from "./pages/Home.jsx";
 import Clothing from "./pages/Clothing.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import CartsContextProvider from "./context/CartsContextProvider.jsx";
-import ProductDetail from "./pages/ProductDetail.jsx";
+import ProductDetail from "./pages/ProductDetail/ProductDetail.jsx";
 import CollectionContextProvider from "./context/CollectionContextProvider.jsx";
 import CategoryContextProvider from "./context/CategoryContextProvider.jsx";
 
