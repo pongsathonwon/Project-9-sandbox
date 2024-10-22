@@ -6,7 +6,7 @@ const CollectionSection = () => {
   return (
     <section className="py-16">
       <div className="w-full flex flex-row justify-center items-center gap-16">
-        {/* Left Column (Title & Description) */}
+        {/* 2024 Collection) */}
         <div className="h-[458px] flex-col justify-start items-start gap-6 inline-flex">
           <div className="flex-col justify-start items-start flex">
             <div className="text-[#222222] text-8xl font-bold font-['Poppins'] leading-[116px]">
