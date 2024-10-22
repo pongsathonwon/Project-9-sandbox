@@ -6,17 +6,13 @@ const BG_COLOR = {
   dark: "bg-secondary-700",
 };
 
-function Skeleton({
-  bgColor = "base",
-  style = { width: "50%", height: "52px" },
-  className,
-}) {
+function Skeleton({ bgColor = "base", style, className, children }) {
   return (
     <div
-      style={{ width, height }}
-      className={`${className} ${BG_COLOR[bgColor]}`}
+      style={{ ...style }}
+      className={`animate-pulse ${className} ${BG_COLOR[bgColor]}`}
     >
-      Skeleton
+      {children}
     </div>
   );
 }
