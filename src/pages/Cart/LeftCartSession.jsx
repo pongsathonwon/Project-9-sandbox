@@ -3,9 +3,40 @@ import { useCartContext } from "../../context/CartsContextProvider";
 import CartItem from "./CartItem";
 import CartBtn from "./CartBtn";
 import { Link } from "react-router-dom";
+import Skeleton from "../../components/Skeleton";
 
 function LeftCartSession() {
-  const { data, isEmptyCart } = useCartContext();
+  const { data, isEmptyCart, isLoading } = useCartContext();
+  if (isLoading && isEmptyCart) {
+    return (
+      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
+        <h6>Items</h6>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col gap-2 items-center text-center">
+            <Skeleton className="w-[261px] md:w-[403px] aspect-square" />
+            <Skeleton bgColor="light" className="h-12 w-1/2" />
+
+            <Skeleton className="h-14 w-full" />
+            <Skeleton bgColor="dark" className="h-[54px] w-[300px]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (isLoading && !isEmptyCart) {
+    return (
+      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
+        <h6>Items</h6>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col gap-6 w-full">
+            {data?.map((d) => (
+              <CartItem key={d.id + d.name} {...d} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (isEmptyCart) {
     return (
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">

@@ -1,11 +1,76 @@
 import React from "react";
 import { SummaryRow, SummarySection } from "./Summary";
-import { useCartContext } from "../../context/CartsContextProvider";
+import {
+  useCartContext,
+  useCartMutation,
+} from "../../context/CartsContextProvider";
 import CartBtn from "./CartBtn";
+import { Link } from "react-router-dom";
+import Skeleton from "../../components/Skeleton";
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
-  const { summaryList, subtotal, isEmptyCart } = useCartContext();
+  const { summaryList, subtotal, isEmptyCart, isLoading } = useCartContext();
+  const { checkout } = useCartMutation();
+  const handleCheckout = () => {
+    console.log(summaryList);
+    checkout();
+  };
+  if (isLoading) {
+    return (
+      <div className="p-6 flex flex-col gap-10 lg:w-1/3">
+        <div className="flex flex-col gap-6">
+          {/* summary header */}
+          <div className="flex justify-between items-center">
+            <span className="text-2xl font-bold text-black">Summary</span>
+            <Skeleton bgColor="light" className="w-1/4 h-full rounded-lg" />
+          </div>
+          {/* summary items */}
+          <div className="flex flex-col gap-4 pb-4">
+            {summaryList.map((_, i) => (
+              <div key={i} className="flex justify-between items-center">
+                <Skeleton
+                  bgColor="light"
+                  style={{ width: `${40 * (1 + Math.random())}%` }}
+                  className="h-5 rounded-lg"
+                />
+                <Skeleton bgColor="light" className="h-5 w-9 rounded-lg" />
+              </div>
+            ))}
+          </div>
+          {/* summary shipping */}
+          <div className="flex flex-col gap-4 pb-4">
+            {[...Array(2)].map((_, i) => (
+              <div
+                key={`shiping-${i}`}
+                className="flex justify-between items-center"
+              >
+                <Skeleton
+                  bgColor="light"
+                  style={{ width: `${40 * (1 + Math.random())}%` }}
+                  className="h-5 rounded-lg"
+                />
+                <Skeleton bgColor="light" className="h-5 w-9 rounded-lg" />
+              </div>
+            ))}
+          </div>
+          {/* summary total */}
+          <div className="flex justify-between items-center">
+            <Skeleton
+              bgColor="light"
+              style={{ width: `${40 * (1 + Math.random())}%` }}
+              className="h-5 rounded-lg"
+            />
+            <Skeleton bgColor="light" className="h-5 w-9 rounded-lg" />
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <Skeleton bgColor="dark" className="w-full h-[54px]" />
+          <Skeleton bgColor="light" className="w-full h-[54px]" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="p-6 flex flex-col gap-10 lg:w-1/3">
       <div className="flex flex-col gap-6">
@@ -21,7 +86,7 @@ function RightCartSession() {
           {summaryList.map(({ name, sum, quantity }) => (
             <SummaryRow
               key={name}
-              name={`${name} ${quantity === 1 ? "" : "X" + quantity}`}
+              name={`${name} ${quantity <= 1 ? "" : "X" + quantity}`}
               price={sum}
               leftClassname={isEmptyCart ? "text-secondary-500" : ""}
               rightClassname={
@@ -66,12 +131,14 @@ function RightCartSession() {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <CartBtn disabled={isEmptyCart} btnLabel="Checkout" />
         <CartBtn
           disabled={isEmptyCart}
-          severity="secondary"
-          btnLabel="Continue shopping"
+          btnLabel="Checkout"
+          onClick={handleCheckout}
         />
+        <Link to="/clothing/all-items" replace={true}>
+          <CartBtn severity="secondary" btnLabel="Continue shopping" />
+        </Link>
       </div>
     </div>
   );
