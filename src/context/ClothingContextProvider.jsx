@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useBaseState from "../hooks/useBaseState";
 import { getData } from "../utils/apiHandler";
+import usePagination from "../hooks/usePagination";
 
 const ClothingContext = createContext(null);
 
@@ -25,26 +26,49 @@ const genSortParams = (sortMode, sortParams) =>
 function ClothingContextProvider({ children }) {
   const { data, erorr, isLoading, setSuccess, setError, setLoading, setEmpty } =
     useBaseState();
-
-  const [categories, setCategories] = useState(null);
-  const [collection, setCollection] = useState(null);
-  const [limit, setLimit] = useState(6);
-  const [startAfter, setStartAfter] = useState(null);
-  const [sortParams, setSortParams] = useState(SORT_PARAMS.ratings);
-  const [sortMode, setSortMode] = useState(SORT_MODES.desc);
   const [max, setMax] = useState(0);
+  const [cursor, setCursor] = useState(null);
+
+  const {
+    getQueryParams,
+    startAfter,
+    setStartAfter,
+    categories,
+    setCategories,
+    collection,
+    setCollection,
+    sortParams,
+    setSortParams,
+    sortMode,
+    setSortMode,
+  } = usePagination();
+  const currentParams = getQueryParams();
   // computed state
-  const sort = genSortParams(sortMode, sortParams);
   const pageNumber = Math.ceil(max / limit);
 
-  const loadProduct = async () => {
+  const nextPage = () => {
+    setStartAfter(cursor);
+  };
+
+  const setSort = (newSortParams, newSortMode) => {
+    setSortParams(newSortParams);
+    setSortMode(newSortMode);
+  };
+
+  const setQuery = (newCategories = null, newCollection = null) => {
+    setCategories(newCategories);
+    setCollection(newCollection);
+  };
+
+  const loadProduct = async (signal) => {
     setLoading();
     try {
       const {
         data,
         pagination: { total, nextCursor },
       } = await getData(PRODUCT_ENDPOINT, {
-        params: { categories, collection, limit, startAfter, sort },
+        params: currentParams,
+        signal,
       });
       setSuccess(data);
       setStartAfter(nextCursor);
@@ -55,8 +79,11 @@ function ClothingContextProvider({ children }) {
   };
   // fetching useEffect
   useEffect(() => {
-    loadProduct();
-  }, []);
+    if (!collection && !categories) return;
+    const contoller = new AbortController();
+    loadProduct(contoller.signal);
+    return () => contoller.abort();
+  }, [startAfter, categories, collection, sortParams, sortMode]);
   // update state; change q sring => change pagination
   useEffect(() => {
     setMax(0);
@@ -64,14 +91,17 @@ function ClothingContextProvider({ children }) {
   //update state; change sort => change startAfter
   useEffect(() => {
     setStartAfter(null);
-  }, [sort, collection, categories]);
+  }, [sortMode, sortParams, collection, categories]);
   return (
     <ClothingContext.Provider
       value={{
         data,
+        max,
+        currentParams,
         isLoading,
         erorr,
-        qurryParams,
+        setQuery,
+        nextPage,
       }}
     >
       {children}
