@@ -5,8 +5,7 @@ import RightCartSession from "./RightCartSession";
 import LeftCartSession from "./LeftCartSession";
 
 function Cart() {
-  const { isEmptyCart, isLoading } = useCartContext();
-  if (isLoading) return <div>loading...</div>;
+  const { isEmptyCart } = useCartContext();
   return (
     <section className="px-4 lg:px-16 xl:px-32 pt-6 lg:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 xl:gap-20">
       <div className="flex flex-col gap-10">

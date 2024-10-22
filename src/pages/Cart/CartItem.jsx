@@ -32,7 +32,7 @@ function CartItem({
 
   if (isLoading) {
     return (
-      <Skeleton className="flex flex-col lg:flex-row gap-10">
+      <Skeleton className="flex flex-col w-full lg:flex-row gap-10">
         <Skeleton
           bgColor="dark"
           className="w-[209px] aspect-square mx-auto lg:mx-0"
