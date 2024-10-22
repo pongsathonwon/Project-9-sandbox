@@ -32,10 +32,10 @@ function CartItem({
 
   if (isLoading) {
     return (
-      <Skeleton className="flex flex-col w-full lg:flex-row gap-10">
+      <div className="flex flex-col w-full lg:flex-row gap-10">
         <Skeleton
           bgColor="dark"
-          className="w-[209px] aspect-square mx-auto lg:mx-0"
+          className="w-[162px] aspect-square mx-auto lg:mx-0"
         />
         <div className="flex flex-col justify-between flex-1">
           <div className="flex justify-between">
@@ -59,7 +59,7 @@ function CartItem({
             <Skeleton bgColor="light" className="h-8 w-32 rounded-lg mt-auto" />
           </div>
         </div>
-      </Skeleton>
+      </div>
     );
   }
 
