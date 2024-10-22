@@ -18,7 +18,7 @@ function CollectionContextProvider({ children }) {
   const { data, erorr, isLoading, setError, setLoading, setSuccess } =
     useBaseState();
 
-  const possibleList =
+  const possibleCollectionList =
     data?.map(({ name, permalink }) => ({
       label: name,
       path: permalink,
@@ -42,7 +42,7 @@ function CollectionContextProvider({ children }) {
   }, []);
   return (
     <CollectionContext.Provider
-      value={{ collectionList: data, possibleList, erorr, isLoading }}
+      value={{ collectionList: data, possibleCollectionList, erorr, isLoading }}
     >
       {children}
     </CollectionContext.Provider>
