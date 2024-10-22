@@ -31,13 +31,14 @@ const reducer = (state, { action, payload }) => {
 function usePagination() {
   const [categories, setCategories] = useState(null);
   const [collection, setCollection] = useState(null);
-  const [sortParams, setSortParams] = useState(SORT_MODES.ratings);
+  const [sortParams, setSortParams] = useState(SORT_PARAMS.ratings);
   const [sortMode, setSortMode] = useState(SORT_MODES.desc);
   const [limit, setLimit] = useState(6);
   const [startAfter, setStartAfter] = useState(null);
   const sort = `${sortParams}:${sortMode}`;
   const getQueryParams = () => {
     const baseObject = { sort, limit };
+    console.log(startAfter);
     if (collection) {
       baseObject.collection = collection;
     }
@@ -47,7 +48,13 @@ function usePagination() {
     if (startAfter) {
       baseObject.startAfter = startAfter;
     }
+    console.log(baseObject);
     return baseObject;
+  };
+
+  const setQuery = (newCat = null, newCol = null) => {
+    setCategories(newCat);
+    setCollection(newCol);
   };
 
   return {
@@ -63,6 +70,7 @@ function usePagination() {
     setSortMode,
     setStartAfter,
     getQueryParams,
+    setQuery,
   };
 }
 
