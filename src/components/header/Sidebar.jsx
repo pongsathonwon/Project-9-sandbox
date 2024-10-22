@@ -96,7 +96,10 @@ function Sidebar({ isShow, onClick }) {
                       key={path}
                       className="h-12 full flex items-center pl-4 hover:bg-none text-base font-normal"
                     >
-                      <button onClick={() => setTertiary({ label, path })}>
+                      <button
+                        className="h-full w-full text-start"
+                        onClick={() => setTertiary({ label, path })}
+                      >
                         {label}
                       </button>
                     </li>

@@ -4,7 +4,7 @@ const DIRECTION = {
   up: "",
   right: "rotate-90",
   left: "-rotate-90",
-  down: "rotate-180",
+  down: "-rotate-180",
 };
 
 function Arrow({ direction = "up" }) {
