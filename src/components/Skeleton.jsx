@@ -9,9 +9,13 @@ const BG_COLOR = {
 function Skeleton({
   bgColor = "base",
   style = { width: "50%", height: "52px" },
+  className,
 }) {
   return (
-    <div style={{ width, height }} className={BG_COLOR[bgColor]}>
+    <div
+      style={{ width, height }}
+      className={`${className} ${BG_COLOR[bgColor]}`}
+    >
       Skeleton
     </div>
   );
