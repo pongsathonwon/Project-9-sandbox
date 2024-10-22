@@ -23,6 +23,20 @@ function LeftCartSession() {
       </div>
     );
   }
+  if (isLoading && !isEmptyCart) {
+    return (
+      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
+        <h6>Items</h6>
+        <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col gap-6">
+            {data?.map((d) => (
+              <CartItem key={d.id + d.name} {...d} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (isEmptyCart) {
     return (
       <div className="lg:w-3/5 p-4 flex flex-col gap-6">
