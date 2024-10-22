@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import axios, { AxiosError } from "axios";
 
 const baseUrl = "https://api.storefront.wdb.skooldio.dev";
