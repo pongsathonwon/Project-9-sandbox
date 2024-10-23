@@ -28,7 +28,7 @@ const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState(CART_ID_REF);
+  const [cartId, setCartId] = React.useState(null);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
@@ -109,8 +109,8 @@ function CartsContextProvider({ children }) {
   //update existing cart
   const updateCartByItem = async (itemId, body) => {
     const validatedBody = checkUpdateCartBody(body);
+    setLoading();
     try {
-      setLoading();
       const { items } = await updateData(
         `carts/${cartId}/items/${itemId}`,
         validatedBody
