@@ -13,7 +13,11 @@ import { useCollectionContext } from "../../context/CollectionContextProvider";
 const ExpandableButton = ({ labelText, children }) => {
   const [open, setOpen] = React.useState(false);
   return (
-    <div className="relative w-full h-full" onBlur={() => setOpen((p) => !p)}>
+    <div
+      aria-haspopup="listbox"
+      className="relative w-full h-full"
+      onBlur={() => setOpen((p) => !p)}
+    >
       <button
         onClick={() => setOpen((p) => !p)}
         className="capitalize text-lg font-semibold w-full h-full text-start flex justify-between items-center"
@@ -42,6 +46,7 @@ function Sidebar({ isShow, onClick }) {
         <div className="h-full relative">
           {/* primary sidebar */}
           <div
+            aria-haspopup="listbox"
             className={`absolute duration-300 h-screen ${
               secondary || tertiary ? "-translate-x-full" : ""
             }`}
@@ -67,6 +72,7 @@ function Sidebar({ isShow, onClick }) {
           </div>
           {/* secondary sidebar */}
           <div
+            aria-haspopup="listbox"
             className={`aboslute duration-300 h-screen ${
               secondary && !tertiary ? "" : "-translate-x-full"
             }`}
@@ -74,6 +80,7 @@ function Sidebar({ isShow, onClick }) {
             <button
               className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
               onClick={() => setSecondary(null)}
+              aria-haspopup=""
             >
               <Arrow direction="left" />
               {secondary}
