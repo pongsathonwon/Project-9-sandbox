@@ -5,7 +5,7 @@ import CartIcon from "../Icon/CartIcon";
 
 function Navbar({ children }) {
   return (
-    <nav className="bg-secondary px-4 py-2 sticky top-0 lg:px-32">
+    <nav className="bg-secondary px-4 py-2 sticky top-0 lg:px-32 z-10">
       <div className="flex items-center justify-between mx-auto">
         <div className="flex">
           <div className="flex items-center gap-2 md:gap-4 md:mr-10">
@@ -15,7 +15,7 @@ function Navbar({ children }) {
               to={"/"}
             >
               <img
-                src="storefront.png"
+                src="../src/assets/logo/storefront.png"
                 alt="storefront-logo"
                 className="w-[37px] aspect-square"
               />
