@@ -42,7 +42,8 @@ const SkCard = () => {
 function ContainerSlot({
   containerLabel,
   containerLabelPosition = "start",
-  collection = "new-arrivals",
+  collection = "price-down",
+  categories,
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
   console.table(data);
@@ -51,7 +52,7 @@ function ContainerSlot({
     (async () => {
       try {
         const { data: resData } = await getData("products", {
-          params: { sort: "ratings:desc", collection, limit: 4 },
+          params: { sort: "ratings:desc", collection, limit: 4, categories },
         });
         setSuccess(resData);
       } catch (error) {
@@ -65,7 +66,10 @@ function ContainerSlot({
       <h5 className={`${POSITION[containerLabelPosition]} capitalize`}>
         {containerLabel}
       </h5>
-      <div className="flex-col flex gap-10 items-center lg:flex-row md:justify-between">
+      <div
+        style={{ scrollbarWidth: "thin" }}
+        className="flex-col flex gap-10 items-center lg:flex-row md:justify-between lg:overflow-x-auto"
+      >
         {isLoading
           ? [...Array(4)].map((_, i) => <SkCard key={i} />)
           : data?.map(
