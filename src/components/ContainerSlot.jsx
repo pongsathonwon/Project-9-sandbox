@@ -65,7 +65,7 @@ function ContainerSlot({
       <h5 className={`${POSITION[containerLabelPosition]} capitalize`}>
         {containerLabel}
       </h5>
-      <div className="flex-col flex gap-10 items-center md:flex-row md:justify-between">
+      <div className="flex-col flex gap-10 items-center lg:flex-row md:justify-between">
         {isLoading
           ? [...Array(4)].map((_, i) => <SkCard key={i} />)
           : data?.map(
