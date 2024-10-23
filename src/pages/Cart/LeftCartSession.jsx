@@ -9,7 +9,7 @@ function LeftCartSession() {
   const { data, isEmptyCart, isLoading } = useCartContext();
   if (isLoading && isEmptyCart) {
     return (
-      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
+      <div className="p-4 flex flex-col gap-6 lg:flex-1">
         <h6>Items</h6>
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col gap-2 items-center text-center">
@@ -25,7 +25,7 @@ function LeftCartSession() {
   }
   if (isLoading && !isEmptyCart) {
     return (
-      <div className="p-4 flex flex-col gap-6 lg:w-2/3">
+      <div className="p-4 flex flex-col gap-6 lg:flex-1">
         <h6>Items</h6>
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col gap-6 w-full">

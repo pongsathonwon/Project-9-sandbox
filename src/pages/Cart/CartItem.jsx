@@ -5,6 +5,7 @@ import {
   useCartMutation,
 } from "../../context/CartsContextProvider";
 import Skeleton from "../../components/Skeleton";
+import SelectBox from "./SelectBox";
 
 function CartItem({
   id,
@@ -80,59 +81,41 @@ function CartItem({
           </button>
         </div>
         <div className="flex flex-col lg:flex-row justify-between">
-          <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 xl:gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 lg:min-w-[23rem] xl:gap-4">
             {/* color dropdown */}
             <div className="flex flex-col gap-2">
               <span className="text-secondary-700">color</span>
-              <select
-                className="h-[54px]"
+              <SelectBox
                 value={curColor}
-                onChange={({ target }) => setCurColor(target.value)}
-              >
-                {colorList.map((c) => (
-                  <option key={`${name}_${c}`} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
+                onChange={(v) => setCurColor(v)}
+                possible={colorList}
+              />
             </div>
             <div className="flex gap-4 lg:gap-2 xl:gap-4">
               {/* size dropdown */}
               {sizeList[0] !== "" && (
                 <div className="flex flex-col gap-2">
                   <span className="text-secondary-700">size</span>
-                  <select
-                    className="h-[54px]"
+                  <SelectBox
                     value={curSize}
-                    onChange={({ target }) => setCurSize(target.value)}
-                  >
-                    {sizeList.map((s) => (
-                      <option key={`${name}_${s}`} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
+                    possible={sizeList}
+                    onChange={(v) => setCurSize(v)}
+                  />
                 </div>
               )}
               {/* amount dropdown */}
               <div className="flex flex-col gap-2">
                 <span className="text-secondary-700">quantity</span>
-                <select
-                  className="h-[54px]"
-                  value={quantity}
-                  onChange={async ({ target }) =>
+                <SelectBox
+                  onChange={async (v) =>
                     await updateCartByItem(id, {
                       skuCode,
-                      quantity: Number(target.value),
+                      quantity: Number(v),
                     })
                   }
-                >
-                  {[...Array(remains ?? 0)].map((_, i) => (
-                    <option key={`${id}-${i}`} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
+                  value={quantity}
+                  possible={[...Array(remains ?? 0)].map((_, i) => i + 1)}
+                />
               </div>
             </div>
           </div>

@@ -28,7 +28,7 @@ const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState(null);
+  const [cartId, setCartId] = React.useState(CART_ID_REF);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
@@ -45,8 +45,8 @@ function CartsContextProvider({ children }) {
   );
   //load cart
   const loadCart = async (cartid) => {
+    setLoading();
     try {
-      setLoading();
       const { id, items } = await getData(`carts/${cartid}`);
       setCartId(id);
       const finalResult = await Promise.all(
@@ -59,8 +59,8 @@ function CartsContextProvider({ children }) {
   };
   //add item to new cart
   const addNewCart = async (body) => {
+    setLoading();
     try {
-      setLoading();
       const validated = checkAddCartBody(body);
       const { id, items } = await postData("carts", { items: validated });
       setCartId(id);
@@ -74,8 +74,8 @@ function CartsContextProvider({ children }) {
   };
   //add item to existing cart
   const addExistCart = async (body) => {
+    setLoading();
     try {
-      setLoading();
       const validated = checkAddCartBody(body);
       const { id, items } = await postData(`carts/${cartId}/items`, {
         items: validated,
@@ -98,6 +98,7 @@ function CartsContextProvider({ children }) {
   };
   //delete from existing cart
   const deleteCart = async (itemId) => {
+    setLoading();
     try {
       await deleteData(`carts/${cartId}/items/${itemId}`, {});
       await loadCart(cartId);

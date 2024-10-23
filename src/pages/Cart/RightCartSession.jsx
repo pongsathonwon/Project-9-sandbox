@@ -18,7 +18,7 @@ function RightCartSession() {
   };
   if (isLoading) {
     return (
-      <div className="p-6 flex flex-col gap-10 lg:w-1/3">
+      <div className="p-6 flex flex-col gap-10 lg:flex-1">
         <div className="flex flex-col gap-6">
           {/* summary header */}
           <div className="flex justify-between items-center">
@@ -72,7 +72,7 @@ function RightCartSession() {
     );
   }
   return (
-    <div className="p-6 flex flex-col gap-10 lg:w-1/3">
+    <div className="p-6 flex flex-col gap-10 lg:flex-1">
       <div className="flex flex-col gap-6">
         {/* summary header */}
         <SummaryRow
