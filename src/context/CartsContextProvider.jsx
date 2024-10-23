@@ -28,7 +28,7 @@ const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState(null);
+  const [cartId, setCartId] = React.useState(CART_ID_REF);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
