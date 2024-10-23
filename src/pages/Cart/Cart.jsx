@@ -17,9 +17,8 @@ function Cart() {
           <RightCartSession />
         </div>
       </div>
-      {!isEmptyCart && (
-        <ContainerSlot containerLabel="people also like these"></ContainerSlot>
-      )}
+
+      <ContainerSlot containerLabel="people also like these" />
     </section>
   );
 }
