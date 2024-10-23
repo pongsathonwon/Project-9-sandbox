@@ -4,12 +4,12 @@ const DIRECTION = {
   up: "",
   right: "rotate-90",
   left: "-rotate-90",
-  down: "rotate-180",
+  down: "-rotate-180",
 };
 
 function Arrow({ direction = "up" }) {
   return (
-    <div className={`squre-group ${DIRECTION[direction]}`}>
+    <div className={`squre-group duration-300 ${DIRECTION[direction]}`}>
       <svg
         width="15"
         height="9"
