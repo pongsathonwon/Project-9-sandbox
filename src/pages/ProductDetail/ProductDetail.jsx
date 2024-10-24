@@ -60,7 +60,6 @@ const ShowColorVariant = ({
           fill={colorCode}
         >
           <rect x="1" y="0.5" width="53" height="53" />
-
         </svg>
       </div>
 
@@ -71,9 +70,10 @@ const ShowColorVariant = ({
   );
 };
 
-const getUniqueValue = (arr, key) => [
-  ...new Set(arr.map((variant) => variant[key])),
-];
+const getUniqueValue = (arr, key) =>{
+  if (!arr[0][key]) return [];
+  return [...new Set(arr.map((item) => item[key])) ];
+}
 
 function numberWithCommas(x) {
   return x
@@ -85,101 +85,80 @@ function numberWithCommas(x) {
 function ProductDetail() {
   // must have the productdetail object
   const [productdetail, setProductDetail] = React.useState({
-    id: "kb1yxnG2jd3pAEy225M5",
-    name: "City Essentials Blazer",
-    skuCode: "C01004",
-    permalink: "shirts-city-essentials-blazer",
+    id: "6FYslqo6hFuvdIpffL9t",
+    name: "Athletic Mesh Slip-On Sneakers",
+    skuCode: "S09001",
+    permalink: "shoes-athletic-mesh-slip-on-sneakers",
     description:
-      "Elevate your style with our refined yet casual corduroy blazer. Crafted from premium cotton with a touch of stretch, this garment offers lasting comfort and shape retention. ",
-    price: 2000,
-    promotionalPrice: 1000,
-    categories: ["all-men", "men-shirts"],
-    collection: "new-arrivals",
-    ratings: 3.9,
+      "Breathable mesh, elasticized fit, perfect for workouts or casual wear.",
+    price: 990,
+    promotionalPrice: 190,
+    categories: ["all-ladies", "ladies-shoes"],
+    collection: "",
+    ratings: 3.4,
     imageUrls: [
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FleqIHZHqkP2HwWyAOA6B-full-length-of-stylish-young-man-in-jacket-looking-2023-11-27-04-50-28-utc.png?alt=media&token=4d0251a9-c7c3-4fbf-b70f-342629e80274",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FF3alR048c95gAUFAcQy9-full-length-of-stylish-man-in-autumn-outfit-touchi-2023-11-27-05-00-25-utc.png?alt=media&token=e32b2efa-e592-4b30-b7f7-5a697928599b",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FUFrtHPkICdjWRBx2p6yb-full-length-of-man-in-autumn-outfit-holding-paper-2023-11-27-05-23-41-utc.png?alt=media&token=4fcd5ec8-a9d5-4ca5-9cd5-55ff784f3948",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2Flu3wCjHLhEAsFo1Icyvh-full-length-of-smiling-man-in-autumn-outfit-sittin-2023-11-27-05-12-06-utc.png?alt=media&token=c5c277d7-de48-4680-8e03-812d99cb6a0b",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2Fkb1yxnG2jd3pAEy225M5%2F_images%2FBqfHyqnV26GqYMnSBbbH-trendy-man-in-autumn-jacket-holding-backpack-and-c-2023-11-27-05-00-33-utc.png?alt=media&token=10e098e7-4fb5-461c-b89a-e8b6e457f64f",
+      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2F3mbrln243CBzwKICFivJ-Gemini%20Generated%20Image%20(15).jpeg?alt=media&token=bc6c2db4-b5b6-4f4b-994a-a20a5d184565",
+      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2Fqcsy2kpwoi1TgVjYEprr-Gemini%20Generated%20(19).jpeg?alt=media&token=8593f0f9-7e74-4cc0-a9e3-4d88e2178afd",
+      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FSs193BUsh8qGB3xMIDdn-Gemini%20Generated%20(20).jpeg?alt=media&token=891c9a17-61fc-426b-9bc4-ae4473cd587b",
+      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FiaIRhc8IROJSXMpPt0xL-Gemini%20Generated%20(1).jpeg?alt=media&token=45aa2ad1-8a8a-4c4d-8006-6ab58b58ac15",
+      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FyWlHAWr26F68tathEghQ-Gemini%20Generated%20(21).jpeg?alt=media&token=dd6361bf-757c-41a8-be38-cef510347ee2",
     ],
     variants: [
       {
-        skuCode: "C0100404",
-        color: "Khaki",
-        size: "XL",
-        remains: 12,
-        colorCode: "#c3b091",
-      },
-      {
-        skuCode: "C0100410",
+        skuCode: "S0900104",
         color: "Black",
-        size: "S",
-        remains: 91,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "C0100409",
-        color: "Black",
-        size: "L",
-        remains: 94,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "C0100411",
-        color: "Black",
-        size: "M",
-        remains: 93,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "C0100405",
-        color: "Green",
-        size: "L",
-        remains: 9,
-        colorCode: "#008000",
-      },
-      {
-        skuCode: "C0100402",
-        color: "Khaki",
-        size: "S",
+        size: "38",
         remains: 6,
-        colorCode: "#c3b091",
-      },
-      {
-        skuCode: "C0100403",
-        color: "Khaki",
-        size: "M",
-        remains: 86,
-        colorCode: "#c3b091",
-      },
-      {
-        skuCode: "C0100408",
-        color: "Green",
-        size: "XL",
-        remains: 85,
-        colorCode: "#008000",
-      },
-      {
-        skuCode: "C0100406",
-        color: "Green",
-        size: "S",
-        remains: 14,
-        colorCode: "#008000",
-      },
-      {
-        skuCode: "C0100412",
-        color: "Black",
-        size: "XL",
-        remains: 87,
         colorCode: "#000000",
       },
       {
-        skuCode: "C0100401",
-        color: "Khaki",
-        size: "L",
-        remains: 88,
-        colorCode: "#c3b091",
+        skuCode: "S0900105",
+        color: "Black",
+        size: "39",
+        remains: 15,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900103",
+        color: "Black",
+        size: "37",
+        remains: 17,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900101",
+        color: "Black",
+        size: "35",
+        remains: 0,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900106",
+        color: "Black",
+        size: "40",
+        remains: 9,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900102",
+        color: "Black",
+        size: "36",
+        remains: 20,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900108",
+        color: "Black",
+        size: "42",
+        remains: 4,
+        colorCode: "#000000",
+      },
+      {
+        skuCode: "S0900107",
+        color: "Black",
+        size: "41",
+        remains: 13,
+        colorCode: "#000000",
       },
     ],
   });
@@ -194,6 +173,7 @@ function ProductDetail() {
       : 0
   );
   const [favorite, setFavorite] = React.useState(false);
+  const [outofstock, setOutofstock] = React.useState(false);
 
   // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
   const [productChoice, setPoductChoice] = React.useState({
@@ -211,17 +191,51 @@ function ProductDetail() {
     L: 4,
     XL: 5,
     XXL: 6,
+    30: 1,
+    31: 2,
+    32: 3,
+    33: 4,
+    34: 5,
+    35: 6,
+    36: 7,
+    37: 8,
+    38: 9,
+    39: 10,
+    40: 11,
+    41: 12,
+    42: 13,
+    43: 14,
+    44: 15,
+    45: 16,
+    46: 17,
+    47: 18,
+    48: 19,
+    49: 20,
+    50: 21,
   };
 
   React.useEffect(() => {
-    setProductDetail((prev) => {
-      return {
-        ...prev,
-        variant: prev.variants.sort(
-          (a, b) => weight_size[a.size] - weight_size[b.size]
-        ),
-      };
-    });
+
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(
+          `https://api.storefront.wdb.skooldio.dev/products/shoes-athletic-mesh-slip-on-sneakers`
+        );
+        const data = await response.json();
+        setProductDetail(data);
+        setProductDetail((prev) => {
+          return {
+            ...prev,
+            variants: prev.variants.sort(
+              (a, b) =>
+                weight_size[a.size] - weight_size[b.size] ||
+                a.color.localeCompare(b.color)
+            ),};});
+      } catch (error) {
+        console.error("Error fetching product: ", error);
+      }
+    }
+    fetchProduct();
   }, []);
 
   React.useEffect(() => {
@@ -240,9 +254,28 @@ function ProductDetail() {
       ...productdetail.variants[0],
       quantity: 1,
     });
-  }, [productChoice]);
+  }, [productChoice, productdetail.variants]);
 
-  console.log(selectedProduct);
+  React.useEffect(() => {
+    if (selectedProduct.remains === 0) {
+      setOutofstock(true);
+    } else {
+      setOutofstock(false);
+    }
+  }, [selectedProduct]);
+
+  const setImageOutofstock = (outofstock) => {
+    if (outofstock) {
+      return "brightness-50";
+    } else {
+      return "";
+    }
+  };
+
+  // console.log(selectedProduct);
+  // console.log(outofstock);
+  // console.log(productdetail);
+  // console.log(productChoice);
 
   return (
     <>
@@ -253,12 +286,25 @@ function ProductDetail() {
             <img
               src={productdetail.imageUrls[selectedImage]}
               alt="product"
-              className="object-cover object-top  w-full h-full"
+              className={`object-cover object-top  w-full h-full ${setImageOutofstock(
+                outofstock
+              )}`}
             />
-            {isDiscount && (
+            {/* {isDiscount ? (
               <div className="absolute flex justify-center items-center font-['Poppins'] top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50 xl:top-[83px] xl:text-[27px] xl:w-[86px] xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
                 -{isDiscount}%
               </div>
+            ) : ""} */}
+            {outofstock ? (
+              <div className="absolute flex justify-center items-center font-['Poppins'] top-[1.875rem] right-0 px-[7px] py-[3px] bg-secondary-900 text-secondary-50 text-[11px] xl:top-[83px] xl:text-[27px]  xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
+                Out of stock
+              </div>
+            ) : isDiscount ? (
+              <div className="absolute flex justify-center items-center font-['Poppins'] top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50 xl:top-[83px] xl:text-[27px] xl:w-[86px] xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
+                -{isDiscount}%
+              </div>
+            ) : (
+              ""
             )}
             <NextLeft
               moveleft={() => {
@@ -288,7 +334,9 @@ function ProductDetail() {
               return (
                 <div
                   key={index}
-                  className="w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px]"
+                  className={`w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px] ${setImageOutofstock(
+                    outofstock
+                  )}`}
                   onClick={() => {
                     setSelectedImage(index);
                   }}
@@ -340,7 +388,7 @@ function ProductDetail() {
                   <path
                     d="M27.3499 14.0256C25.5304 12.4621 22.8244 12.7433 21.1543 14.481L20.5002 15.1607L19.8462 14.481C18.1794 12.7433 15.4701 12.4621 13.6506 14.0256C11.5655 15.8203 11.4559 19.0412 13.3219 20.9865L19.7465 27.6761C20.1616 28.108 20.8356 28.108 21.2506 27.6761L27.6753 20.9865C29.5446 19.0412 29.435 15.8203 27.3499 14.0256Z"
                     fill={favorite ? "#FF000D" : "none"}
-                    stroke={favorite ? 'none' : 'black'}
+                    stroke={favorite ? "none" : "black"}
                     strokeWidth="1.5"
                   />
                 </svg>
@@ -354,7 +402,17 @@ function ProductDetail() {
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              {isDiscount ? (
+              {outofstock ? (
+                <>
+                  <h5 className="font-bold font-['Poppins'] self-start py-2 xl:text-[2.5rem]">
+                    THB {numberWithCommas(productdetail.promotionalPrice)}
+                  </h5>
+                  {/* Add From THB 2,000.00 */}
+                  <p className=" font-bold font-['Poppins'] self-start text-danger xl:text-[24px]">
+                    Out of stock
+                  </p>
+                </>
+              ) : isDiscount ? (
                 <>
                   <h5 className="font-bold font-['Poppins'] self-start py-2 px-[10px] bg-danger text-secondary-50 xl:text-[2.5rem]">
                     THB {numberWithCommas(productdetail.promotionalPrice)}
@@ -385,50 +443,34 @@ function ProductDetail() {
               </h5>
               <div className=" grid grid-cols-3  gap-2 xl:grid-cols-5">
                 {productChoice.color.map((color, index) => {
-                  if (
-                    productdetail.variants.find(
-                      (variant) =>
-                        variant.color === color &&
-                        variant.size === selectedProduct.size
-                    )?.remains > 0
-                  ) {
-                    return (
-                      <ShowColorVariant
-                        key={index}
-                        color={color}
-                        colorCode={productChoice.colorCode[index]}
-                        setselectColor={() => {
-                          setSelectedProduct((prev) => {
-                            const product = productdetail.variants.find(
-                              (variant) =>
-                                variant.color === color &&
-                                variant.size === selectedProduct.size
-                            );
-                            return {
-                              ...prev,
-                              color: color,
-                              skuCode: product.skuCode,
-                              remains: product.remains,
-                            };
-                          });
-                        }}
-                        selectColor={selectedProduct.color === color}
-                      />
-                    );
-                  } else {
-                    return (
-                      <div key={index} className="opacity-30">
-                        <ShowColorVariant
-                          color={color}
-                          colorCode={productChoice.colorCode[index]}
-                        />
-                      </div>
-                    );
-                  }
+                  return (
+                    <ShowColorVariant
+                      key={index}
+                      color={color}
+                      colorCode={productChoice.colorCode[index]}
+                      setselectColor={() => {
+                        setSelectedProduct((prev) => {
+                          const product = productdetail.variants.find(
+                            (variant) =>
+                              variant.color === color &&
+                              variant.size === selectedProduct.size
+                          );
+                          return {
+                            ...prev,
+                            color: color,
+                            skuCode: product.skuCode,
+                            remains: product.remains,
+                          };
+                        });
+                      }}
+                      selectColor={selectedProduct.color === color}
+                    />
+                  );
                 })}
               </div>
             </div>
             {/* Size Select */}
+            {productChoice.size.length > 0 && 
             <div className="flex flex-col gap-2">
               <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
                 Size
@@ -439,49 +481,32 @@ function ProductDetail() {
                     selectedProduct.size === size
                       ? "border-[#C1CD00]"
                       : "border-[#E1E1E1]";
-                  if (
-                    productdetail.variants.find(
-                      (variant) =>
-                        variant.color === selectedProduct.color &&
-                        variant.size === size
-                    )?.remains > 0
-                  ) {
-                    return (
-                      <button
-                        key={index}
-                        className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
-                        onClick={() => {
-                          setSelectedProduct((prev) => {
-                            const product = productdetail.variants.find(
-                              (variant) =>
-                                variant.color === selectedProduct.color &&
-                                variant.size === size
-                            );
-                            return {
-                              ...prev,
-                              size: size,
-                              skuCode: product.skuCode,
-                              remains: product.remains,
-                            };
-                          });
-                        }}
-                      >
-                        {size}
-                      </button>
-                    );
-                  } else {
-                    return (
-                      <button
-                        key={index}
-                        className={` opacity-30 flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
-                      >
-                        {size}
-                      </button>
-                    );
-                  }
+                  return (
+                    <button
+                      key={index}
+                      className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                      onClick={() => {
+                        setSelectedProduct((prev) => {
+                          const product = productdetail.variants.find(
+                            (variant) =>
+                              variant.color === selectedProduct.color &&
+                              variant.size === size
+                          );
+                          return {
+                            ...prev,
+                            size: size,
+                            skuCode: product.skuCode,
+                            remains: product.remains,
+                          };
+                        });
+                      }}
+                    >
+                      {size}
+                    </button>
+                  );
                 })}
               </div>
-            </div>
+            </div>}
             {/* Quantity Select */}
             <div className="flex flex-col gap-2">
               <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
@@ -490,9 +515,17 @@ function ProductDetail() {
               <Dropdown
                 setselectedProduct={setSelectedProduct}
                 selectedProduct={selectedProduct}
+                outofstock={outofstock}
               />
             </div>
-            <button className=" bg-secondary-900 text-secondary-50 font-light font-['Poppins'] h-[54px] hover:bg-primary-700 focus:outline-none">
+            <button
+              className={` font-light font-['Poppins'] h-[54px] duration-500 ${
+                outofstock
+                  ? " bg-secondary-300 text-secondary-500"
+                  : "bg-secondary-900 text-secondary-50 hover:bg-primary-700 focus:outline-none cursor-pointer"
+              } `}
+              disabled={outofstock}
+            >
               Add to Cart
             </button>
           </div>
