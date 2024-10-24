@@ -23,7 +23,6 @@ function CollectionContextProvider({ children }) {
       label: name,
       path: permalink,
     })) ?? [];
-
   React.useEffect(() => {
     setLoading();
     const localData = loadLocal(LOCALSTORAGE_KEY.collections);
