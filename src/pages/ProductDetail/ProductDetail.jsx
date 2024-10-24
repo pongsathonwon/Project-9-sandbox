@@ -1,6 +1,7 @@
 import React from "react";
 import StarRating from "../../components/StarRating";
 import Dropdown from "./Dropdown";
+import LoadingScreen from "./LoadingScreen";
 
 const NextLeft = ({ moveleft }) => {
   return (
@@ -10,7 +11,7 @@ const NextLeft = ({ moveleft }) => {
       height="31"
       viewBox="0 0 31 31"
       fill="none"
-      className="absolute top-1/2 left-2 transform -translate-y-1/2 cursor-pointer hover:opacity-70 hover:scale-110"
+      className="absolute top-1/2 left-2 transform -translate-y-1/2 cursor-pointer duration-200  hover:-translate-x-1 xl:w-[59px] xl:h-[59px] 2xl:w-[70px] 2xl:h-[70px]"
       onClick={moveleft}
     >
       <circle opacity="0.3" cx="15.4262" cy="15.5356" r="15.391" fill="white" />
@@ -30,7 +31,7 @@ const NextRight = ({ moveright }) => {
       height="31"
       viewBox="0 0 31 31"
       fill="none"
-      className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer hover:opacity-70 hover:scale-110 "
+      className="absolute top-1/2 right-2 transform -translate-y-1/2  cursor-pointer duration-200  hover:translate-x-1 xl:w-[59px] xl:h-[59px] 2xl:w-[70px] 2xl:h-[70px] "
       onClick={moveright}
     >
       <circle opacity="0.3" cx="15.4262" cy="15.5356" r="15.391" fill="white" />
@@ -70,10 +71,10 @@ const ShowColorVariant = ({
   );
 };
 
-const getUniqueValue = (arr, key) =>{
+const getUniqueValue = (arr, key) => {
   if (!arr[0][key]) return [];
-  return [...new Set(arr.map((item) => item[key])) ];
-}
+  return [...new Set(arr.map((item) => item[key]))];
+};
 
 function numberWithCommas(x) {
   return x
@@ -83,85 +84,9 @@ function numberWithCommas(x) {
 }
 
 function ProductDetail() {
+  const [finishLoading, setFinishLoading] = React.useState(false);
   // must have the productdetail object
-  const [productdetail, setProductDetail] = React.useState({
-    id: "6FYslqo6hFuvdIpffL9t",
-    name: "Athletic Mesh Slip-On Sneakers",
-    skuCode: "S09001",
-    permalink: "shoes-athletic-mesh-slip-on-sneakers",
-    description:
-      "Breathable mesh, elasticized fit, perfect for workouts or casual wear.",
-    price: 990,
-    promotionalPrice: 190,
-    categories: ["all-ladies", "ladies-shoes"],
-    collection: "",
-    ratings: 3.4,
-    imageUrls: [
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2F3mbrln243CBzwKICFivJ-Gemini%20Generated%20Image%20(15).jpeg?alt=media&token=bc6c2db4-b5b6-4f4b-994a-a20a5d184565",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2Fqcsy2kpwoi1TgVjYEprr-Gemini%20Generated%20(19).jpeg?alt=media&token=8593f0f9-7e74-4cc0-a9e3-4d88e2178afd",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FSs193BUsh8qGB3xMIDdn-Gemini%20Generated%20(20).jpeg?alt=media&token=891c9a17-61fc-426b-9bc4-ae4473cd587b",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FiaIRhc8IROJSXMpPt0xL-Gemini%20Generated%20(1).jpeg?alt=media&token=45aa2ad1-8a8a-4c4d-8006-6ab58b58ac15",
-      "https://firebasestorage.googleapis.com/v0/b/wdb-storefront-project-api.appspot.com/o/products%2F6FYslqo6hFuvdIpffL9t%2F_images%2FyWlHAWr26F68tathEghQ-Gemini%20Generated%20(21).jpeg?alt=media&token=dd6361bf-757c-41a8-be38-cef510347ee2",
-    ],
-    variants: [
-      {
-        skuCode: "S0900104",
-        color: "Black",
-        size: "38",
-        remains: 6,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900105",
-        color: "Black",
-        size: "39",
-        remains: 15,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900103",
-        color: "Black",
-        size: "37",
-        remains: 17,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900101",
-        color: "Black",
-        size: "35",
-        remains: 0,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900106",
-        color: "Black",
-        size: "40",
-        remains: 9,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900102",
-        color: "Black",
-        size: "36",
-        remains: 20,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900108",
-        color: "Black",
-        size: "42",
-        remains: 4,
-        colorCode: "#000000",
-      },
-      {
-        skuCode: "S0900107",
-        color: "Black",
-        size: "41",
-        remains: 13,
-        colorCode: "#000000",
-      },
-    ],
-  });
+  const [productdetail, setProductDetail] = React.useState({});
   // must have the selectedImage state
   const [selectedImage, setSelectedImage] = React.useState(0);
   // must have the isDiscount state
@@ -215,7 +140,6 @@ function ProductDetail() {
   };
 
   React.useEffect(() => {
-
     const fetchProduct = async () => {
       try {
         const response = await fetch(
@@ -229,16 +153,21 @@ function ProductDetail() {
             variants: prev.variants.sort(
               (a, b) =>
                 weight_size[a.size] - weight_size[b.size] ||
-                a.color.localeCompare(b.color)
-            ),};});
+              a.color.localeCompare(b.color)
+            ),
+          };
+        });
+        setFinishLoading(true);
       } catch (error) {
         console.error("Error fetching product: ", error);
       }
-    }
+    };
     fetchProduct();
   }, []);
 
   React.useEffect(() => {
+    if (!finishLoading) return;
+
     setPoductChoice((prev) => {
       return {
         ...prev,
@@ -247,16 +176,26 @@ function ProductDetail() {
         size: getUniqueValue(productdetail.variants, "size"),
       };
     });
+    setIsDiscount(
+      productdetail.promotionalPrice < productdetail.price
+        ? parseInt(
+            (1 - productdetail.promotionalPrice / productdetail.price) * 100
+          )
+        : 0
+    );
   }, [productdetail]);
 
   React.useEffect(() => {
+    if (!finishLoading) return;
+
     setSelectedProduct({
       ...productdetail.variants[0],
       quantity: 1,
     });
-  }, [productChoice, productdetail.variants]);
+  }, [productChoice]);
 
   React.useEffect(() => {
+    if (finishLoading === false) return;
     if (selectedProduct.remains === 0) {
       setOutofstock(true);
     } else {
@@ -272,97 +211,88 @@ function ProductDetail() {
     }
   };
 
-  // console.log(selectedProduct);
-  // console.log(outofstock);
-  // console.log(productdetail);
-  // console.log(productChoice);
-
   return (
     <>
       {/* Preview of product */}
-      <div className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">
-        <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
-          <div className="w-full h-[21.4375rem] col-span-4 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]">
-            <img
-              src={productdetail.imageUrls[selectedImage]}
-              alt="product"
-              className={`object-cover object-top  w-full h-full ${setImageOutofstock(
-                outofstock
-              )}`}
-            />
-            {/* {isDiscount ? (
-              <div className="absolute flex justify-center items-center font-['Poppins'] top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50 xl:top-[83px] xl:text-[27px] xl:w-[86px] xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
-                -{isDiscount}%
-              </div>
-            ) : ""} */}
-            {outofstock ? (
-              <div className="absolute flex justify-center items-center font-['Poppins'] top-[1.875rem] right-0 px-[7px] py-[3px] bg-secondary-900 text-secondary-50 text-[11px] xl:top-[83px] xl:text-[27px]  xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
-                Out of stock
-              </div>
-            ) : isDiscount ? (
-              <div className="absolute flex justify-center items-center font-['Poppins'] top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50 xl:top-[83px] xl:text-[27px] xl:w-[86px] xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
-                -{isDiscount}%
-              </div>
-            ) : (
-              ""
-            )}
-            <NextLeft
-              moveleft={() => {
-                // if the selected image is the first image, then set the selected image to the last image
-                setSelectedImage((prev) => {
-                  if (prev === 0) {
-                    return productdetail.imageUrls.length - 1;
-                  }
-                  return prev - 1;
-                });
-              }}
-            />
-            <NextRight
-              moveright={() => {
-                // if the selected image is the last image, then set the selected image to the first image
-                setSelectedImage((prev) => {
-                  if (prev === productdetail.imageUrls.length - 1) {
-                    return 0;
-                  }
-                  return prev + 1;
-                });
-              }}
-            />
-          </div>
-          {productdetail.imageUrls.map((image, index) => {
-            if (index !== selectedImage) {
-              return (
-                <div
-                  key={index}
-                  className={`w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px] ${setImageOutofstock(
-                    outofstock
-                  )}`}
-                  onClick={() => {
-                    setSelectedImage(index);
-                  }}
-                >
-                  <img
-                    src={image}
-                    alt="product"
-                    className="object-cover object-top  w-full h-full"
-                  />
+      {finishLoading ? (
+        <div className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">
+          <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
+            <div className="w-full h-[21.4375rem] col-span-4 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]">
+              <img
+                src={productdetail.imageUrls[selectedImage]}
+                alt="product"
+                className={`object-cover object-top  w-full h-full ${setImageOutofstock(
+                  outofstock
+                )}`}
+              />
+              {outofstock ? (
+                <div className="absolute flex justify-center items-center font-['Poppins'] top-[1.875rem] right-0 px-[7px] py-[3px] bg-secondary-900 text-secondary-50 text-[11px] xl:top-[83px] xl:text-[27px]  xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
+                  Out of stock
                 </div>
-              );
-            }
-          })}
-        </div>
-        {/* Detail of product */}
-        <div className=" flex flex-col w-[21.4375rem] gap-10 xl:w-[36.0625rem] 2xl:w-[780px]">
-          {/* Name, Description, Price, Star */}
-          <div className=" flex flex-col gap-6">
-            {/* Name and Description */}
-            <div className="flex flex-col gap-1 xl:gap-4">
-              <div className="flex justify-between items-center">
-                {/* ID and Favorite */}
-                <p className="font-semibold font-['Poppins'] text-[18px] xl:font-bold xl:text-2xl">
-                  ID: {productdetail.skuCode}
-                </p>
-                {/* <svg
+              ) : isDiscount ? (
+                <div className="absolute flex justify-center items-center font-['Poppins'] top-[0.875rem] right-0 px-[7px] py-[3px] bg-danger text-secondary-50 xl:top-[83px] xl:text-[27px] xl:w-[86px] xl:h-[47px] xl:leading-8 2xl:top-[32px] 2xl:h-[57px] ">
+                  -{isDiscount}%
+                </div>
+              ) : (
+                ""
+              )}
+              <NextLeft
+                moveleft={() => {
+                  // if the selected image is the first image, then set the selected image to the last image
+                  setSelectedImage((prev) => {
+                    if (prev === 0) {
+                      return productdetail.imageUrls.length - 1;
+                    }
+                    return prev - 1;
+                  });
+                }}
+              />
+              <NextRight
+                moveright={() => {
+                  // if the selected image is the last image, then set the selected image to the first image
+                  setSelectedImage((prev) => {
+                    if (prev === productdetail.imageUrls.length - 1) {
+                      return 0;
+                    }
+                    return prev + 1;
+                  });
+                }}
+              />
+            </div>
+            {productdetail.imageUrls.map((image, index) => {
+              if (index !== selectedImage) {
+                return (
+                  <div
+                    key={index}
+                    className={`w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px] ${setImageOutofstock(
+                      outofstock
+                    )}`}
+                    onClick={() => {
+                      setSelectedImage(index);
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt="product"
+                      className="object-cover object-top  w-full h-full"
+                    />
+                  </div>
+                );
+              }
+            })}
+          </div>
+          {/* Detail of product */}
+          <div className=" flex flex-col w-[21.4375rem] gap-10 xl:w-[36.0625rem] 2xl:w-[780px]">
+            {/* Name, Description, Price, Star */}
+            <div className=" flex flex-col gap-6">
+              {/* Name and Description */}
+              <div className="flex flex-col gap-1 xl:gap-4">
+                <div className="flex justify-between items-center">
+                  {/* ID and Favorite */}
+                  <p className="font-semibold font-['Poppins'] text-[18px] xl:font-bold xl:text-2xl">
+                    ID: {productdetail.skuCode}
+                  </p>
+                  {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="40"
                   height="40"
@@ -375,162 +305,166 @@ function ProductDetail() {
                     fill={favorite ? "#FF000D" : "#222222"}
                   />
                 </svg> */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="40"
-                  height="40"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  onClick={() => setFavorite(!favorite)}
-                  className={"cursor-pointer"}
-                >
-                  <rect width="40" height="40" fill="none" />
-                  <path
-                    d="M27.3499 14.0256C25.5304 12.4621 22.8244 12.7433 21.1543 14.481L20.5002 15.1607L19.8462 14.481C18.1794 12.7433 15.4701 12.4621 13.6506 14.0256C11.5655 15.8203 11.4559 19.0412 13.3219 20.9865L19.7465 27.6761C20.1616 28.108 20.8356 28.108 21.2506 27.6761L27.6753 20.9865C29.5446 19.0412 29.435 15.8203 27.3499 14.0256Z"
-                    fill={favorite ? "#FF000D" : "none"}
-                    stroke={favorite ? "none" : "black"}
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </div>
-              {/* Name and Des of Product */}
-              <h4 className="font-bold font-['Poppins'] xl:text-[3rem]">
-                {productdetail.name}
-              </h4>
-              <p className=" text-secondary-700 font-semibold font-['Poppins'] xl:text-2xl xl:font-bold ">
-                {productdetail.description}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2">
-              {outofstock ? (
-                <>
-                  <h5 className="font-bold font-['Poppins'] self-start py-2 xl:text-[2.5rem]">
-                    THB {numberWithCommas(productdetail.promotionalPrice)}
-                  </h5>
-                  {/* Add From THB 2,000.00 */}
-                  <p className=" font-bold font-['Poppins'] self-start text-danger xl:text-[24px]">
-                    Out of stock
-                  </p>
-                </>
-              ) : isDiscount ? (
-                <>
-                  <h5 className="font-bold font-['Poppins'] self-start py-2 px-[10px] bg-danger text-secondary-50 xl:text-[2.5rem]">
-                    THB {numberWithCommas(productdetail.promotionalPrice)}
-                  </h5>
-                  {/* Add From THB 2,000.00 */}
-                  <p className=" font-semibold font-['Poppins'] self-start  text-secondary-900">
-                    From{" "}
-                    <span className=" line-through ">
-                      THB {numberWithCommas(productdetail.price)}
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <h5 className="font-bold font-['Poppins'] self-start py-2 px-[10px] xl:text-[2.5rem]">
-                  THB {numberWithCommas(productdetail.price)}
-                </h5>
-              )}
-            </div>
-
-            <StarRating rating={productdetail.ratings} />
-          </div>
-          {/* Color, Size, Quantity */}
-          <div className="flex flex-col gap-6">
-            {/* Color Select*/}
-            <div className="flex flex-col gap-2 ">
-              <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
-                Color
-              </h5>
-              <div className=" grid grid-cols-3  gap-2 xl:grid-cols-5">
-                {productChoice.color.map((color, index) => {
-                  return (
-                    <ShowColorVariant
-                      key={index}
-                      color={color}
-                      colorCode={productChoice.colorCode[index]}
-                      setselectColor={() => {
-                        setSelectedProduct((prev) => {
-                          const product = productdetail.variants.find(
-                            (variant) =>
-                              variant.color === color &&
-                              variant.size === selectedProduct.size
-                          );
-                          return {
-                            ...prev,
-                            color: color,
-                            skuCode: product.skuCode,
-                            remains: product.remains,
-                          };
-                        });
-                      }}
-                      selectColor={selectedProduct.color === color}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    onClick={() => setFavorite(!favorite)}
+                    className={"cursor-pointer"}
+                  >
+                    <rect width="40" height="40" fill="none" />
+                    <path
+                      d="M27.3499 14.0256C25.5304 12.4621 22.8244 12.7433 21.1543 14.481L20.5002 15.1607L19.8462 14.481C18.1794 12.7433 15.4701 12.4621 13.6506 14.0256C11.5655 15.8203 11.4559 19.0412 13.3219 20.9865L19.7465 27.6761C20.1616 28.108 20.8356 28.108 21.2506 27.6761L27.6753 20.9865C29.5446 19.0412 29.435 15.8203 27.3499 14.0256Z"
+                      fill={favorite ? "#FF000D" : "none"}
+                      stroke={favorite ? "none" : "black"}
+                      strokeWidth="1.5"
                     />
-                  );
-                })}
+                  </svg>
+                </div>
+                {/* Name and Des of Product */}
+                <h4 className="font-bold font-['Poppins'] xl:text-[3rem]">
+                  {productdetail.name}
+                </h4>
+                <p className=" text-secondary-700 font-semibold font-['Poppins'] xl:text-2xl xl:font-bold ">
+                  {productdetail.description}
+                </p>
               </div>
-            </div>
-            {/* Size Select */}
-            {productChoice.size.length > 0 && 
-            <div className="flex flex-col gap-2">
-              <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
-                Size
-              </h5>
-              <div className=" grid grid-cols-5  gap-2">
-                {productChoice.size.map((size, index) => {
-                  const border_color =
-                    selectedProduct.size === size
-                      ? "border-[#C1CD00]"
-                      : "border-[#E1E1E1]";
-                  return (
-                    <button
-                      key={index}
-                      className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
-                      onClick={() => {
-                        setSelectedProduct((prev) => {
-                          const product = productdetail.variants.find(
-                            (variant) =>
-                              variant.color === selectedProduct.color &&
-                              variant.size === size
-                          );
-                          return {
-                            ...prev,
-                            size: size,
-                            skuCode: product.skuCode,
-                            remains: product.remains,
-                          };
-                        });
-                      }}
-                    >
-                      {size}
-                    </button>
-                  );
-                })}
+              <div className="flex flex-col gap-2">
+                {outofstock ? (
+                  <>
+                    <h5 className="font-bold font-['Poppins'] self-start py-2 xl:text-[2.5rem]">
+                      THB {numberWithCommas(productdetail.promotionalPrice)}
+                    </h5>
+                    {/* Add From THB 2,000.00 */}
+                    <p className=" font-bold font-['Poppins'] self-start text-danger xl:text-[24px]">
+                      Out of stock
+                    </p>
+                  </>
+                ) : isDiscount ? (
+                  <>
+                    <h5 className="font-bold font-['Poppins'] self-start py-2 px-[10px] bg-danger text-secondary-50 xl:text-[2.5rem]">
+                      THB {numberWithCommas(productdetail.promotionalPrice)}
+                    </h5>
+                    {/* Add From THB 2,000.00 */}
+                    <p className=" font-semibold font-['Poppins'] self-start  text-secondary-900">
+                      From{" "}
+                      <span className=" line-through ">
+                        THB {numberWithCommas(productdetail.price)}
+                      </span>
+                    </p>
+                  </>
+                ) : (
+                  <h5 className="font-bold font-['Poppins'] self-start py-2 px-[10px] xl:text-[2.5rem]">
+                    THB {numberWithCommas(productdetail.price)}
+                  </h5>
+                )}
               </div>
-            </div>}
-            {/* Quantity Select */}
-            <div className="flex flex-col gap-2">
-              <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
-                Qty.
-              </h5>
-              <Dropdown
-                setselectedProduct={setSelectedProduct}
-                selectedProduct={selectedProduct}
-                outofstock={outofstock}
-              />
+
+              <StarRating rating={productdetail.ratings} />
             </div>
-            <button
-              className={` font-light font-['Poppins'] h-[54px] duration-500 ${
-                outofstock
-                  ? " bg-secondary-300 text-secondary-500"
-                  : "bg-secondary-900 text-secondary-50 hover:bg-primary-700 focus:outline-none cursor-pointer"
-              } `}
-              disabled={outofstock}
-            >
-              Add to Cart
-            </button>
+            {/* Color, Size, Quantity */}
+            <div className="flex flex-col gap-6">
+              {/* Color Select*/}
+              <div className="flex flex-col gap-2 ">
+                <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
+                  Color
+                </h5>
+                <div className=" grid grid-cols-3  gap-2 xl:grid-cols-5">
+                  {productChoice.color.map((color, index) => {
+                    return (
+                      <ShowColorVariant
+                        key={index}
+                        color={color}
+                        colorCode={productChoice.colorCode[index]}
+                        setselectColor={() => {
+                          setSelectedProduct((prev) => {
+                            const product = productdetail.variants.find(
+                              (variant) =>
+                                variant.color === color &&
+                                variant.size === selectedProduct.size
+                            );
+                            return {
+                              ...prev,
+                              color: color,
+                              skuCode: product.skuCode,
+                              remains: product.remains,
+                            };
+                          });
+                        }}
+                        selectColor={selectedProduct.color === color}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+              {/* Size Select */}
+              {productChoice.size.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
+                    Size
+                  </h5>
+                  <div className=" grid grid-cols-5  gap-2">
+                    {productChoice.size.map((size, index) => {
+                      const border_color =
+                        selectedProduct.size === size
+                          ? "border-[#C1CD00]"
+                          : "border-[#E1E1E1]";
+                      return (
+                        <button
+                          key={index}
+                          className={`flex justify-center items-center font-['Poppins'] text-secondary-900 h-[54px] text-center py-2 border ${border_color} cursor-pointer`}
+                          onClick={() => {
+                            setSelectedProduct((prev) => {
+                              const product = productdetail.variants.find(
+                                (variant) =>
+                                  variant.color === selectedProduct.color &&
+                                  variant.size === size
+                              );
+                              return {
+                                ...prev,
+                                size: size,
+                                skuCode: product.skuCode,
+                                remains: product.remains,
+                              };
+                            });
+                          }}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {/* Quantity Select */}
+              <div className="flex flex-col gap-2">
+                <h5 className=" font-normal text-[1rem] font-['Poppins'] text-secondary-700">
+                  Qty.
+                </h5>
+                <Dropdown
+                  setselectedProduct={setSelectedProduct}
+                  selectedProduct={selectedProduct}
+                  outofstock={outofstock}
+                />
+              </div>
+              <button
+                className={` font-light font-['Poppins'] h-[54px] duration-500 ${
+                  outofstock
+                    ? " bg-secondary-300 text-secondary-500"
+                    : "bg-secondary-900 text-secondary-50 hover:bg-primary-700 focus:outline-none cursor-pointer"
+                } `}
+                disabled={outofstock}
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <LoadingScreen />
+      )}
     </>
   );
 }
