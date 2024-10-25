@@ -2,7 +2,17 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        fateIn: {
+          "0%": { opacity: "0.3" },
+          "100%": { opacity: "1" },
+        },
+      },
+      animation: {
+        fateIn: "fateIn 0.5s ease-out forwards",
+      },
+    },
     fontWeight: {
       thin: "100",
       hairline: "100",
