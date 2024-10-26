@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown";
 import LoadingScreen from "./LoadingScreen";
 import ProductModal from "./ProductModal";
 import { getUniqueValue, numberWithCommas, permalinks, getWeightSize } from "./ProductDetail";
+import { useParams } from "react-router-dom";
 
 const NextLeft = ({ moveleft }) => {
   return (
@@ -76,6 +77,7 @@ const ShowColorVariant = ({
 
 
 function ProductDetail() {
+  const { permalink } = useParams() || permalinks[0];
   const [finishLoading, setFinishLoading] = React.useState(false);
   // must have the productdetail object
   const [productdetail, setProductDetail] = React.useState({});
@@ -102,7 +104,7 @@ function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `https://api.storefront.wdb.skooldio.dev/products/${permalinks[10]}` // must use the first permalink from the permalinks array
+          `https://api.storefront.wdb.skooldio.dev/products/${permalink}` // must use the first permalink from the permalinks array
         );
         const data = await response.json();
         setProductDetail(data);
@@ -171,7 +173,7 @@ function ProductDetail() {
       return "";
     }
   };
-  console.log(productdetail);
+  // console.log(productdetail);
 
   return (
     <>
