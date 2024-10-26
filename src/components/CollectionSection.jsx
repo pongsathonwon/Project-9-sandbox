@@ -13,7 +13,7 @@ const ColloctionCard = ({ title, imageUrl, description, permalink }) => {
         src={imageUrl}
         alt={title + " promation image"}
       />
-      <div className="relative self-stretch h-8 text-center text-white text-2xl font-bold font-['Poppins'] leading-loose">
+      <div className="relative self-stretch min-h-8 text-center text-white text-2xl font-bold font-['Poppins'] leading-loose">
         {title}
       </div>
       <div className="relative self-stretch text-center text-white text-base font-normal font-['Poppins'] leading-tight">
