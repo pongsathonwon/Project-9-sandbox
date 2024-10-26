@@ -21,7 +21,7 @@ const Mainpage = () => {
         <CollectionSection />
 
         {/* Featured Products Section */}
-        <section className="py-16 px-[1.125rem] lg:px-32 items-center w-screen">
+        <section className="py-16 px-[1.125rem] lg:px-32 items-center">
           <ContainerSlot
             containerLabel="Feature Products"
             containerLabelPosition="center"
