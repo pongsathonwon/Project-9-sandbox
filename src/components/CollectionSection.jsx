@@ -135,7 +135,7 @@ const CollectionSection = () => {
     );
 
   return (
-    <section className="py-16">
+    <section className="py-16 px-[1.125rem] lg:px-32">
       <div className="w-full flex flex-col xl:flex-row justify-center items-center gap-16">
         {/* Left Column (Title & Description) */}
         <div className="h-[458px] flex-col justify-start items-start gap-6 inline-flex">

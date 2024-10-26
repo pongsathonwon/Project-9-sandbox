@@ -7,7 +7,6 @@ import {
   tertiaryNavlist,
 } from "./navlist";
 import Arrow from "../Icon/Arrow";
-import { useCategoryContext } from "../../context/CategoryContextProvider";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
 
 const ExpandableButton = ({ labelText, children }) => {
@@ -143,49 +142,13 @@ function Sidebar({ isShow, onClick }) {
           </div>
         </div>
       </div>
-      <button className="w-full h-full" onClick={onClick} aria-hidden></button>
+      <button
+        className="w-full h-full md:hidden"
+        onClick={onClick}
+        aria-hidden
+      ></button>
     </div>
   );
 }
 
 export default Sidebar;
-
-{
-  /*
-          <button
-          className={`font-bold capitalize flex gap-8 items-center w-full px-4 h-12 ${
-            type ? "border-b border-secondary-300 text-2xl" : "text-lg"
-          }`}
-          onClick={onClick}
-        >
-          {type ? (
-            <>
-              <Arrow direction="left" />
-              {type}
-            </>
-          ) : (
-            <span className="text-lg ml-4">home</span>
-          )}
-        </button>
-
-        /////////////////////////////////////////////
-
-                  {type ? (
-            <>
-              <Arrow direction="left" />
-              {navlist.find(({ path }) => path === type).label}
-            </>
-          ) : (
-            <span className="text-lg ml-4">home</span>
-          )}
-
-          ///////////////////////////////
-                          <Link
-                  className="flex items-center justify-between w-full"
-                  to={genClothingList(path)}
-                >
-                  {label} <Arrow direction="right" />
-                </Link>
-
-*/
-}
