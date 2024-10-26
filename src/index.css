@@ -78,21 +78,24 @@
   }
 
   ::-webkit-scrollbar {
-  width: 5px;
-}
+    width: 5px;
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 
 .border-focus-primary:focus {
   @apply border-primary;
+}
+
+.collection-card {
+  @apply w-full flex flex-row justify-center items-center gap-16;
 }
