@@ -131,6 +131,18 @@ function CartsContextProvider({ children }) {
 
   //permalink logic
   const getByPermalink = async (cart) => {
+    //localstorage logic
+    const savedResult = localStorage.getItem(cart.productPermalink);
+    if (savedResult) {
+      const [initial] = savedResult.variants.filter(
+        (data) => data.skuCode === cart.skuCode
+      );
+      const colorList = permalinkData.variants.reduce(
+        (prev, { color }) => (prev.includes(color) ? prev : [...prev, color]),
+        []
+      );
+      return { ...permalinkData, colorList, ...cart, ...initial };
+    }
     try {
       const permalinkData = await getData(`products/${cart.productPermalink}`);
       const [initial] = permalinkData.variants.filter(
