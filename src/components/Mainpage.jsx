@@ -5,11 +5,11 @@ import FeaturedProducts from "./FeaturedProducts"; // Import the FeaturedProduct
 
 const Mainpage = () => {
   return (
-    <div className="w-[1920px] h-[2314px] relative bg-white">
+    <div className="w-full h-auto relative bg-white">
       {/* Header Image Section */}
-      <div className="">
+      <div className="w-full h-[420px] lg:h-[600px] relative">
         <img
-          className="max-w-full object-cover"
+          className="w-full h-full object-cover"
           src={headerPicture}
           alt="Header Image"
         />
