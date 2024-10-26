@@ -133,8 +133,9 @@ function CartsContextProvider({ children }) {
   const getByPermalink = async (cart) => {
     //localstorage logic
     const savedResult = localStorage.getItem(cart.productPermalink);
-    if (savedResult) {
-      const [initial] = savedResult.variants.filter(
+    const saveData = JSON.parse(savedResult);
+    if (saveData) {
+      const [initial] = saveData.variants.filter(
         (data) => data.skuCode === cart.skuCode
       );
       const colorList = permalinkData.variants.reduce(
