@@ -5,8 +5,8 @@ import flexiImage from "../assets/flexi.jpg"; // Import flexi image
 const CollectionSection = () => {
   return (
     <section className="py-16">
-      <div className="w-full flex flex-row justify-center items-center gap-16">
-        {/* 2024 Collection) */}
+      <div className="w-full flex flex-col xl:flex-row justify-center items-center gap-16">
+        {/* Left Column (Title & Description) */}
         <div className="h-[458px] flex-col justify-start items-start gap-6 inline-flex">
           <div className="flex-col justify-start items-start flex">
             <div className="text-[#222222] text-8xl font-bold font-['Poppins'] leading-[116px]">
