@@ -68,19 +68,20 @@ const FeaturedProducts = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {products.map((product) =>
             product.items.map((item, index) => (
-              <div key={index} className="w-[267px] flex flex-col justify-start items-start gap-4 relative">
+              <div
+                key={index}
+                className="w-[267px] flex flex-col justify-start items-start gap-4 relative"
+              >
                 <img
                   className="w-full h-[370px] object-cover rounded-t-lg"
                   src={item.imageUrl}
                   alt={item.title}
                 />
-                {index === 0 && (
-                  <div className="absolute top-2 right-2 h-[34px] px-2.5 py-1 bg-[#ff000d] flex justify-start items-center gap-2">
-                    <div className="text-white text-base font-normal font-poppins leading-tight">
-                      - 50%
-                    </div>
+                <div className="absolute top-2 right-2 h-[34px] px-2.5 py-1 bg-[#ff000d] flex justify-start items-center gap-2">
+                  <div className="text-white text-base font-normal font-poppins leading-tight">
+                    - 50%
                   </div>
-                )}
+                </div>
                 <div className="w-full flex flex-col justify-start items-start gap-2">
                   <div className="text-[#222222] text-2xl font-bold font-poppins leading-loose">
                     {item.title}
