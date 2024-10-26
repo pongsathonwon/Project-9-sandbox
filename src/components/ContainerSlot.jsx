@@ -4,7 +4,7 @@ import ProductCard from "./productCard";
 import { getData } from "../utils/apiHandler";
 import Skeleton from "./Skeleton";
 import StarRating from "./StarRating";
-import { loadLocal, saveToLocal } from "../utils/loacl";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const POSITION = {
   start: "",
@@ -50,7 +50,7 @@ function ContainerSlot({
   useEffect(() => {
     setLoading();
     (async () => {
-      const saved = loadLocal("slot");
+      const saved = loadLocal(LOCALSTORAGE_KEY.slot);
       if (saved) {
         setSuccess(saved);
         return;
@@ -59,7 +59,7 @@ function ContainerSlot({
         const { data: resData } = await getData("products", {
           params: { sort: "ratings:desc", collection, limit: 4, categories },
         });
-        saveToLocal("slot")(resData, 1 / (24 * 12));
+        saveToLocal(LOCALSTORAGE_KEY.slot)(resData, 1 / (24 * 12));
         setSuccess(resData);
       } catch (error) {
         console.error(error);
