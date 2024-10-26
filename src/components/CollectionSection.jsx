@@ -50,7 +50,6 @@ const CollectionSection = () => {
   useEffect(() => {
     const n = collectionList?.length ?? 0;
     const id = setTimeout(() => {
-      console.log("call");
       if (page === n - 1) {
         setPage(0);
         return;
