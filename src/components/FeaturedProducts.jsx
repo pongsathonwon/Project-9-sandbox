@@ -66,13 +66,9 @@ const FeaturedProducts = () => {
           Featured Product
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {products
-            .flatMap((product) => product.items)
-            .map((item, index) => (
-              <div
-                key={index}
-                className="w-[267px] flex flex-col justify-start items-start gap-4 relative"
-              >
+          {products.map((product) =>
+            product.items.map((item, index) => (
+              <div key={index} className="w-[267px] flex flex-col justify-start items-start gap-4 relative">
                 <img
                   className="w-full h-[370px] object-cover rounded-t-lg"
                   src={item.imageUrl}
@@ -105,7 +101,8 @@ const FeaturedProducts = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
     </section>
