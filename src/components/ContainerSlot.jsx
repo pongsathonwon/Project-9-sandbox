@@ -46,7 +46,6 @@ function ContainerSlot({
   categories,
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
-  console.table(data);
   useEffect(() => {
     setLoading();
     (async () => {
@@ -81,6 +80,7 @@ function ContainerSlot({
                 imageUrls,
                 ratings,
                 skuCode,
+                permalink,
               }) => (
                 <ProductCard
                   key={skuCode}
@@ -91,6 +91,7 @@ function ContainerSlot({
                     promotionalPrice,
                     ratings,
                     imageUrl: imageUrls[0],
+                    permalink,
                   }}
                 />
               )
