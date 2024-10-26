@@ -113,8 +113,7 @@ function ProductDetail() {
             ...prev,
             variants: prev.variants.sort(
               (a, b) =>
-                getWeightSize(a.size) - getWeightSize(b.size) ||
-                a.color.localeCompare(b.color)
+                getWeightSize(a.size) - getWeightSize(b.size)
             ),
           };
         });
