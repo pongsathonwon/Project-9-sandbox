@@ -3,8 +3,14 @@ import StarRating from "../../components/StarRating";
 import Dropdown from "./Dropdown";
 import LoadingScreen from "./LoadingScreen";
 import ProductModal from "./ProductModal";
-import { getUniqueValue, numberWithCommas, permalinks, getWeightSize } from "./ProductDetail";
+import {
+  getUniqueValue,
+  numberWithCommas,
+  permalinks,
+  getWeightSize,
+} from "./ProductDetail";
 import { useParams } from "react-router-dom";
+import ContainerSlot from "../../components/ContainerSlot";
 
 const NextLeft = ({ moveleft }) => {
   return (
@@ -74,8 +80,6 @@ const ShowColorVariant = ({
   );
 };
 
-
-
 function ProductDetail() {
   const { permalink } = useParams() || permalinks[0];
   const [finishLoading, setFinishLoading] = React.useState(false);
@@ -96,11 +100,26 @@ function ProductDetail() {
     size: [],
   });
 
+  const resetState = () => {
+    setFinishLoading(false);
+    setProductDetail({});
+    setSelectedImage(0);
+    setIsDiscount(0);
+    setFavorite(false);
+    setOutofstock(false);
+    setShowModal(false);
+    setPoductChoice({
+      color: [],
+      colorCode: [],
+      size: [],
+    });
+  };
+
   const [selectedProduct, setSelectedProduct] = React.useState({});
 
-
-
   React.useEffect(() => {
+    setFinishLoading(false);
+    resetState();
     const fetchProduct = async () => {
       try {
         const response = await fetch(
@@ -112,8 +131,7 @@ function ProductDetail() {
           return {
             ...prev,
             variants: prev.variants.sort(
-              (a, b) =>
-                getWeightSize(a.size) - getWeightSize(b.size)
+              (a, b) => getWeightSize(a.size) - getWeightSize(b.size)
             ),
           };
         });
@@ -123,7 +141,7 @@ function ProductDetail() {
       }
     };
     fetchProduct();
-  }, []);
+  }, [permalink]);
 
   React.useEffect(() => {
     if (!finishLoading) return;
@@ -185,9 +203,10 @@ function ProductDetail() {
             selectedProduct={selectedProduct}
             setShowModal={setShowModal}
           />
-          <div className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">
-            <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
-              <div className="w-full h-[21.4375rem] col-span-4 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]">
+
+          <section className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">
+            <div className="grid grid-cols-5 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
+              <div className="w-full h-[21.4375rem] col-span-5 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]">
                 <img
                   src={productdetail.imageUrls[selectedImage]}
                   alt="product"
@@ -230,25 +249,33 @@ function ProductDetail() {
                 />
               </div>
               {productdetail.imageUrls.map((image, index) => {
-                if (index !== selectedImage) {
-                  return (
-                    <div
-                      key={index}
-                      className={`w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px] ${setImageOutofstock(
-                        outofstock
-                      )}`}
-                      onClick={() => {
-                        setSelectedImage(index);
-                      }}
-                    >
-                      <img
-                        src={image}
-                        alt="product"
-                        className="object-cover object-top  w-full h-full"
-                      />
-                    </div>
-                  );
+                {
+                  /* w-full h-[70px] col-span-1 bg-secondary-700 xl:h-[140px] 2xl:h-[150px] */
                 }
+                {
+                  /* w-full h-[80px] col-span-1 bg-secondary-700 xl:h-[167px] 2xl:h-[172px] */
+                }
+                let style_image = `w-full h-[70px] col-span-1 bg-secondary-700 xl:h-[140px] 2xl:h-[150px] ${setImageOutofstock(
+                  outofstock
+                )} duration-200 cursor-pointer translate-y-0 hover:translate-y-[-5px]`;
+                if (index == selectedImage) {
+                  style_image += "  brightness-50";
+                }
+                return (
+                  <div
+                    key={index}
+                    className={style_image}
+                    onClick={() => {
+                      setSelectedImage(index);
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt="product"
+                      className="object-cover object-top  w-full h-full"
+                    />
+                  </div>
+                );
               })}
             </div>
             {/* Detail of product */}
@@ -419,6 +446,9 @@ function ProductDetail() {
                 </button>
               </div>
             </div>
+          </section>
+          <div className="px-4 lg:px-16 2xl:px-32 pt-6 xl:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 2xl:gap-20">
+            <ContainerSlot containerLabel="people also like these" />
           </div>
         </>
       ) : (
