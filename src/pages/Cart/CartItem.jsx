@@ -67,7 +67,7 @@ function CartItem({
   return (
     <div className="flex flex-col lg:flex-row gap-10">
       <img
-        className="w-[276px] lg:w-[162px] aspect-square mx-auto lg:mx-0 xl:w-[276px]"
+        className="w-[276px] lg:w-[209px] aspect-square mx-auto lg:mx-0 xl:w-[276px]"
         src={imageUrls[0] ?? ""}
       />
       <div className="flex flex-col justify-between flex-1">
