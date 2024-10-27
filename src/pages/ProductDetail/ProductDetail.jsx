@@ -118,7 +118,6 @@ function ProductDetail() {
   const [selectedProduct, setSelectedProduct] = React.useState({});
 
   React.useEffect(() => {
-    setFinishLoading(false);
     resetState();
     const fetchProduct = async () => {
       try {
