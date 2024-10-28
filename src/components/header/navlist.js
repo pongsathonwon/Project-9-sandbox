@@ -29,3 +29,8 @@ export const tertiaryNavlist = (collectionPath) => {
     path: `${path}&${collectionPath}`,
   }));
 };
+
+export const extractLink = (link) => {
+  const [categories, collection] = link.split("&");
+  return { categories: categories ?? null, collection: collection ?? null };
+};
