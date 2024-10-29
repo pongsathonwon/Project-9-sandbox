@@ -48,8 +48,7 @@ const weight_size = {
 
 
  function getWeightSize(size) {
-    const regex = /^$/;
-  if (regex.test(regex)) {
+  if (!weight_size[size]) {
     return size;
   } else {
     return weight_size[size];

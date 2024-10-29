@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
 
 const ProductCard = ({
@@ -7,13 +8,17 @@ const ProductCard = ({
   promotionalPrice,
   imageUrl,
   ratings,
+  permalink,
 }) => {
   const isDiscounted = promotionalPrice < price;
   return (
-    <div className="w-[267px] flex flex-col justify-start items-start gap-4 relative">
+    <Link
+      to={`/productdetail/${permalink}`}
+      className="w-[267px] flex flex-col justify-start items-start gap-4 relative"
+    >
       {/* Product Image */}
       <img
-        className="w-full h-[267px] object-cover"
+        className="w-full h-[267px] object-cover object-top"
         src={imageUrl}
         alt={name}
       />
@@ -55,7 +60,7 @@ const ProductCard = ({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

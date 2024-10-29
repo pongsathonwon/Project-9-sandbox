@@ -1,5 +1,6 @@
 import React from "react";
-import { numberWithCommas } from "./ProductDetail";
+import { numberWithCommas } from "../../utils/productDetail";
+import { Link } from "react-router-dom";
 
 function ProductModal({
   showModal,
@@ -79,9 +80,18 @@ function ProductModal({
               </div>
             </div>
             <div className="flex flex-col items-start gap-4 self-stretch xl:flex-row ">
-              <button className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#222] text-white font-['Poppins'] leading-5 cursor-pointer xl:w-full">
-                View cart
-              </button>
+              <Link
+                to="/cart"
+                className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#222] text-white font-['Poppins'] leading-5 cursor-pointer xl:w-full"
+              >
+                <button
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  View cart
+                </button>
+              </Link>
               <button
                 className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] bg-white text-[#222] font-['Poppins'] leading-5 cursor-pointer xl:w-full"
                 onClick={() => setShowModal(false)}

@@ -1,5 +1,11 @@
 import React from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import {
   genClothingList,
   navlist,
@@ -7,7 +13,6 @@ import {
   tertiaryNavlist,
 } from "./navlist";
 import Arrow from "../Icon/Arrow";
-import { useCategoryContext } from "../../context/CategoryContextProvider";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
 
 const ExpandableButton = ({ labelText, children }) => {
@@ -35,7 +40,15 @@ const ExpandableButton = ({ labelText, children }) => {
 function Sidebar({ isShow, onClick }) {
   const { possibleCollectionList } = useCollectionContext();
   const [secondary, setSecondary] = React.useState(null);
+  const [secPath, setSecPath] = React.useState(null);
   const [tertiary, setTertiary] = React.useState(null);
+  const navigate = useNavigate();
+  const { type } = useParams();
+  React.useEffect(() => {
+    if (!type) return;
+    const cat = type.split("&")[0];
+    setSecPath(cat);
+  }, [type]);
   return (
     <div
       className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
@@ -61,7 +74,10 @@ function Sidebar({ isShow, onClick }) {
               {navlist.map(({ label, path }) => (
                 <li className="w-64 flex items-center h-12" key={path}>
                   <button
-                    onClick={() => setSecondary(label)}
+                    onClick={() => {
+                      setSecondary(label);
+                      setSecPath(path);
+                    }}
                     className="w-full h-full text-start capitalize"
                   >
                     {label}
@@ -105,7 +121,10 @@ function Sidebar({ isShow, onClick }) {
                     >
                       <button
                         className="h-full w-full text-start"
-                        onClick={() => setTertiary({ label, path })}
+                        onClick={() => {
+                          setTertiary({ label, path });
+                          navigate(genClothingList(`${secPath}&${path}`));
+                        }}
                       >
                         {label}
                       </button>
@@ -143,49 +162,13 @@ function Sidebar({ isShow, onClick }) {
           </div>
         </div>
       </div>
-      <button className="w-full h-full" onClick={onClick} aria-hidden></button>
+      <button
+        className="w-full h-full md:hidden"
+        onClick={onClick}
+        aria-hidden
+      ></button>
     </div>
   );
 }
 
 export default Sidebar;
-
-{
-  /*
-          <button
-          className={`font-bold capitalize flex gap-8 items-center w-full px-4 h-12 ${
-            type ? "border-b border-secondary-300 text-2xl" : "text-lg"
-          }`}
-          onClick={onClick}
-        >
-          {type ? (
-            <>
-              <Arrow direction="left" />
-              {type}
-            </>
-          ) : (
-            <span className="text-lg ml-4">home</span>
-          )}
-        </button>
-
-        /////////////////////////////////////////////
-
-                  {type ? (
-            <>
-              <Arrow direction="left" />
-              {navlist.find(({ path }) => path === type).label}
-            </>
-          ) : (
-            <span className="text-lg ml-4">home</span>
-          )}
-
-          ///////////////////////////////
-                          <Link
-                  className="flex items-center justify-between w-full"
-                  to={genClothingList(path)}
-                >
-                  {label} <Arrow direction="right" />
-                </Link>
-
-*/
-}

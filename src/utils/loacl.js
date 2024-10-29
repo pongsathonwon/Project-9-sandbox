@@ -1,6 +1,7 @@
 export const LOCALSTORAGE_KEY = {
   collections: "COLLECTIONS",
   categories: "CATEGORIES",
+  slot: "SLOT",
 };
 
 const genExp = (day) => {

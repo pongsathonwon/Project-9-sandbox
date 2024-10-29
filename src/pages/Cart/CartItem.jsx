@@ -6,6 +6,7 @@ import {
 } from "../../context/CartsContextProvider";
 import Skeleton from "../../components/Skeleton";
 import SelectBox from "./SelectBox";
+import { numberWithCommas } from "../../utils/productDetail";
 
 function CartItem({
   id,
@@ -67,7 +68,7 @@ function CartItem({
   return (
     <div className="flex flex-col lg:flex-row gap-10">
       <img
-        className="w-[276px] lg:w-[162px] aspect-square mx-auto lg:mx-0 xl:w-[276px]"
+        className="w-[276px] lg:w-[209px] aspect-square mx-auto lg:mx-0 xl:w-[276px] object-cover object-top"
         src={imageUrls[0] ?? ""}
       />
       <div className="flex flex-col justify-between flex-1">
@@ -83,7 +84,7 @@ function CartItem({
         <div className="flex flex-col lg:flex-row justify-between">
           <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 lg:min-w-[23rem] xl:gap-4">
             {/* color dropdown */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 z-10">
               <span className="text-secondary-700">color</span>
               <SelectBox
                 value={curColor}
@@ -120,7 +121,7 @@ function CartItem({
             </div>
           </div>
           <span className="text-2xl font-bold mt-auto ml-auto">
-            THB: {promotionalPrice * quantity}
+            THB: { numberWithCommas(promotionalPrice * quantity)}
           </span>
         </div>
       </div>

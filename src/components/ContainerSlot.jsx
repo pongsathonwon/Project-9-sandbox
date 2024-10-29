@@ -4,6 +4,7 @@ import ProductCard from "./productCard";
 import { getData } from "../utils/apiHandler";
 import Skeleton from "./Skeleton";
 import StarRating from "./StarRating";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const POSITION = {
   start: "",
@@ -46,14 +47,19 @@ function ContainerSlot({
   categories,
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
-  console.table(data);
   useEffect(() => {
     setLoading();
     (async () => {
+      const saved = loadLocal(LOCALSTORAGE_KEY.slot);
+      if (saved) {
+        setSuccess(saved);
+        return;
+      }
       try {
         const { data: resData } = await getData("products", {
           params: { sort: "ratings:desc", collection, limit: 4, categories },
         });
+        saveToLocal(LOCALSTORAGE_KEY.slot)(resData, 1 / (24 * 12));
         setSuccess(resData);
       } catch (error) {
         console.error(error);
@@ -81,6 +87,7 @@ function ContainerSlot({
                 imageUrls,
                 ratings,
                 skuCode,
+                permalink,
               }) => (
                 <ProductCard
                   key={skuCode}
@@ -91,6 +98,7 @@ function ContainerSlot({
                     promotionalPrice,
                     ratings,
                     imageUrl: imageUrls[0],
+                    permalink,
                   }}
                 />
               )

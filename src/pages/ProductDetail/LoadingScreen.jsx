@@ -3,15 +3,15 @@ const LoadingScreen = () => {
     <>
       <div className="px-4 pt-6 pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px] animate-pulse">
         {/* Image Section */}
-        <div className="grid grid-cols-4 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
+        <div className="grid grid-cols-5 gap-y-4 gap-x-2 w-[21.4375rem] xl:w-[36rem] 2xl:w-[48.75rem]">
           {/* Main Image */}
-          <div className="w-full h-[21.4375rem] col-span-4 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]  bg-secondary-500 rounded-lg" />
+          <div className="w-full h-[21.4375rem] col-span-5 relative xl:h-[37.3125rem] 2xl:h-[48.75rem]  bg-secondary-500 rounded-md" />
 
           {/* Thumbnail Images */}
-          {[...Array(4)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <div
               key={index}
-              className="w-full h-[80px] col-span-1  bg-secondary-500 rounded-lg xl:h-[167px] 2xl:h-[172px]"
+              className="w-full h-[80px] col-span-1  bg-secondary-500 rounded-md xl:h-[167px] 2xl:h-[172px]"
             />
           ))}
         </div>
