@@ -11,6 +11,7 @@ import {
 } from "./ProductDetail";
 import { useParams } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
+import { useWishContext } from "../../context/WishContaxtProvider";
 
 const NextLeft = ({ moveleft }) => {
   return (
@@ -89,9 +90,13 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = React.useState(0);
   // must have the isDiscount state
   const [isDiscount, setIsDiscount] = React.useState(0);
-  const [favorite, setFavorite] = React.useState(false);
+  // const [favorite, setFavorite] = React.useState(false);
   const [outofstock, setOutofstock] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
+  //
+  const { toggle, wishList } = useWishContext();
+  const favorite = wishList.includes(permalink) ?? false;
+  console.log(wishList);
 
   // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
   const [productChoice, setPoductChoice] = React.useState({
@@ -105,7 +110,7 @@ function ProductDetail() {
     setProductDetail({});
     setSelectedImage(0);
     setIsDiscount(0);
-    setFavorite(false);
+    //setFavorite(false);
     setOutofstock(false);
     setShowModal(false);
     setPoductChoice({
@@ -294,7 +299,7 @@ function ProductDetail() {
                       height="40"
                       viewBox="0 0 40 40"
                       fill="none"
-                      onClick={() => setFavorite(!favorite)}
+                      onClick={async () => await toggle(permalink)}
                       className={"cursor-pointer"}
                     >
                       <rect width="40" height="40" fill="none" />
