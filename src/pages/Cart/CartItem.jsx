@@ -69,6 +69,7 @@ function CartItem({
       <img
         className="w-[276px] lg:w-[209px] aspect-square mx-auto lg:mx-0 xl:w-[276px]"
         src={imageUrls[0] ?? ""}
+        alt={name + " product image"}
       />
       <div className="flex flex-col justify-between flex-1">
         <div className="flex justify-between">

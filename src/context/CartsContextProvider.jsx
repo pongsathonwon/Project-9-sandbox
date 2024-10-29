@@ -2,6 +2,9 @@ import React from "react";
 import useBaseState from "../hooks/useBaseState";
 import { deleteData, getData, postData, updateData } from "../utils/apiHandler";
 import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
+import { useAuthContext } from "./AuthContextProvider";
+import { ref, set } from "firebase/database";
+import { db } from "../utils/firebase";
 
 const CartContext = React.createContext(null);
 
@@ -164,6 +167,18 @@ function CartsContextProvider({ children }) {
     loadCart(cartId);
   }, []);
 
+  const { account } = useAuthContext();
+  React.useEffect(() => {
+    if (!account || !cartId) return;
+    (async () => {
+      const dbRef = ref(db, `cartids/${account}`);
+      try {
+        await set(dbRef, cartId);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [cartId, account]);
   return (
     <CartContext.Provider
       value={{ isLoading, erorr, data, isEmptyCart, summaryList, subtotal }}
