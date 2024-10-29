@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContextProvider";
+import useSubsciption from "../hooks/useSubsciption";
+import { genClothingList, navlist } from "./header/navlist";
 
 const Footer = () => {
   const { signIn } = useAuthContext();
+  const { email, onChange, submit } = useSubsciption();
   // outter div
   return (
     <div className="flex flex-col items-center gap-4 pl-[1.125rem] pr-[1.125rem] p-6  bg-[#222] lg:px-32 lg:py-6 text-secondary-50">
@@ -12,18 +16,15 @@ const Footer = () => {
             Featured product
           </div>
           <div className="flex flex-col items-center gap-4 lg:items-start">
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Men
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Ladies
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Shoes
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Accessories
-            </div>
+            {navlist.map(({ label, path }) => (
+              <Link
+                key={label}
+                to={genClothingList(path)}
+                className="capitalize text-white text-center font-['Poppins'] text-lg font-semibold leading-6"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
         </div>
         {/* Register with us */}
@@ -76,12 +77,18 @@ const Footer = () => {
             </div>
           </div>
           <input
+            value={email}
+            onChange={onChange}
             className="flex items-center self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] text-[#9f9f9f] font-['Poppins'] "
             placeholder="Enter your email"
+            type="email"
           ></input>
-          <div className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5">
+          <button
+            onClick={submit}
+            className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5"
+          >
             Subscribe
-          </div>
+          </button>
         </div>
       </div>
       {/* Copyright */}
