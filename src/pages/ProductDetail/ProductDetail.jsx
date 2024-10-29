@@ -225,7 +225,7 @@ function ProductDetail() {
             </div>
           </section>
           <div className="px-4 lg:px-16 2xl:px-32 pt-6 xl:pt-10 pb-16 lg:pb-20 flex flex-col gap-10 lg:gap-12 2xl:gap-20">
-            <ContainerSlot containerLabel="people also like these" />
+            <ContainerSlot containerLabel="people also like these" collection="" />
           </div>
         </>
       ) : (
