@@ -10,6 +10,7 @@ import CartsContextProvider from "./context/CartsContextProvider.jsx";
 import ProductDetail from "./pages/ProductDetail/ProductDetail.jsx";
 import CollectionContextProvider from "./context/CollectionContextProvider.jsx";
 import CategoryContextProvider from "./context/CategoryContextProvider.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 const ROUTES = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const ROUTES = createBrowserRouter([
       { path: "/productdetail/:permalink", element: <ProductDetail /> },
       { path: "/cart", element: <Cart /> },
     ],
+    errorElement: <ErrorPage />,
   },
 ]);
 
