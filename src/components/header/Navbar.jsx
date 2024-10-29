@@ -31,7 +31,7 @@ function Navbar({ children }) {
       };
   const loginLabel = account ? "logout" : "sign in";
   return (
-    <nav className="bg-secondary px-4 py-2 sticky top-0 lg:px-32 z-10">
+    <nav className="bg-secondary px-4 py-2 sticky top-0 lg:px-32 z-20">
       <div className="flex items-center justify-between mx-auto">
         <div className="flex">
           <div className="flex items-center gap-2 md:gap-4 md:mr-10">

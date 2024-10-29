@@ -14,7 +14,7 @@ import AuthContextProvider from "./context/AuthContextProvider.jsx";
 import ModalContextProvider from "./context/ModalContextProvider.jsx";
 import Wish from "./pages/wish/Wish.jsx";
 import WishContaxtProvider from "./context/WishContaxtProvider.jsx";
-
+import ErrorPage from "./pages/ErrorPage.jsx";
 const ROUTES = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +26,7 @@ const ROUTES = createBrowserRouter([
       { path: "/cart", element: <Cart /> },
       { path: "/wish", element: <Wish /> },
     ],
+    errorElement: <ErrorPage />,
   },
 ]);
 
