@@ -111,7 +111,6 @@ function WishContaxtProvider({ children }) {
   // sync local storage
   useEffect(() => {
     const local = localStorage.getItem("wishes");
-    console.log(local);
     if (!local) return;
     setWishList(JSON.parse(local));
   }, []);

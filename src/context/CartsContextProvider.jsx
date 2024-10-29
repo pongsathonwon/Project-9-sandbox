@@ -3,7 +3,7 @@ import useBaseState from "../hooks/useBaseState";
 import { deleteData, getData, postData, updateData } from "../utils/apiHandler";
 import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
 import { useAuthContext } from "./AuthContextProvider";
-import { ref, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import { db } from "../utils/firebase";
 
 const CartContext = React.createContext(null);
@@ -31,7 +31,7 @@ const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState(CART_ID_REF);
+  const [cartId, setCartId] = React.useState(null);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
@@ -166,7 +166,7 @@ function CartsContextProvider({ children }) {
     if (!cartId) return;
     loadCart(cartId);
   }, []);
-
+  // sync local cart to rtdb
   const { account } = useAuthContext();
   React.useEffect(() => {
     if (!account || !cartId) return;
@@ -179,6 +179,24 @@ function CartsContextProvider({ children }) {
       }
     })();
   }, [cartId, account]);
+  //load save cart if islogin
+  React.useEffect(() => {
+    if (!account) return;
+    const dbRef = ref(db, `cartids/${account}`);
+    const sub$ = onValue(
+      dbRef,
+      (snapshot) => {
+        const savedCart = snapshot.val();
+        if (!savedCart) return;
+        //if local cart prioritized local cart > online cart
+        if (cartId) return;
+        setCartId(savedCart);
+        loadCart(savedCart);
+      },
+      (err) => console.error(err.message)
+    );
+    return sub$;
+  }, [account]);
   return (
     <CartContext.Provider
       value={{ isLoading, erorr, data, isEmptyCart, summaryList, subtotal }}
