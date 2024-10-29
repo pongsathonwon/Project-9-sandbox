@@ -43,15 +43,12 @@ function Sidebar({ isShow, onClick }) {
   const [secPath, setSecPath] = React.useState(null);
   const [tertiary, setTertiary] = React.useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const url = location.pathname;
+  const { type } = useParams();
   React.useEffect(() => {
-    const url = location.pathname;
-    if (!url.includes("/clothing")) return;
-    const endpoint = url.split("/").reverse()[0];
-    const cat = endpoint.split("&")[0];
+    if (!type) return;
+    const cat = type.split("&")[0];
     setSecPath(cat);
-  }, [url]);
+  }, [type]);
   return (
     <div
       className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
