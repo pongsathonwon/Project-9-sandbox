@@ -70,9 +70,8 @@ function ContainerSlot({
       }
     })();
   }, [startAfter]);
+  // pagination logic
   useEffect(() => {
-    console.log("next");
-    console.log(cursor);
     const timer = setInterval(() => {
       if (page === totalPage) {
         setStartAfter(null);
@@ -80,7 +79,7 @@ function ContainerSlot({
         return;
       }
       setStartAfter(cursor);
-    }, 60 * 1000);
+    }, 5 * 60 * 1000);
     return () => clearInterval(timer);
   }, [cursor]);
   return (
