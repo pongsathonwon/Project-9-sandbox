@@ -1,6 +1,6 @@
-import React from "react";
 import ShowColorVariant from "./ShowColorVariant";
 import Dropdown from "./Dropdown";
+import { useCartMutation } from "../../context/CartsContextProvider";
 
 function SelectionComponent({
   productdetail,
@@ -10,6 +10,7 @@ function SelectionComponent({
   outofstock,
   setShowModal,
 }) {
+  const { addCart } = useCartMutation();
   return (
     <>
       {/* Color, Size, Quantity */}
@@ -104,7 +105,10 @@ function SelectionComponent({
               : "bg-secondary-900 text-secondary-50 hover:bg-primary-700 focus:outline-none cursor-pointer"
           } `}
           disabled={outofstock}
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setShowModal(true);
+            addCart([{ skuCode: selectedProduct.skuCode, quantity: selectedProduct.quantity }]);
+          }}
         >
           Add to Cart
         </button>
