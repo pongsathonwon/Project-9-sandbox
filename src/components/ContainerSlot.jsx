@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useBaseState from "../hooks/useBaseState";
 import ProductCard from "./productCard";
 import { getData } from "../utils/apiHandler";
@@ -16,29 +16,73 @@ function ContainerSlot({
   containerLabel,
   containerLabelPosition = "start",
   collection = "price-down",
-  categories,
+  categories = null,
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
+  const [max, setMax] = useState(0);
+  const [page, setPage] = useState(0);
+  const [startAfter, setStartAfter] = useState(null);
+  const [cursor, setCursor] = useState(null);
+  const totalPage = Math.floor(max / page);
   useEffect(() => {
-    setLoading();
+    if (page === 0) {
+      setLoading();
+    }
     (async () => {
-      const saved = loadLocal(LOCALSTORAGE_KEY.slot);
+      const saved = loadLocal(
+        `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
+      );
       if (saved) {
-        setSuccess(saved);
-        return;
+        const {
+          data: resData,
+          pagination: { total, nextCursor },
+        } = saved;
+        setSuccess(resData);
+        setCursor(nextCursor);
+        setMax(total);
+        setPage((p) => p + 1);
       }
       try {
-        const { data: resData } = await getData("products", {
-          params: { sort: "ratings:desc", collection, limit: 4, categories },
+        const result = await getData("products", {
+          params: {
+            sort: "ratings:desc",
+            collection,
+            limit: 4,
+            categories,
+            startAfter,
+          },
         });
-        saveToLocal(LOCALSTORAGE_KEY.slot)(resData, 1 / (24 * 12));
+
+        saveToLocal(
+          `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
+        )(result, 1 / (24 * 4));
+        const {
+          data: resData,
+          pagination: { total, nextCursor },
+        } = result;
         setSuccess(resData);
+        setCursor(nextCursor);
+        setMax(total);
+        setPage((p) => p + 1);
       } catch (error) {
         console.error(error);
         setError(error);
       }
     })();
-  }, []);
+  }, [startAfter]);
+  useEffect(() => {
+    console.log("next");
+    console.log(cursor);
+    const timer = setInterval(() => {
+      if (page === totalPage) {
+        setStartAfter(null);
+        setPage(0);
+        return;
+      }
+      setStartAfter(cursor);
+    }, 60 * 1000);
+    return () => clearInterval(timer);
+  }, [cursor]);
   return (
     <div className="flex flex-col gap-16">
       <h5 className={`${POSITION[containerLabelPosition]} capitalize`}>
