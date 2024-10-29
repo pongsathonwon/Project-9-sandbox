@@ -1,5 +1,5 @@
 import React from "react";
-import { numberWithCommas } from "./ProductDetail";
+import { numberWithCommas } from "../../utils/productDetail";
 import { Link } from "react-router-dom";
 
 function ProductModal({
