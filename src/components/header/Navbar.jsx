@@ -8,6 +8,7 @@ import Profile from "../Icon/Profile";
 import Heart from "../Icon/Heart";
 import { useAuthContext } from "../../context/AuthContextProvider";
 import { useModalContext } from "../../context/ModalContextProvider";
+import Exit from "../Icon/Exit";
 
 function Navbar({ children }) {
   const { setOpen } = useModalContext();
@@ -61,9 +62,7 @@ function Navbar({ children }) {
             </Icon>
           </NavLink>
           <button onClick={() => setOpen(loginLabel, leftProps)}>
-            <Icon isShow={account}>
-              <Profile />
-            </Icon>
+            <Icon>{account ? <Exit /> : <Profile />}</Icon>
           </button>
           <NavLink to={"/cart"} className="squre-group text-white">
             <Icon isShow={!isEmptyCart}>
