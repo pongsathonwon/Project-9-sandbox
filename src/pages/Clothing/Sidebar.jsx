@@ -5,130 +5,146 @@ function Sidebar() {
   const location = useLocation();
   const [mainPath, setMainPath] = useState("");
 
-  // paths ที่ต้องการให้ sidebar เปลี่ยน
-  const mainPaths = [
-    "all-men",
-    "all-ladies",
-    "men-shirts,ladies-shirts",
-    "men-shoes,ladies-shoes",
-    "men-accessories,ladies-accessories",
+  // Configuration objects
+  const MAIN_PATHS = {
+    MEN: "all-men",
+    WOMEN: "all-ladies",
+    SHIRTS: "men-shirts,ladies-shirts",
+    SHOES: "men-shoes,ladies-shoes",
+    ACCESSORIES: "men-accessories,ladies-accessories",
+  };
+
+  const CATEGORIES = {
+    [MAIN_PATHS.MEN]: [
+      { label: "All Items", path: "/clothing/all-men" },
+      { label: "Shirts", path: "/clothing/men-shirts" },
+      { label: "Shoes", path: "/clothing/men-shoes" },
+      { label: "Accessories", path: "/clothing/men-accessories" },
+    ],
+    [MAIN_PATHS.WOMEN]: [
+      { label: "All Items", path: "/clothing/all-ladies" },
+      { label: "Shirts", path: "/clothing/ladies-shirts" },
+      { label: "Shoes", path: "/clothing/ladies-shoes" },
+      { label: "Accessories", path: "/clothing/ladies-accessories" },
+    ],
+    DEFAULT: [
+      { label: "Men's Clothing", path: "/clothing/all-men" },
+      { label: "Women's Clothing", path: "/clothing/all-ladies" },
+      { label: "Shirts", path: "/clothing/men-shirts,ladies-shirts" },
+      { label: "Shoes", path: "/clothing/men-shoes,ladies-shoes" },
+      {
+        label: "Accessories",
+        path: "/clothing/men-accessories,ladies-accessories",
+      },
+    ],
+  };
+
+  const COLLECTIONS = [
+    { label: "Price Down", value: "price-down" },
+    { label: "New Arrivals", value: "new-arrivals" },
   ];
 
   useEffect(() => {
     const path = location.pathname.replace("/clothing/", "");
     const [basePath] = path.split("&");
 
-    // เปลี่ยน mainPath เฉพาะเมื่อคลิกที่ path หลัก
-    if (mainPaths.includes(basePath)) {
+    if (Object.values(MAIN_PATHS).includes(basePath)) {
       setMainPath(basePath);
     }
   }, [location.pathname]);
 
-  const renderCategories = () => {
-    if (mainPath === "all-men") {
-      return (
-        <ul className="space-y-2">
-          <li>
-            <Link to="/clothing/all-men">All Items</Link>
-          </li>
-          <li>
-            <Link to="/clothing/men-shirts">Shirts</Link>
-          </li>
-          <li>
-            <Link to="/clothing/men-shoes">Shoes</Link>
-          </li>
-          <li>
-            <Link to="/clothing/men-accessories">Accessories</Link>
-          </li>
-        </ul>
-      );
-    }
+  const getCurrentPath = () => {
+    const path = location.pathname.replace("/clothing/", "");
+    return path.split("&")[0];
+  };
 
-    if (mainPath === "all-ladies") {
-      return (
-        <ul className="space-y-2">
-          <li>
-            <Link to="/clothing/all-ladies">All Items</Link>
-          </li>
-          <li>
-            <Link to="/clothing/ladies-shirts">Shirts</Link>
-          </li>
-          <li>
-            <Link to="/clothing/ladies-shoes">Shoes</Link>
-          </li>
-          <li>
-            <Link to="/clothing/ladies-accessories">Accessories</Link>
-          </li>
-        </ul>
-      );
-    }
+  const renderCategoryLinks = (categories) => {
+    const currentFullPath = location.pathname;
+    const [currentPath] = currentFullPath.split("&");
 
-    if (
-      [
-        "men-shirts,ladies-shirts",
-        "men-shoes,ladies-shoes",
-        "men-accessories,ladies-accessories",
-      ].includes(mainPath)
-    ) {
-      const [menPath, ladiesPath] = mainPath.split(",");
-      return (
-        <ul className="space-y-2">
-          <li>
-            <Link to={`/clothing/${mainPath}`}>All Items</Link>
-          </li>
-          <li>
-            <Link to={`/clothing/${menPath}`}>Men</Link>
-          </li>
-          <li>
-            <Link to={`/clothing/${ladiesPath}`}>Women</Link>
-          </li>
-        </ul>
-      );
-    }
-
-    // Default categories
     return (
       <ul className="space-y-2">
-        <li>
-          <Link to="/clothing/all-men">Men's Clothing</Link>
-        </li>
-        <li>
-          <Link to="/clothing/all-ladies">Women's Clothing</Link>
-        </li>
-        <li>
-          <Link to="/clothing/men-shirts,ladies-shirts">Shirts</Link>
-        </li>
-        <li>
-          <Link to="/clothing/men-shoes,ladies-shoes">Shoes</Link>
-        </li>
-        <li>
-          <Link to="/clothing/men-accessories,ladies-accessories">
-            Accessories
-          </Link>
-        </li>
+        {categories.map(({ label, path }) => {
+          const isActive = currentPath === path;
+
+          return (
+            <li key={path}>
+              <Link
+                to={path}
+                style={{
+                  display: "block",
+                  padding: "10px",
+                  fontSize: "0.875rem",
+                  backgroundColor: isActive ? "#DEF81C" : "transparent",
+                  color: isActive ? "inherit" : "inherit",
+                }}
+              >
+                {label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     );
   };
 
+  const renderCategories = () => {
+    // Combined categories (Shirts, Shoes, Accessories)
+    if (Object.values(MAIN_PATHS).slice(2).includes(mainPath)) {
+      const [menPath, ladiesPath] = mainPath.split(",");
+      return renderCategoryLinks([
+        { label: "All Items", path: `/clothing/${mainPath}` },
+        { label: "Men", path: `/clothing/${menPath}` },
+        { label: "Women", path: `/clothing/${ladiesPath}` },
+      ]);
+    }
+
+    // Men's or Women's categories
+    if (CATEGORIES[mainPath]) {
+      return renderCategoryLinks(CATEGORIES[mainPath]);
+    }
+
+    // Default categories
+    return renderCategoryLinks(CATEGORIES.DEFAULT);
+  };
+
+  const getCollectionUrl = (collection) => {
+    const currentPath = getCurrentPath();
+    return `/clothing/${currentPath}${collection ? `&${collection}` : ""}`;
+  };
+
   return (
-    <div className="hidden lg:block w-64 bg-white p-4 border-r">
+    <div className="hidden lg:block w-[280px] bg-white p-4 ml-32 mt-8">
       <div className="space-y-4">
         <div>
-          <h3 className="font-semibold mb-2">Categories</h3>
+          <h3 className="text-lg font-semibold mb-2">Categories</h3>
           {renderCategories()}
         </div>
 
         <div>
-          <h3 className="font-semibold mb-2">Collections</h3>
+          <h3 className="text-lg font-semibold mb-2">Collections</h3>
           <ul className="space-y-2">
-            <li>
-              <Link to={`/clothing/${mainPath}&price-down`}>Price Down</Link>
-            </li>
-            <li>
-              <Link to={`/clothing/${mainPath}&new-arrivals`}>
-                New Arrivals
-              </Link>
-            </li>
+            {COLLECTIONS.map(({ label, value }) => {
+              const collectionPath = getCollectionUrl(value);
+              const isActive = location.pathname === collectionPath;
+
+              return (
+                <li key={value}>
+                  <Link
+                    to={collectionPath}
+                    style={{
+                      display: "block",
+                      padding: "10px",
+                      fontSize: "0.875rem",
+                      backgroundColor: isActive ? "#DEF81C" : "transparent",
+                      color: isActive ? "inherit" : "inherit",
+                    }}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
