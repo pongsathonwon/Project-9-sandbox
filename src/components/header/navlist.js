@@ -12,7 +12,7 @@ export const secondaryNavlist = (priamry) => {
   if (priamry === "men" || priamry === "women")
     return [
       { label: "all items", path: `all-${priamry}` },
-      { label: "shirts", path: `${priamry}-shirt` },
+      { label: "shirts", path: `${priamry}-shirts` },
       { label: "shoes", path: `${priamry}-shoes` },
       { label: "accessories", path: `${priamry}-accessories` },
     ];
