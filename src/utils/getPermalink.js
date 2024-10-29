@@ -8,7 +8,6 @@ export const getPermalink = async (permalink) => {
   try {
     const data = await getData(`products/${permalink}`);
     localStorage.setItem(permalink, JSON.stringify(data));
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

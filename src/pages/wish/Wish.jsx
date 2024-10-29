@@ -16,7 +16,6 @@ function Wish() {
     (async () => {
       try {
         const resList = await Promise.all(wishList.map(getPermalink));
-        console.log(resList);
         setSuccess(resList);
       } catch (err) {
         console.log(err);

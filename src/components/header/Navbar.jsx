@@ -9,10 +9,12 @@ import Heart from "../Icon/Heart";
 import { useAuthContext } from "../../context/AuthContextProvider";
 import { useModalContext } from "../../context/ModalContextProvider";
 import Exit from "../Icon/Exit";
+import { useWishContext } from "../../context/WishContaxtProvider";
 
 function Navbar({ children }) {
   const { setOpen } = useModalContext();
   const { isEmptyCart } = useCartContext();
+  const { wishList } = useWishContext();
   const { account, signIn, logout, setIsShow } = useAuthContext();
   const leftProps = account
     ? {
@@ -57,7 +59,7 @@ function Navbar({ children }) {
         {/* cart */}
         <div className="flex gap-1">
           <NavLink to={"/wish"}>
-            <Icon>
+            <Icon isShow={wishList.length > 0}>
               <Heart />
             </Icon>
           </NavLink>
