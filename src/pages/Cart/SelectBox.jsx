@@ -60,7 +60,7 @@ function SelectBox({
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-secondary-300 rounded-md shadow-lg">
+        <div className="absolute w-full mt-1 bg-white border border-secondary-300 rounded-md shadow-lg">
           <ul
             className="py-1 max-h-60 overflow-auto"
             style={{ scrollbarWidth: "thin" }}

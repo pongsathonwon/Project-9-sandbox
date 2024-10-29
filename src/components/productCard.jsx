@@ -18,7 +18,7 @@ const ProductCard = ({
     >
       {/* Product Image */}
       <img
-        className="w-full h-[267px] object-cover"
+        className="w-full h-[267px] object-cover object-top"
         src={imageUrl}
         alt={name}
       />

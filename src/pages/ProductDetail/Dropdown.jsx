@@ -1,5 +1,4 @@
 import React from "react";
-import Dropdownbutt from "./Dropdownbutt";
 
 function Dropdown({
   setselectedProduct,
@@ -23,9 +22,7 @@ function Dropdown({
   return (
     <>
       {outofstock ? (
-        <div
-          className="w-full flex flex-col xl:w-[14rem] bg-secondary-100"
-        >
+        <div className="w-full flex flex-col xl:w-[14rem] bg-secondary-100">
           <div
             className=" flex justify-between items-center px-[10px] py-[7px] border border-[#E1E1E1] "
             tabIndex={0}
@@ -47,7 +44,7 @@ function Dropdown({
         </div>
       ) : (
         <div
-          className="w-full flex flex-col xl:w-[14rem] 2xl:w-[8.6875rem]"
+          className=" relative w-full flex flex-col xl:w-[14rem] 2xl:w-[8.6875rem]"
           onClick={() => setToggle(!toggle)}
         >
           <div
@@ -70,20 +67,36 @@ function Dropdown({
             </svg>
           </div>
           {toggle && (
-            <div className="  w-full overflow-y-scroll h-[100px] bg-primary-50 translate-y-1">
-              {Array.from(
-                { length: selectedProduct.remains },
-                (_, i) => i + 1
-              ).map((item) => (
-                <Dropdownbutt
-                  key={item}
-                  setslectedQuantity={setselectedQuantity}
-                  setToggle={setToggle}
+            <>
+              <div className="absolute  w-full top-[60px] bg-white border border-secondary-300 rounded-md shadow-lg">
+                <ul
+                  className="py-1 max-h-60 overflow-auto"
+                  style={{ scrollbarWidth: "thin" }}
+                  role="listbox"
                 >
-                  {item}
-                </Dropdownbutt>
-              ))}
-            </div>
+                  {Array.from(
+                    { length: selectedProduct.remains },
+                    (_, i) => i + 1
+                  ).map((p) => (
+                    <li
+                      key={p}
+                      className={`px-4 py-2 cursor-pointer ${
+                        p === selectedQuantity
+                          ? "bg-primary-50 text-black"
+                          : "text-secondary-900 hover:bg-secondary-100"
+                      }`}
+                      role="option"
+                      onClick={() => {
+                        setselectedQuantity(p);
+                        setToggle(false);
+                      }}
+                    >
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
           )}
         </div>
       )}
