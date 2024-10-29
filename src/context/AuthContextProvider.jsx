@@ -36,8 +36,8 @@ function AuthContextProvider({ children }) {
           setAccount(null);
           return;
         }
-        const { uid, displayName } = user;
-        setAccount({ uid, displayName });
+        const { uid } = user;
+        setAccount(uid);
       },
       (error) => console.error(error)
     );
