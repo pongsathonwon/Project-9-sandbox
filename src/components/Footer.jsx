@@ -5,7 +5,7 @@ import { genClothingList, navlist } from "./header/navlist";
 
 const Footer = () => {
   const { signIn } = useAuthContext();
-  const { email, onChange, submit } = useSubsciption();
+  const { email, invalid, onChange, submit } = useSubsciption();
   // outter div
   return (
     <div className="flex flex-col items-center gap-4 pl-[1.125rem] pr-[1.125rem] p-6  bg-[#222] lg:px-32 lg:py-6 text-secondary-50">
@@ -79,13 +79,16 @@ const Footer = () => {
           <input
             value={email}
             onChange={onChange}
-            className="flex items-center self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] text-[#9f9f9f] font-['Poppins'] "
+            className={`flex items-center self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] text-[#9f9f9f] font-['Poppins'] ${
+              invalid ? "outline-danger" : ""
+            }`}
             placeholder="Enter your email"
             type="email"
           ></input>
           <button
+            disabled={invalid}
             onClick={submit}
-            className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5"
+            className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5 hover:bg-primary-500 hover:text-secondary-900 active:text-primary-700 active:bg-secondary-900 disabled:bg-secondary-300 disabled:text-secondary-500"
           >
             Subscribe
           </button>

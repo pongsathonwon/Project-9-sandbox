@@ -1,7 +1,6 @@
 import { getData } from "./apiHandler";
 
 export const getPermalink = async (permalink) => {
-  console.log(permalink);
   const local = localStorage.getItem(permalink);
   if (local) {
     return JSON.parse(local);
