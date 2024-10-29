@@ -7,6 +7,7 @@ import {
 import CartBtn from "./CartBtn";
 import { Link } from "react-router-dom";
 import Skeleton from "../../components/Skeleton";
+import { numberWithCommas } from "../../utils/productDetail";
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
@@ -87,7 +88,7 @@ function RightCartSession() {
             <SummaryRow
               key={name}
               name={`${name} ${quantity <= 1 ? "" : "X" + quantity}`}
-              price={sum}
+              price={numberWithCommas(sum)}
               leftClassname={isEmptyCart ? "text-secondary-500" : ""}
               rightClassname={
                 isEmptyCart ? "text-secondary-500" : "text-secondary-700"
@@ -99,7 +100,7 @@ function RightCartSession() {
         <SummarySection>
           <SummaryRow
             name="subtotal"
-            price={subtotal.subtotal}
+            price={numberWithCommas(subtotal.subtotal)}
             leftClassname={isEmptyCart ? "text-secondary-500" : ""}
             rightClassname={
               isEmptyCart ? "text-secondary-500" : "text-secondary-700"
@@ -107,7 +108,7 @@ function RightCartSession() {
           />{" "}
           <SummaryRow
             name={"shipping fee"}
-            price={SHIPPING_FEE === 0 ? "Free" : SHIPPING_FEE}
+            price={SHIPPING_FEE === 0 ? "Free" : numberWithCommas(SHIPPING_FEE)}
             leftClassname={isEmptyCart ? "text-secondary-500" : ""}
             rightClassname={
               isEmptyCart ? "text-secondary-500" : "text-secondary-700"
@@ -117,7 +118,7 @@ function RightCartSession() {
         {/* summary total */}
         <SummaryRow
           name={"Total"}
-          price={SHIPPING_FEE + subtotal.subtotal}
+          price={numberWithCommas(SHIPPING_FEE + subtotal.subtotal)}
           leftClassname={
             isEmptyCart
               ? "font-bold text-xl text-secondary-500"

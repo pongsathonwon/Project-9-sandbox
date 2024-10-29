@@ -1,5 +1,5 @@
 import StarRating from "../../components/StarRating";
-import { numberWithCommas } from "./ProductDetail";
+import { numberWithCommas } from "../../utils/productDetail";
 
 function DescriptionComponent({
   productdetail,
