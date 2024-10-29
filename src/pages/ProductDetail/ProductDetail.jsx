@@ -22,13 +22,12 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = React.useState(0);
   // must have the isDiscount state
   const [isDiscount, setIsDiscount] = React.useState(0);
-  const [favorite, setFavorite] = React.useState(false);
+  // const [favorite, setFavorite] = React.useState(false);
   const [outofstock, setOutofstock] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
-  // //
-  // const { toggle, wishList } = useWishContext();
-  // const favorite = wishList.includes(permalink) ?? false;
-  // console.log(wishList);
+
+  const { toggle, wishList } = useWishContext();
+  const favorite = wishList.includes(permalink) ?? false;
 
   // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
   const [productChoice, setPoductChoice] = React.useState({
@@ -42,7 +41,7 @@ function ProductDetail() {
     setProductDetail({});
     setSelectedImage(0);
     setIsDiscount(0);
-    setFavorite(false);
+    // setFavorite(false);
     setOutofstock(false);
     setShowModal(false);
     setPoductChoice({
@@ -220,7 +219,7 @@ function ProductDetail() {
                 isDiscount={isDiscount}
                 outofstock={outofstock}
                 favorite={favorite}
-                setFavorite={setFavorite}
+                setFavorite={async () => toggle(productdetail?.permalink)}
               />
 
               {/* Select Color, Size, Quantity */}

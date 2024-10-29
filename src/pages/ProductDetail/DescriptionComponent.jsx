@@ -25,7 +25,7 @@ function DescriptionComponent({
               height="40"
               viewBox="0 0 40 40"
               fill="none"
-              onClick={() => setFavorite(!favorite)}
+              onClick={setFavorite}
               className={"cursor-pointer"}
             >
               <rect width="40" height="40" fill="none" />
