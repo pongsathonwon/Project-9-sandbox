@@ -114,7 +114,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="hidden lg:block w-[280px] bg-white p-4 ml-32 mt-8">
+    <div className="hidden lg:block w-[280px] bg-white ml-32 mt-8">
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold mb-2">Categories</h3>
