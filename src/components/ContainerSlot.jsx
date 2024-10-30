@@ -22,7 +22,7 @@ function ContainerSlot({
   const [page, setPage] = useState(0);
   const [startAfter, setStartAfter] = useState(null);
   const [cursor, setCursor] = useState(null);
-  const totalPage = Math.floor(max / 5);
+  const totalPage = Math.floor(max / 4 + notinclude.length);
   const filterList =
     notinclude.length !== 0
       ? data?.filter(({ permalink }) => {
@@ -40,7 +40,7 @@ function ContainerSlot({
           params: {
             sort: "ratings:desc",
             collection,
-            limit: 5,
+            limit: 4 + notinclude.length,
             categories,
             startAfter,
           },
