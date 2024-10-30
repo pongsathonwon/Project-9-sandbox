@@ -3,6 +3,7 @@ export const LOCALSTORAGE_KEY = {
   categories: "CATEGORIES",
   slot: "SLOT",
   carid: "CARTIDS",
+  wish: "WISHES",
 };
 
 const genExp = (day) => {
