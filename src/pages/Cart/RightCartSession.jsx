@@ -5,7 +5,7 @@ import {
   useCartMutation,
 } from "../../context/CartsContextProvider";
 import CartBtn from "./CartBtn";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Skeleton from "../../components/Skeleton";
 import { numberWithCommas } from "../../utils/productDetail";
 
@@ -17,7 +17,9 @@ function RightCartSession() {
   const handleCheckout = () => {
     console.log(summaryList);
   };
-  const lastCat = !isEmptyCart ? data[0].categories?.[0] : "all-men";
+  const [q, _] = useSearchParams();
+  const prev = q.get("prev");
+  const lastCat = !isEmptyCart ? data[0].categories?.join() : "all-men";
   if (isLoading) {
     return (
       <div className="p-6 flex flex-col gap-10 lg:flex-1">
@@ -138,7 +140,7 @@ function RightCartSession() {
           btnLabel="Checkout"
           onClick={handleCheckout}
         />
-        <Link to={`/clothing/${lastCat}`} replace={true}>
+        <Link to={prev ? prev : `/clothing/${lastCat}`} replace={true}>
           <CartBtn severity="secondary" btnLabel="Continue shopping" />
         </Link>
       </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingScreen from "./LoadingScreen";
 import ProductModal from "./ProductModal";
-import { getUniqueValue, getWeightSize } from "../../utils/productDetail"
+import { getUniqueValue, getWeightSize } from "../../utils/productDetail";
 import { useParams } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
 import { useWishContext } from "../../context/WishContaxtProvider";
@@ -133,6 +133,7 @@ function ProductDetail() {
             selectedImage={productdetail.imageUrls[selectedImage]}
             selectedProduct={selectedProduct}
             setShowModal={setShowModal}
+            cat={productdetail.categories}
           />
 
           <section className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">

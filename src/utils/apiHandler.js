@@ -23,7 +23,6 @@ export const getData = async (url, options = {}) => {
 // in validate body return valid body or Error
 // thus checking body before fire http req
 export const postData = async (url, body, options = {}) => {
-  console.log(body);
   if (body instanceof Error) {
     console.log("body validation error");
     console.error(body);
