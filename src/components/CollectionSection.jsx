@@ -7,7 +7,7 @@ import Skeleton from "./Skeleton";
 
 const ColloctionCard = ({ title, imageUrl, description, permalink }) => {
   return (
-    <div className="relative w-[575px] h-[500px] p-4 bg-gradient-to-b from-[rgba(0,0,0,)] to-black flex-col justify-end items-center gap-4 inline-flex">
+    <div className="relative w-[345px] h-[300px] md:w-[575px] md:h-[500px] p-4 bg-gradient-to-b from-[rgba(0,0,0,)] to-black flex-col justify-end items-center gap-4 inline-flex">
       <img
         className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
         src={imageUrl}
