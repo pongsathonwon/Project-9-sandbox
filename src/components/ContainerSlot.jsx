@@ -15,45 +15,34 @@ function ContainerSlot({
   containerLabelPosition = "start",
   collection = "price-down",
   categories = null,
+  notinclude = [],
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
   const [max, setMax] = useState(0);
   const [page, setPage] = useState(0);
   const [startAfter, setStartAfter] = useState(null);
   const [cursor, setCursor] = useState(null);
-  const totalPage = Math.floor(max / page);
+  const totalPage = Math.floor(max / 5);
+  const filterList =
+    notinclude.length !== 0
+      ? data?.filter(({ permalink }) => !notinclude.includes(permalink))
+      : data ?? [];
+  const renderList =
+    filterList?.lenght > 4 ? filterList : filterList?.splice(0, 4);
   useEffect(() => {
-    if (page === 0) {
-      setLoading();
-    }
     (async () => {
-      const saved = loadLocal(
-        `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
-      );
-      if (saved) {
-        const {
-          data: resData,
-          pagination: { total, nextCursor },
-        } = saved;
-        setSuccess(resData);
-        setCursor(nextCursor);
-        setMax(total);
-        setPage((p) => p + 1);
-      }
+      setLoading();
       try {
         const result = await getData("products", {
           params: {
             sort: "ratings:desc",
             collection,
-            limit: 4,
+            limit: 5,
             categories,
             startAfter,
           },
         });
 
-        saveToLocal(
-          `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
-        )(result, 1 / (24 * 4));
         const {
           data: resData,
           pagination: { total, nextCursor },
@@ -67,7 +56,7 @@ function ContainerSlot({
         setError(error);
       }
     })();
-  }, [startAfter]);
+  }, [startAfter, categories]);
   // pagination logic
   useEffect(() => {
     const timer = setInterval(() => {
@@ -91,7 +80,7 @@ function ContainerSlot({
       >
         {isLoading
           ? [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
-          : data?.map(
+          : renderList?.map(
               ({
                 name,
                 description,
