@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingScreen from "./LoadingScreen";
 import ProductModal from "./ProductModal";
-import { getUniqueValue, permalinks, getWeightSize } from "../../utils/productDetail"
+import { getUniqueValue, getWeightSize } from "../../utils/productDetail"
 import { useParams } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
 import NextButt from "./NextButt";
@@ -9,7 +9,7 @@ import SelectionComponent from "./SelectionComponent";
 import DescriptionComponent from "./DescriptionComponent";
 
 function ProductDetail() {
-  const { permalink } = useParams() || permalinks[0];
+  const { permalink } = useParams();
   const [finishLoading, setFinishLoading] = React.useState(false);
   // must have the productdetail object
   const [productdetail, setProductDetail] = React.useState({});
