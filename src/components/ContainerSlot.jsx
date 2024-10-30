@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import useBaseState from "../hooks/useBaseState";
 import ProductCard from "./productCard";
 import { getData } from "../utils/apiHandler";
-import Skeleton from "./Skeleton";
-import StarRating from "./StarRating";
 import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
-import SkCard from "./SkCard";
+import ProductCardSkeleton from "../pages/Clothing/ProductCardSkeleton";
 
 const POSITION = {
   start: "",
@@ -92,7 +90,7 @@ function ContainerSlot({
         className="flex-col flex gap-10 items-center lg:flex-row md:justify-between lg:overflow-x-auto"
       >
         {isLoading
-          ? [...Array(4)].map((_, i) => <SkCard key={i} />)
+          ? [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
           : data?.map(
               ({
                 name,

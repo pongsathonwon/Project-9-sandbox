@@ -82,7 +82,7 @@ function CartItem({
             <DeleteIcon />
           </button>
         </div>
-        <div className="flex flex-col lg:flex-row justify-between">
+        <div className="flex flex-col gap-2 2xl:flex-row justify-between">
           <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 lg:min-w-[23rem] xl:gap-4">
             {/* color dropdown */}
             <div className="flex flex-col gap-2 z-10">
@@ -122,7 +122,7 @@ function CartItem({
             </div>
           </div>
           <span className="text-2xl font-bold mt-auto ml-auto">
-            THB: { numberWithCommas(promotionalPrice * quantity)}
+            THB: {numberWithCommas(promotionalPrice * quantity)}
           </span>
         </div>
       </div>

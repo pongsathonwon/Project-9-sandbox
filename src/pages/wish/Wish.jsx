@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import SkCard from "../../components/SkCard";
 import { Link } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
 import CartBtn from "../Cart/CartBtn";
@@ -7,6 +6,7 @@ import { useWishContext } from "../../context/WishContaxtProvider";
 import useBaseState from "../../hooks/useBaseState";
 import { getPermalink } from "../../utils/getPermalink";
 import ProductCard from "../../components/productCard";
+import ProductCardSkeleton from "../Clothing/ProductCardSkeleton";
 
 function Wish() {
   const { data, setSuccess, isLoading, setLoading, setError } = useBaseState();
@@ -28,7 +28,7 @@ function Wish() {
       <div className="flex flex-col gap-16">
         <h5 className=" capitalize">wishlist</h5>
         <div className="flex flex-col gap-10">
-          <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-y-16 justify-items-center">
+          <article className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-y-10 justify-items-center">
             {data &&
               data.map(
                 ({
@@ -55,7 +55,8 @@ function Wish() {
                   />
                 )
               )}
-            {isLoading && [...Array(6)].map((_, i) => <SkCard key={i} />)}
+            {isLoading &&
+              [...Array(6)].map((_, i) => <ProductCardSkeleton key={i} />)}
           </article>
           {wishList.length === 0 && (
             <h5 className="capitalize text-center">no wishlist item</h5>
