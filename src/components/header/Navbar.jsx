@@ -48,7 +48,7 @@ function Navbar({ children }) {
               WDB
             </NavLink>
           </div>
-          <ul className="hidden text-white gap-6 text-base items-center capitalize md:flex">
+          <ul className="hidden text-white gap-6 text-base items-center capitalize lg:flex">
             {navlist.map(({ label, path }) => (
               <li className="navlink" key={path}>
                 <NavLink to={genClothingList(path)}>{label}</NavLink>
