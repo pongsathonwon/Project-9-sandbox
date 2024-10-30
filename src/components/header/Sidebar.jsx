@@ -47,6 +47,8 @@ function Sidebar({ isShow, onClick }) {
   React.useEffect(() => {
     if (!type) return;
     const cat = type.split("&")[0];
+    const cur = navlist.find(({ path }) => path === cat);
+    if (cur) setSecondary(cur.label);
     setSecPath(cat);
   }, [type]);
   return (
