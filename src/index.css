@@ -6,7 +6,8 @@
 @layer base {
   :root {
     --width-footer-box: 372px;
-    @apply text-base leading-5 font-normal;
+    scrollbar-width: thin;
+    @apply text-base leading-5 font-normal font-["Poppins"];
   }
   h1 {
     @apply text-8xl leading-[1.2] font-bold;
@@ -76,7 +77,6 @@
   .navlink:has(a.active) {
     @apply text-primary-500;
   }
-  
 }
 
 .border-focus-primary:focus {
