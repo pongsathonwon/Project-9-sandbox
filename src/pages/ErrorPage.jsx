@@ -22,7 +22,12 @@ function ErrorPage() {
             The page you're looking for doesn’t exist or may have been moved.
             Try heading back to the homepage.
           </p>
-          <Link to="/" className="btn btn-primary p-3 bg-primary-400 rounded-sm">Go to Homepage</Link>
+          <Link
+            to="/"
+            className="btn btn-primary p-3 rounded-sm bg-secondary-900 text-white hover:bg-primary-500 hover:text-secondary-900"
+          >
+            Go to Homepage
+          </Link>
         </div>
       </div>
 

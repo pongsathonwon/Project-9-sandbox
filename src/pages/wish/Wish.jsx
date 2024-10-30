@@ -62,7 +62,7 @@ function Wish() {
             <h5 className="capitalize text-center">no wishlist item</h5>
           )}
           <div className="flex justify-center">
-            <Link>
+            <Link to={"/clothing/all-men"}>
               <CartBtn btnLabel="Continue shopping" />
             </Link>
           </div>
