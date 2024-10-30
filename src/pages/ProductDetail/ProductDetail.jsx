@@ -4,6 +4,7 @@ import ProductModal from "./ProductModal";
 import { getUniqueValue, getWeightSize } from "../../utils/productDetail"
 import { useParams } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
+import { useWishContext } from "../../context/WishContaxtProvider";
 import NextButt from "./NextButt";
 import SelectionComponent from "./SelectionComponent";
 import DescriptionComponent from "./DescriptionComponent";
@@ -17,9 +18,12 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = React.useState(0);
   // must have the isDiscount state
   const [isDiscount, setIsDiscount] = React.useState(0);
-  const [favorite, setFavorite] = React.useState(false);
+  // const [favorite, setFavorite] = React.useState(false);
   const [outofstock, setOutofstock] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
+
+  const { toggle, wishList } = useWishContext();
+  const favorite = wishList.includes(permalink) ?? false;
 
   // use getUniqueValue function to get the unique color, size, and colorCode from the productdetail.variants
   const [productChoice, setPoductChoice] = React.useState({
@@ -33,7 +37,7 @@ function ProductDetail() {
     setProductDetail({});
     setSelectedImage(0);
     setIsDiscount(0);
-    setFavorite(false);
+    // setFavorite(false);
     setOutofstock(false);
     setShowModal(false);
     setPoductChoice({
@@ -205,12 +209,13 @@ function ProductDetail() {
             {/* Detail of product */}
             <div className=" flex flex-col w-[21.4375rem] gap-10 xl:w-[36.0625rem] 2xl:w-[780px]">
               {/* Name, Description, Price, Star */}
+
               <DescriptionComponent
                 productdetail={productdetail}
                 isDiscount={isDiscount}
                 outofstock={outofstock}
                 favorite={favorite}
-                setFavorite={setFavorite}
+                setFavorite={async () => toggle(productdetail?.permalink)}
               />
 
               {/* Select Color, Size, Quantity */}

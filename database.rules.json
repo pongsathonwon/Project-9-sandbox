@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "wishes": {
+      "$uid": {
+        ".read": "auth != null && now <= 1730505600000",
+        ".write": "auth != null && now <= 1730505600000",
+        ".validate": "newData.exists() && now <= 1730505600000"
+      }
+    },
+    "cartids": {
+      "$uid": {
+        ".read": "auth != null && now <= 1730505600000",
+        ".write": "auth != null && now <= 1730505600000",
+        ".validate": "newData.exists() && now <= 1730505600000"
+      }
+    },
+    "sub": {
+      ".write": "now <= 1730505600000"
+    }
+  }
+}
