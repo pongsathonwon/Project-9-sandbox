@@ -5,6 +5,7 @@ import { checkAddCartBody, checkUpdateCartBody } from "../utils/cartValidator";
 import { useAuthContext } from "./AuthContextProvider";
 import { onValue, ref, set } from "firebase/database";
 import { db } from "../utils/firebase";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const CartContext = React.createContext(null);
 
@@ -31,7 +32,8 @@ const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();
-  const [cartId, setCartId] = React.useState(CART_ID_REF);
+  const [cartId, setCartId] = React.useState(null);
+  const saveLocalCart = saveToLocal(LOCALSTORAGE_KEY.carid);
   // derived state
   const isEmptyCart = !data || data.length === 0;
   const summaryList = data?.map(({ name, promotionalPrice, quantity }) => ({
@@ -161,11 +163,25 @@ function CartsContextProvider({ children }) {
       console.error(error);
     }
   };
-
+  //load cart
   React.useEffect(() => {
-    if (!cartId) return;
+    if (!cartId) {
+      // no existing cart > try load from local storaage
+      const savedCart = loadLocal(LOCALSTORAGE_KEY.carid);
+      if (savedCart) {
+        setCartId(savedCart);
+        loadCart(savedCart);
+        return;
+      }
+    }
+    // if cart fetch
     loadCart(cartId);
   }, []);
+  // svae Cart id
+  React.useEffect(() => {
+    if (!cartId) return;
+    saveLocalCart(cartId, 1);
+  }, [cartId]);
   // sync local cart to rtdb
   const { account } = useAuthContext();
   React.useEffect(() => {
