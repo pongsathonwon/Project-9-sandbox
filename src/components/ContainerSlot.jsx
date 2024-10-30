@@ -13,7 +13,7 @@ const POSITION = {
 function ContainerSlot({
   containerLabel,
   containerLabelPosition = "start",
-  collection = "price-down",
+  collection = "new-arrivals",
   categories = null,
   notinclude = [],
 }) {
@@ -25,10 +25,13 @@ function ContainerSlot({
   const totalPage = Math.floor(max / 5);
   const filterList =
     notinclude.length !== 0
-      ? data?.filter(({ permalink }) => !notinclude.includes(permalink))
+      ? data?.filter(({ permalink }) => {
+          if (notinclude.length === 0) return true;
+          return !notinclude.includes(permalink);
+        })
       : data ?? [];
   const renderList =
-    filterList?.lenght > 4 ? filterList : filterList?.splice(0, 4);
+    filterList?.lenght > 4 ? filterList : filterList?.filter((_, i) => i <= 3);
   useEffect(() => {
     (async () => {
       setLoading();

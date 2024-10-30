@@ -17,7 +17,7 @@ function RightCartSession() {
   const handleCheckout = () => {
     console.log(summaryList);
   };
-  const lastCat = data ? data[0].categories[0] : "";
+  const lastCat = !isEmptyCart ? data[0].categories?.[0] : "all-men";
   if (isLoading) {
     return (
       <div className="p-6 flex flex-col gap-10 lg:flex-1">
