@@ -2,6 +2,7 @@ import { useContext, createContext, useEffect, useState } from "react";
 import { useAuthContext } from "./AuthContextProvider";
 import { onValue, ref, set } from "firebase/database";
 import { db } from "../utils/firebase";
+import { loadLocal, LOCALSTORAGE_KEY, saveToLocal } from "../utils/loacl";
 
 const WishContxt = createContext();
 
@@ -16,12 +17,13 @@ function WishContaxtProvider({ children }) {
   const { account } = useAuthContext();
   const [sync, setSync] = useState(false);
   const isListEmpty = wishList.length === 0;
+  const saveLocalWish = saveToLocal(LOCALSTORAGE_KEY.wish);
   //remove item
   const removeFavorite = async (item) => {
     const newList = [...wishList.filter((d) => d !== item)];
     if (!account) {
       setWishList(newList);
-      localStorage.setItem("wishes", JSON.stringify(newList));
+      saveLocalWish(newList, 1);
       return;
     }
     const dbRef = ref(db, `wishes/${account}`);
@@ -40,7 +42,7 @@ function WishContaxtProvider({ children }) {
     const newList = [...wishList, item];
     if (!account) {
       setWishList(newList);
-      localStorage.setItem("wishes", JSON.stringify(newList));
+      saveLocalWish(newList, 1);
       return;
     }
     const dbRef = ref(db, `wishes/${account}`);
@@ -94,13 +96,12 @@ function WishContaxtProvider({ children }) {
     // if no local wish return
     if (isListEmpty) return;
     // sync and local wish update rt wish
-    const local = localStorage.getItem("wishes");
-    if (!local) return;
+    const localData = loadLocal(LOCALSTORAGE_KEY.wish);
+    if (!localData) return;
     (async () => {
       try {
         const dbRef = ref(db, `wishes/${account}`);
-        const jsonData = JSON.parse(local);
-        await set(dbRef, jsonData);
+        await set(dbRef, localData);
       } catch (err) {
         console.log(err);
       } finally {
@@ -110,9 +111,9 @@ function WishContaxtProvider({ children }) {
   }, [sync]);
   // sync local storage
   useEffect(() => {
-    const local = localStorage.getItem("wishes");
-    if (!local) return;
-    setWishList(JSON.parse(local));
+    const localData = loadLocal(LOCALSTORAGE_KEY.wish);
+    if (!localData) return;
+    setWishList(localData);
   }, []);
   return (
     <WishContxt.Provider value={{ wishList, toggle, favorite }}>
