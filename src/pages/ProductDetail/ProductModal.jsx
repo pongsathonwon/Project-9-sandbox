@@ -6,8 +6,19 @@ function ProductModal({
   showModal,
   selectedImage,
   selectedProduct,
+  setSelectedProduct,
   setShowModal,
+  productChoice,
 }) {
+  React.useEffect(() => {
+    if (productChoice.size.length > 0) {
+      setSelectedProduct((prev) => {
+        return {
+          ...prev,
+          size: "",
+        };
+      });
+    }}, []);
   return (
     <>
       {showModal && (
