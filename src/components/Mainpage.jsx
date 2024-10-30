@@ -9,9 +9,9 @@ const Mainpage = () => {
     <>
       <div className="w-full h-auto relative bg-white">
         {/* Header Image Section */}
-        <div className="w-full h-[420px] lg:h-[600px] relative">
+        <div className="w-full h-[420px] lg:h-full relative">
           <img
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover "
             src={headerPicture}
             alt="Header Image"
           />
@@ -23,7 +23,8 @@ const Mainpage = () => {
         {/* Featured Products Section */}
         <section className="py-16 px-[1.125rem] lg:px-32 items-center">
           <ContainerSlot
-            containerLabel="Feature Products"
+            collection="new-arrivals"
+            containerLabel="Featured Products"
             containerLabelPosition="center"
           />
         </section>

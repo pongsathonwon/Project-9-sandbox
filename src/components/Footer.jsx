@@ -1,4 +1,11 @@
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContextProvider";
+import useSubsciption from "../hooks/useSubsciption";
+import { genClothingList, navlist } from "./header/navlist";
+
 const Footer = () => {
+  const { signIn } = useAuthContext();
+  const { email, invalid, onChange, submit } = useSubsciption();
   // outter div
   return (
     <div className="flex flex-col items-center gap-4 pl-[1.125rem] pr-[1.125rem] p-6  bg-[#222] lg:px-32 lg:py-6 text-secondary-50">
@@ -9,18 +16,15 @@ const Footer = () => {
             Featured product
           </div>
           <div className="flex flex-col items-center gap-4 lg:items-start">
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Men
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Ladies
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Shoes
-            </div>
-            <div className="text-white text-center font-['Poppins'] text-lg font-semibold leading-6">
-              Accessories
-            </div>
+            {navlist.map(({ label, path }) => (
+              <Link
+                key={label}
+                to={genClothingList(path)}
+                className="capitalize text-white text-center font-['Poppins'] text-lg font-semibold leading-6"
+              >
+                {label}
+              </Link>
+            ))}
           </div>
         </div>
         {/* Register with us */}
@@ -31,9 +35,12 @@ const Footer = () => {
           <div className="self-stretch text-white text-center font-['Poppins'] leading-5 font-light lg:text-left">
             Sign up now and get 20% off your first purchase!
           </div>
-          <div className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-secondary-50">
+          <button
+            onClick={signIn}
+            className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-secondary-50"
+          >
             <div className="text-[#222] font-['Poppins'] leading-5 font">
-              Sing up now
+              Sign up now
             </div>
             <div className="flex justify-center items-center pt-[0.5625rem] pb-[0.5625rem] pl-[0.5625rem] pr-[0.5625rem] w-10 h-10">
               <svg
@@ -53,7 +60,7 @@ const Footer = () => {
                 />
               </svg>
             </div>
-          </div>
+          </button>
         </div>
         {/* Customer services */}
         <div className="flex flex-col items-center gap-4 self-stretch lg:footer-subcontent-lg 2xl:footer-subcontent-2xl">
@@ -70,12 +77,21 @@ const Footer = () => {
             </div>
           </div>
           <input
-            className="flex items-center self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] text-[#9f9f9f] font-['Poppins'] "
+            value={email}
+            onChange={onChange}
+            className={`flex items-center self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] text-[#9f9f9f] font-['Poppins'] ${
+              invalid ? "outline-danger" : ""
+            }`}
             placeholder="Enter your email"
+            type="email"
           ></input>
-          <div className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5">
+          <button
+            disabled={invalid}
+            onClick={submit}
+            className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#def81c] text-[#222] font-['Poppins'] leading-5 hover:bg-primary-500 hover:text-secondary-900 active:text-primary-700 active:bg-secondary-900 disabled:bg-secondary-300 disabled:text-secondary-500"
+          >
             Subscribe
-          </div>
+          </button>
         </div>
       </div>
       {/* Copyright */}

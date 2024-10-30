@@ -9,17 +9,24 @@ export const navlist = [
 export const genClothingList = (label) => `/clothing/${label}`;
 
 export const secondaryNavlist = (priamry) => {
-  if (priamry === "men" || priamry === "women")
+  if (priamry === "men")
     return [
       { label: "all items", path: `all-${priamry}` },
-      { label: "shirts", path: `${priamry}-shirt` },
+      { label: "shirts", path: `${priamry}-shirts` },
       { label: "shoes", path: `${priamry}-shoes` },
       { label: "accessories", path: `${priamry}-accessories` },
     ];
+  if (priamry === "women")
+    return [
+      { label: "all items", path: `all-ladies` },
+      { label: "shirts", path: `ladies-shirts` },
+      { label: "shoes", path: `ladies-shoes` },
+      { label: "accessories", path: `ladies-accessories` },
+    ];
   return [
-    { label: "all items", path: `men-${priamry},women-${priamry}` },
+    { label: "all items", path: `men-${priamry},ladies-${priamry}` },
     { label: `men ${priamry}`, path: `men-${priamry}` },
-    { label: `women ${priamry}`, path: `women-${priamry}` },
+    { label: `women ${priamry}`, path: `ladies-${priamry}` },
   ];
 };
 
