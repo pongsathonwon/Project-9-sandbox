@@ -165,7 +165,7 @@ function Sidebar({ isShow, onClick }) {
         </div>
       </div>
       <button
-        className="w-full h-full md:hidden"
+        className="w-full h-full lg:hidden"
         onClick={onClick}
         aria-hidden
       ></button>
