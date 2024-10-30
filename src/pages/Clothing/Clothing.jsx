@@ -4,13 +4,14 @@ import { getData } from "../../utils/apiHandler";
 import SortDropdown from "./SortDropdown";
 import ProductCard from "../../components/productCard";
 import Sidebar from "./Sidebar";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 
 function Clothing() {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sortOrder, setSortOrder] = useState("default");
+  const [sortOrder, setSortOrder] = useState("");
   const [category, setCategory] = useState("");
   const [collection, setCollection] = useState("");
   const [gender, setGender] = useState("men");
@@ -102,30 +103,56 @@ function Clothing() {
   };
 
   return (
-    <div className="flex">
-      <div className="hidden lg:block">
+    <div className="flex max-w-[1536px] mx-auto mb-14">
+      <div className="hidden lg:block min-w-[280px] sticky bg-white top-16 z-[5] py-4 h-screen">
         <Sidebar />
       </div>
-      <div className="flex-1 p-4 lg:p-8">
-        <h2 className="text-2xl font-bold mb-4">{getPageTitle(category)}</h2>
-        <SortDropdown sortOrder={sortOrder} setSortOrder={setSortOrder} />
+      <div className="flex-1 px-10">
+        <div className="flex flex-col lg:flex-row justify-between items-center sticky top-14 bg-white z-[5] py-4">
+          <h2 className="text-3xl font-bold">{getPageTitle(category)}</h2>
+          <div className="lg:flex-1 flex justify-end items-center lg:pr-16 mt-4">
+            <SortDropdown sortOrder={sortOrder} setSortOrder={setSortOrder} />
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center max-w-7xl mx-auto">
-          {loading && <div>กำลังโหลด...</div>}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-y-[40px]">
+          {loading && (
+            <>
+              {[...Array(6)].map((_, index) => (
+                <div
+                  key={index}
+                  className="w-full flex justify-center lg:block"
+                >
+                  <ProductCardSkeleton />
+                </div>
+              ))}
+            </>
+          )}
           {error && <div className="text-red-500">{error}</div>}
 
           {!loading &&
             !error &&
-            sortProducts(products).map((product) => (
-              <ProductCard
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                promotionalPrice={product.promotionalPrice}
-                imageUrl={product.imageUrls[0]}
-                ratings={product.ratings}
-                permalink={product.permalink}
-              />
+            (products.length === 0 ? (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                No Products Found
+              </div>
+            ) : (
+              sortProducts(products).map((product) => (
+                <div
+                  key={product.permalink}
+                  className="w-full flex justify-center lg:block"
+                >
+                  <ProductCard
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                    promotionalPrice={product.promotionalPrice}
+                    imageUrl={product.imageUrls[0]}
+                    ratings={product.ratings}
+                    permalink={product.permalink}
+                  />
+                </div>
+              ))
             ))}
         </div>
       </div>
