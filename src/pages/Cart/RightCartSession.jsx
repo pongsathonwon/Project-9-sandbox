@@ -11,12 +11,13 @@ import { numberWithCommas } from "../../utils/productDetail";
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
-  const { summaryList, subtotal, isEmptyCart, isLoading } = useCartContext();
+  const { summaryList, subtotal, isEmptyCart, isLoading, data } =
+    useCartContext();
   const { checkout } = useCartMutation();
   const handleCheckout = () => {
     console.log(summaryList);
-    checkout();
   };
+  const lastCat = data ? data[0].categories[0] : "";
   if (isLoading) {
     return (
       <div className="p-6 flex flex-col gap-10 lg:flex-1">
@@ -137,7 +138,7 @@ function RightCartSession() {
           btnLabel="Checkout"
           onClick={handleCheckout}
         />
-        <Link to="/clothing/all-items" replace={true}>
+        <Link to={`/clothing/${lastCat}`} replace={true}>
           <CartBtn severity="secondary" btnLabel="Continue shopping" />
         </Link>
       </div>

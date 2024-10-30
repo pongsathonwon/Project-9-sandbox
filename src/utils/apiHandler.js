@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import axios, { AxiosError } from "axios";
 
 const baseUrl = "https://api.storefront.wdb.skooldio.dev";
@@ -50,7 +49,6 @@ export const postData = async (url, body, options = {}) => {
 export const deleteData = async (url, options = {}) => {
   try {
     const res = await axios.delete(`${baseUrl}/${url}`, options);
-    console.info(res);
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
