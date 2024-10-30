@@ -9,9 +9,9 @@ const Mainpage = () => {
     <>
       <div className="w-full h-auto relative bg-white">
         {/* Header Image Section */}
-        <div className="w-full h-[420px] lg:h-[600px] relative">
+        <div className="w-full h-[420px] lg:h-full relative">
           <img
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover "
             src={headerPicture}
             alt="Header Image"
           />
