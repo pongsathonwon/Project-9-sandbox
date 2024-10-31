@@ -140,7 +140,7 @@ function Clothing() {
               sortProducts(products).map((product) => (
                 <div
                   key={product.permalink}
-                  className="w-full flex justify-center lg:block"
+                  className="w-full flex justify-center lg:block transition-transform duration-300 hover:-translate-y-2"
                 >
                   <ProductCard
                     name={product.name}
