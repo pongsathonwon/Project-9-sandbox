@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import { genClothingList, navlist, secondaryNavlist } from "./navlist";
+import {
+  genClothingList,
+  genLabel,
+  navlist,
+  secondaryNavlist,
+} from "./navlist";
 import Arrow from "../Icon/Arrow";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
 import Icon from "../Icon/Icon";
@@ -40,6 +45,11 @@ function Sidebar({ isShow, onClick }) {
     }`;
   const getCollectionUrl = (collection = "") =>
     `clothing/${baseCat ?? ""}${collection === "" ? "" : "&" + collection}`;
+  useEffect(() => {
+    if (!type) return;
+    const matchLable = genLabel(type);
+    setSecondary(matchLable);
+  }, [type]);
   return (
     <div
       className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
