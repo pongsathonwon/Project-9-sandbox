@@ -7,27 +7,29 @@ import Skeleton from "./Skeleton";
 
 const ColloctionCard = ({ title, imageUrl, description, permalink }) => {
   return (
-    <div className="relative w-[345px] h-[300px] md:w-[575px] md:h-[500px] p-4 bg-gradient-to-b from-[rgba(0,0,0,)] to-black flex-col justify-end items-center gap-4 inline-flex">
+    <div className="relative w-[345px] h-[300px] md:w-[575px] md:h-[500px] p-4 flex-col justify-end items-center gap-4 inline-flex overflow-hidden">
       <img
         className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
         src={imageUrl}
         alt={title + " promation image"}
       />
-
-      <div className="relative self-stretch h-8 line-clamp-1 text-center text-white text-2xl font-bold font-['Poppins'] leading-loose">
-        {title}
-      </div>
-      <div className="relative self-stretch text-center text-white text-base font-normal font-['Poppins'] leading-tight">
-        {description}
-      </div>
-      <Link
-        to={`/clothing/&${permalink}`}
-        className="relative h-[54px] px-2.5 py-[7px] bg-[#222222] justify-center items-center gap-2 inline-flex"
-      >
-        <div className="text-white text-base font-normal font-['Poppins'] leading-tight">
-          View more
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent rounded-lg" />
+      <div className="relative z-10 flex flex-col items-center gap-4 mt-auto">
+        <div className="self-stretch h-8 line-clamp-1 text-center text-white text-2xl font-bold font-['Poppins'] leading-loose">
+          {title}
         </div>
-      </Link>
+        <div className="self-stretch text-center text-white text-base font-normal font-['Poppins'] leading-tight">
+          {description}
+        </div>
+        <Link
+          to={`/clothing/&${permalink}`}
+          className="h-[54px] px-2.5 py-[7px] bg-[#222222] justify-center items-center gap-2 inline-flex"
+        >
+          <div className="text-white text-base font-normal font-['Poppins'] leading-tight">
+            View more
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
