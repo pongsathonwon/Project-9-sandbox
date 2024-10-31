@@ -35,13 +35,12 @@ const Footer = () => {
           <div className="self-stretch text-white text-center font-['Poppins'] leading-5 font-light lg:text-left">
             Sign up now and get 20% off your first purchase!
           </div>
-          <div className="flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-secondary-50">
-            <button
-              onClick={signIn}
-              className="text-[#222] font-['Poppins'] leading-5 font"
-            >
-              Sing up now
-            </button>
+
+          <button
+            onClick={signIn}
+            className="text-[#222] font-['Poppins'] leading-5 font flex justify-center items-center gap-2 pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-secondary-50"
+          >
+            Sign up now
             <div className="flex justify-center items-center pt-[0.5625rem] pb-[0.5625rem] pl-[0.5625rem] pr-[0.5625rem] w-10 h-10">
               <svg
                 width={22}
@@ -60,7 +59,7 @@ const Footer = () => {
                 />
               </svg>
             </div>
-          </div>
+          </button>
         </div>
         {/* Customer services */}
         <div className="flex flex-col items-center gap-4 self-stretch lg:footer-subcontent-lg 2xl:footer-subcontent-2xl">
