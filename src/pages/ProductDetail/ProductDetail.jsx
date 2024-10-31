@@ -134,6 +134,8 @@ function ProductDetail() {
             selectedProduct={selectedProduct}
             setShowModal={setShowModal}
             cat={productdetail.categories}
+            productChoice={productChoice}
+            setSelectedProduct={setSelectedProduct}
           />
 
           <section className=" px-4 pt-6  pb-24 flex flex-col items-center justify-center gap-10 select-none xl:flex-row xl:items-start xl:pt-16 xl:px-[124px] 2xl:px-[160px]">

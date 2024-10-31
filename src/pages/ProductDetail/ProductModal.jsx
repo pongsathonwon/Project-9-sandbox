@@ -6,12 +6,26 @@ function ProductModal({
   showModal,
   selectedImage,
   selectedProduct,
+  setSelectedProduct,
   setShowModal,
   cat,
 }) {
   const [q, _] = useSearchParams();
   const prev = q.get("prev");
   const navigate = useNavigate();
+  productChoice,
+}) {
+  React.useEffect(() => {
+    if (productChoice.size.length === 0) {
+      setSelectedProduct((prev) => {
+        return {
+          ...prev,
+          size: "",
+        };
+      });
+    }}, [showModal]);
+    console.log(selectedProduct);
+
   return (
     <>
       {showModal && (
@@ -61,10 +75,10 @@ function ProductModal({
                         {selectedProduct.name}
 
                         <div className="text-[#9f9f9f] font-['Poppins'] text-base font-normal leading-5 xl:font-normal xl:text-[16px] my-2">
-                          {selectedProduct.color !== undefined && (
+                          {selectedProduct.color !== "" && (
                             <span>color: {selectedProduct.color} </span>
                           )}
-                          {selectedProduct.size !== undefined && (
+                          {selectedProduct.size !== "" && (
                             <span>, size: {selectedProduct.size} </span>
                           )}
                         </div>
