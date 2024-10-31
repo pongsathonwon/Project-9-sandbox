@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  Link,
-  NavLink,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   genClothingList,
   navlist,
@@ -15,161 +9,177 @@ import {
 import Arrow from "../Icon/Arrow";
 import { useCollectionContext } from "../../context/CollectionContextProvider";
 
-const ExpandableButton = ({ labelText, children }) => {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <div
-      aria-haspopup="listbox"
-      className="relative w-full h-full"
-      onBlur={() => setOpen((p) => !p)}
-    >
-      <button
-        onClick={() => setOpen((p) => !p)}
-        className="capitalize text-lg font-semibold w-full h-full text-start flex justify-between items-center"
-      >
-        {labelText}
-        <Arrow direction={open ? "down" : "up"} />
-      </button>
-      <ul className={`${open ? "" : "scale-y-0 duration-300 origin-top"}`}>
-        {children}
-      </ul>
-    </div>
-  );
-};
-
 function Sidebar({ isShow, onClick }) {
   const { possibleCollectionList } = useCollectionContext();
-  const [secondary, setSecondary] = React.useState(null);
-  const [secPath, setSecPath] = React.useState(null);
-  const [tertiary, setTertiary] = React.useState(null);
+  const [activeMenu, setActiveMenu] = React.useState("primary");
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [selectedCollection, setSelectedCollection] = React.useState(null);
   const navigate = useNavigate();
-  const { type } = useParams();
-  React.useEffect(() => {
-    if (!type) return;
-    const cat = type.split("&")[0];
-    const cur = navlist.find(({ path }) => path === cat);
-    if (cur) setSecondary(cur.label);
-    setSecPath(cat);
-  }, [type]);
+  const location = useLocation();
+  const [isCollectionOpen, setIsCollectionOpen] = useState(false);
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setActiveMenu("secondary");
+    onClick();
+    navigate(genClothingList(`${category.path}`));
+  };
+
+  const handleCollectionClick = (collection) => {
+    const currentPath = location.pathname;
+    const pathSegments = currentPath.split("/clothing/");
+
+    // Remove any existing collection from the path
+    let basePath = pathSegments[1] || "";
+    basePath = basePath.split("&")[0]; // Keep only the category part
+
+    // Create new path with only the new collection
+    const newPath = basePath
+      ? `${basePath}&${collection.path}`
+      : collection.path;
+
+    navigate(genClothingList(newPath));
+    onClick?.();
+  };
+
+  const handleBack = () => {
+    if (activeMenu === "tertiary") {
+      setActiveMenu("secondary");
+      setSelectedCollection(null);
+    } else if (activeMenu === "secondary") {
+      setActiveMenu("primary");
+      setSelectedCategory(null);
+    }
+  };
+
+  const handleHomeClick = () => {
+    navigate("/");
+    onClick(); // Close sidebar after navigation
+  };
+
+  const getCollectionsByCategory = (categoryPath) => {
+    if (!categoryPath) return [];
+    return possibleCollectionList;
+  };
+
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 h-screen bg-black bg-opacity-50 flex transition-all duration-300 z-20 ${
-        isShow ? "" : "-translate-x-full"
+    <aside
+      className={`fixed inset-0 flex transition-all duration-300 z-20 ${
+        isShow ? "bg-black/50" : "bg-black/0 pointer-events-none"
       }`}
     >
-      <div className="bg-white rounded-r-2xl pt-5">
-        <div className="h-full relative">
-          {/* primary sidebar */}
-          <div
-            aria-haspopup="listbox"
-            className={`absolute duration-300 h-screen ${
-              secondary || tertiary ? "-translate-x-full" : ""
+      <div
+        className={`bg-white w-80 pt-5 rounded-r-2xl transition-transform duration-300 ease-out
+        ${isShow ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="h-full relative overflow-hidden">
+          {/* Primary Navigation */}
+          <nav
+            className={`absolute w-full transition-transform duration-300 ${
+              activeMenu !== "primary" ? "-translate-x-full" : ""
             }`}
           >
             <button
               className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 text-lg"
-              onClick={onClick}
+              onClick={handleHomeClick}
             >
               <span className="text-lg ml-4">home</span>
             </button>
             <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
-              {navlist.map(({ label, path }) => (
-                <li className="w-64 flex items-center h-12" key={path}>
+              {navlist.map((category) => (
+                <li className="w-64 flex items-center h-12" key={category.path}>
                   <button
-                    onClick={() => {
-                      setSecondary(label);
-                      setSecPath(path);
-                    }}
+                    onClick={() => handleCategoryClick(category)}
                     className="w-full h-full text-start capitalize"
                   >
-                    {label}
+                    {category.label}
                   </button>
                 </li>
               ))}
             </ul>
-          </div>
-          {/* secondary sidebar */}
-          <div
-            aria-haspopup="listbox"
-            className={`aboslute duration-300 h-screen ${
-              secondary && !tertiary ? "" : "-translate-x-full"
+          </nav>
+
+          {/* Secondary Navigation */}
+          <nav
+            className={`absolute w-full transition-transform duration-300 ${
+              activeMenu === "secondary" ? "translate-x-0" : "translate-x-full"
             }`}
           >
             <button
-              className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
-              onClick={() => setSecondary(null)}
-              aria-haspopup=""
+              className="font-bold capitalize flex gap-8 items-center w-full h-12 border-b border-secondary-300 text-2xl"
+              onClick={handleBack}
             >
               <Arrow direction="left" />
-              {secondary}
+              {selectedCategory?.label}
             </button>
             <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
-              {secondaryNavlist(secondary)?.map(({ label, path }) => (
-                <li key={path} className="listitem">
-                  <NavLink
-                    className="flex w-64 h-12 items-center justify-between font-normal"
-                    to={genClothingList(path)}
+              {/* Main Categories */}
+              {secondaryNavlist(selectedCategory?.label)?.map((item) => (
+                <li key={item.path} className="listitem">
+                  <Link
+                    className={`flex w-64 h-12 items-center justify-between font-normal ${
+                      location.pathname.includes(item.path)
+                        ? "bg-[#DEF81C]"
+                        : ""
+                    }`}
+                    to={genClothingList(item.path)}
+                    onClick={onClick}
                   >
-                    {label}
-                  </NavLink>
+                    {item.label}
+                  </Link>
                 </li>
               ))}
-              <li className="px-2.5 h-12">
-                <ExpandableButton labelText="Collections">
-                  {possibleCollectionList.map(({ label, path }) => (
-                    <li
-                      key={path}
-                      className="h-12 full flex items-center pl-4 hover:bg-none text-base font-normal"
-                    >
+
+              {/* Collections Section as Dropdown */}
+              <li className="mt-4">
+                <button
+                  className="flex w-full items-center justify-between text-lg font-semibold mb-2"
+                  onClick={() => setIsCollectionOpen(!isCollectionOpen)}
+                >
+                  <span>Collections</span>
+                  <svg
+                    className={`fill-current h-4 w-4 transform transition-transform duration-200 ${
+                      isCollectionOpen ? "rotate-180" : ""
+                    }`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                  </svg>
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-200 ${
+                    isCollectionOpen ? "max-h-[500px]" : "max-h-0"
+                  }`}
+                >
+                  {getCollectionsByCategory(selectedCategory?.path).map(
+                    (collection) => (
                       <button
-                        className="h-full w-full text-start"
-                        onClick={() => {
-                          setTertiary({ label, path });
-                          navigate(genClothingList(`${secPath}&${path}`));
-                        }}
+                        key={collection.path}
+                        className={`flex w-64 h-12 items-center font-normal ${
+                          location.pathname.includes(`&${collection.path}`)
+                            ? "bg-[#DEF81C]"
+                            : ""
+                        }`}
+                        onClick={() => handleCollectionClick(collection)}
                       >
-                        {label}
+                        {collection.label}
                       </button>
-                    </li>
-                  ))}
-                </ExpandableButton>
+                    )
+                  )}
+                </div>
               </li>
             </ul>
-          </div>
-          {/* tertiary sidebar */}
-          <div
-            className={`aboslute duration-300 h-screen -translate-y-full ${
-              tertiary ? "" : "-translate-x-full"
-            }`}
-          >
-            <button
-              className="font-bold capitalize flex gap-8 items-center w-full px-4 h-12 border-b border-secondary-300 text-2xl"
-              onClick={() => setTertiary(null)}
-            >
-              <Arrow direction="left" />
-              {tertiary?.label}
-            </button>
-            <ul className="flex flex-col gap-2 text-lg font-semibold px-8 capitalize">
-              {tertiaryNavlist(tertiary?.path)?.map(({ label, path }) => (
-                <li key={path} className="listitem">
-                  <NavLink
-                    className="flex w-64 h-12 items-center justify-between font-normal"
-                    to={genClothingList(path)}
-                  >
-                    {label}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+          </nav>
         </div>
       </div>
       <button
-        className="w-full h-full md:hidden"
+        className="flex-1 h-full md:hidden"
         onClick={onClick}
-        aria-hidden
-      ></button>
-    </div>
+        aria-label="Close sidebar"
+      />
+    </aside>
   );
 }
 
