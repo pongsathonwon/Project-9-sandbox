@@ -48,17 +48,29 @@ function CartItem({
             />
             <Skeleton bgColor="dark" className="squre-group rounded-lg" />
           </div>
-          <div className="flex flex-col lg:flex-row justify-between">
+          <div className="flex flex-col gap-4 pt-4 lg:pt-0 lg:gap-2 lg:flex-row justify-between">
             <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 xl:gap-4">
-              <Skeleton bgColor="dark" className="h-10 w-20 rounded-lg" />
-              <div className="flex gap-4 lg:gap-2 xl:gap-4">
+              <Skeleton
+                bgColor="dark"
+                className="h-10 min-w-20 rounded-lg lg:flex-1"
+              />
+              <div className="flex flex-1 gap-4 lg:gap-2 xl:gap-4">
                 {/* size dropdown */}
-                <Skeleton bgColor="light" className="h-10 w-20 rounded-lg" />
+                <Skeleton
+                  bgColor="light"
+                  className="flex-1 h-10 w-20 rounded-lg"
+                />
                 {/* amount dropdown */}
-                <Skeleton bgColor="dark" className="h-10 w-20 rounded-lg" />
+                <Skeleton
+                  bgColor="dark"
+                  className="flex-1 h-10 w-20 rounded-lg"
+                />
               </div>
             </div>
-            <Skeleton bgColor="light" className="h-8 w-32 rounded-lg mt-auto" />
+            <Skeleton
+              bgColor="light"
+              className="h-10 w-32 rounded-lg ml-auto"
+            />
           </div>
         </div>
       </div>
