@@ -8,8 +8,10 @@ export const navlist = [
 
 export const genClothingList = (label) => `/clothing/${label}`;
 
+
 export const secondaryNavlist = (primary) => {
   if (primary === "men" || primary === "women")
+
     return [
       {
         label: "all items",
@@ -40,4 +42,13 @@ export const tertiaryNavlist = (collectionPath) => {
     label,
     path: `${path}&${collectionPath}`,
   }));
+};
+
+export const genLabel = (url = "") => {
+  if (url.includes("accessories")) return "accessories";
+  if (url.includes("shoes")) return "shoes";
+  if (url.includes("shirts")) return "shirts";
+  if (url.includes("men")) return "men";
+  if (url.includes("ladies")) return "women";
+  return "";
 };

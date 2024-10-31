@@ -19,11 +19,19 @@ function ModalContextProvider({ children }) {
 
   const [leftProps, setLeftProps] = useState(propsInit);
   const [rightProps, setRightProps] = useState(propsInit);
+  const [content, setContent] = useState(null);
 
-  const setOpen = (newTitle, left) => {
+  const setOpen = (newTitle, left, newChild) => {
+    setContent(newChild ?? null);
     setTitle(newTitle);
     setLeftProps(left);
-    setRightProps({ label: "close", onClick: () => setIsShow(false) });
+    setRightProps({
+      label: "close",
+      onClick: () => {
+        setIsShow(false);
+        setContent(null);
+      },
+    });
     setIsShow(true);
   };
   return (
@@ -36,6 +44,8 @@ function ModalContextProvider({ children }) {
         setOpen,
         leftProps,
         rightProps,
+        content,
+        setContent,
       }}
     >
       {children}

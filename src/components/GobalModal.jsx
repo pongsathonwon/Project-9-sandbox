@@ -2,12 +2,21 @@ import React, { useEffect, useRef } from "react";
 import { useModalContext } from "../context/ModalContextProvider";
 
 function GobalModal() {
-  const { isShow, setIsShow, leftProps, rightProps, title } = useModalContext();
+  const {
+    isShow,
+    setIsShow,
+    leftProps,
+    rightProps,
+    title,
+    content,
+    setContent,
+  } = useModalContext();
   const modalRef = useRef(null);
   useEffect(() => {
     const close = ({ target }) => {
       if (modalRef.current && !modalRef.current.contains(target)) {
         setIsShow(false);
+        setContent(null);
       }
     };
     document.addEventListener("mousedown", close);
@@ -28,7 +37,9 @@ function GobalModal() {
             </div>
             <div className="flex flex-col justify-center items-center gap-4 self-stretch">
               <div className="frame_4240 flex flex-col items-start self-stretch">
-                <div className="flex flex-col items-center gap-1 self-stretch xl:flex-row "></div>
+                <div className="flex flex-col items-center gap-1 self-stretch xl:flex-row ">
+                  {content}
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-start gap-4 self-stretch xl:flex-row ">
@@ -36,6 +47,7 @@ function GobalModal() {
                 onClick={() => {
                   leftProps.onClick();
                   setIsShow(false);
+                  setContent(null);
                 }}
                 className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#222] text-white font-['Poppins'] leading-5 cursor-pointer xl:w-full"
               >

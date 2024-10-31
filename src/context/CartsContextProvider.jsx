@@ -27,8 +27,6 @@ export const useCartContext = () => {
   return ctx;
 };
 
-const CART_ID_REF = "mqoGNJ9284nUUkKo1bnd";
-
 function CartsContextProvider({ children }) {
   const { isLoading, erorr, data, setLoading, setSuccess, setError, setEmpty } =
     useBaseState();

@@ -2,11 +2,13 @@ import React from "react";
 import { useCartContext } from "../../context/CartsContextProvider";
 import CartItem from "./CartItem";
 import CartBtn from "./CartBtn";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Skeleton from "../../components/Skeleton";
 
 function LeftCartSession() {
   const { data, isEmptyCart, isLoading } = useCartContext();
+  const [q] = useSearchParams();
+  const prev = q.get("prev");
   if (isLoading && isEmptyCart) {
     return (
       <div className="p-4 flex flex-col gap-6 lg:flex-1">
@@ -29,8 +31,8 @@ function LeftCartSession() {
         <h6>Items</h6>
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col gap-6 w-full">
-            {data?.map((d) => (
-              <CartItem key={d.id + d.name} {...d} />
+            {data?.map((d, i) => (
+              <CartItem key={i} {...d} />
             ))}
           </div>
         </div>
@@ -56,7 +58,7 @@ function LeftCartSession() {
               Go ahead & explore stuff
             </p>
           </div>
-          <Link to="/clothing/all-items" replace={true}>
+          <Link to={prev ? prev : "/clothing/all-men"} replace={true}>
             <CartBtn btnLabel="Continue shopping" />
           </Link>
         </div>
@@ -67,8 +69,8 @@ function LeftCartSession() {
       <div className="p-4 flex flex-col gap-6 lg:w-2/3">
         <h6>Items</h6>
         <div className="flex flex-col gap-6">
-          {data?.map((d) => (
-            <CartItem key={d.id + d.name} {...d} />
+          {data?.map((d, i) => (
+            <CartItem key={d + i} {...d} />
           ))}
         </div>
       </div>

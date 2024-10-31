@@ -1,22 +1,69 @@
 import React from "react";
 import { SummaryRow, SummarySection } from "./Summary";
-import {
-  useCartContext,
-  useCartMutation,
-} from "../../context/CartsContextProvider";
+import { useCartContext } from "../../context/CartsContextProvider";
 import CartBtn from "./CartBtn";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Skeleton from "../../components/Skeleton";
 import { numberWithCommas } from "../../utils/productDetail";
+import { useModalContext } from "../../context/ModalContextProvider";
+
+const CartModalConetnt = ({ summaryList, subtotal = 0, shipping = 0 }) => {
+  return (
+    <div className="w-full flex-col">
+      <SummarySection>
+        {summaryList.map(({ name, sum, quantity }, i) => (
+          <SummaryRow
+            key={"summary-with-item-" + name + i}
+            name={`${name} ${quantity <= 1 ? "" : "X" + quantity}`}
+            price={numberWithCommas(sum)}
+            rightClassname="text-secondary-700"
+          />
+        ))}
+      </SummarySection>
+      <SummarySection>
+        <SummaryRow
+          name="subtotal"
+          price={numberWithCommas(subtotal)}
+          rightClassname="text-secondary-700"
+        />{" "}
+        <SummaryRow
+          name={"shipping fee"}
+          price={numberWithCommas(shipping)}
+          rightClassname="text-secondary-700"
+        />
+      </SummarySection>
+      <SummaryRow
+        name={"Total"}
+        price={numberWithCommas(subtotal + shipping)}
+        leftClassname="font-bold text-xl "
+        rightClassname="font-bold text-xl "
+      />
+    </div>
+  );
+};
 
 function RightCartSession() {
   const SHIPPING_FEE = 0;
-  const { summaryList, subtotal, isEmptyCart, isLoading } = useCartContext();
-  const { checkout } = useCartMutation();
+  const { summaryList, subtotal, isEmptyCart, isLoading, data } =
+    useCartContext();
+  const { setOpen } = useModalContext();
   const handleCheckout = () => {
-    console.log(summaryList);
-    checkout();
+    setOpen(
+      "Successful Checkout",
+      {
+        label: "Ok",
+        onClick: () => {},
+      },
+      CartModalConetnt({
+        summaryList,
+        subtotal: subtotal.subtotal,
+        shipping: SHIPPING_FEE,
+      })
+    );
   };
+  const [q, _] = useSearchParams();
+  const prev = q.get("prev");
+  const lastCat = !isEmptyCart ? data[0].categories?.join() : "all-men";
   if (isLoading) {
     return (
       <div className="p-6 flex flex-col gap-10 lg:flex-1">
@@ -84,9 +131,9 @@ function RightCartSession() {
         />
         {/* summary items */}
         <SummarySection>
-          {summaryList.map(({ name, sum, quantity }) => (
+          {summaryList.map(({ name, sum, quantity }, i) => (
             <SummaryRow
-              key={name}
+              key={"summary-with-item-" + name + i}
               name={`${name} ${quantity <= 1 ? "" : "X" + quantity}`}
               price={numberWithCommas(sum)}
               leftClassname={isEmptyCart ? "text-secondary-500" : ""}
@@ -137,7 +184,7 @@ function RightCartSession() {
           btnLabel="Checkout"
           onClick={handleCheckout}
         />
-        <Link to="/clothing/all-items" replace={true}>
+        <Link to={prev ? prev : `/clothing/${lastCat}`} replace={true}>
           <CartBtn severity="secondary" btnLabel="Continue shopping" />
         </Link>
       </div>
