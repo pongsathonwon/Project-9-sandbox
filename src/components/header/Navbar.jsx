@@ -35,10 +35,10 @@ function Navbar({ children }) {
     <nav className="bg-secondary px-4 py-2 sticky top-0 lg:px-32 z-20">
       <div className="flex items-center justify-between mx-auto">
         <div className="flex">
-          <div className="flex items-center gap-2 md:gap-4 md:mr-10">
+          <div className="flex items-center gap-2 lg:gap-4 lg:mr-10">
             {children}
             <NavLink
-              className="text-lg font-semibold text-white flex gap-2 md:gap-4 items-center"
+              className="text-lg font-semibold text-white flex gap-2 lg:gap-4 items-center"
               to={"/"}
             >
               <img
