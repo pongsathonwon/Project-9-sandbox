@@ -8,7 +8,7 @@ function Header() {
     <>
       <Navbar>
         <button
-          className="text-white squre-group md:hidden"
+          className="text-white squre-group lg:hidden"
           onClick={() => setIsShow((p) => !p)}
         >
           <svg
