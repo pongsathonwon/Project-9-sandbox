@@ -13,7 +13,7 @@ const POSITION = {
 function ContainerSlot({
   containerLabel,
   containerLabelPosition = "start",
-  collection = "new-arrivals",
+  collection = "price-down",
   categories = null,
   notinclude = [],
 }) {
