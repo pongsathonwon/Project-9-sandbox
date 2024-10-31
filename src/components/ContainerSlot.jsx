@@ -13,47 +13,39 @@ const POSITION = {
 function ContainerSlot({
   containerLabel,
   containerLabelPosition = "start",
-  collection = "price-down",
+  collection = "new-arrivals",
   categories = null,
+  notinclude = [],
 }) {
   const { data, isLoading, setLoading, setSuccess, setError } = useBaseState();
   const [max, setMax] = useState(0);
   const [page, setPage] = useState(0);
   const [startAfter, setStartAfter] = useState(null);
   const [cursor, setCursor] = useState(null);
-  const totalPage = Math.floor(max / page);
+  const totalPage = Math.floor(max / 4 + notinclude.length);
+  const filterList =
+    notinclude.length !== 0
+      ? data?.filter(({ permalink }) => {
+          if (notinclude.length === 0) return true;
+          return !notinclude.includes(permalink);
+        })
+      : data ?? [];
+  const renderList =
+    filterList?.lenght > 4 ? filterList : filterList?.filter((_, i) => i <= 3);
   useEffect(() => {
-    if (page === 0) {
-      setLoading();
-    }
     (async () => {
-      const saved = loadLocal(
-        `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
-      );
-      if (saved) {
-        const {
-          data: resData,
-          pagination: { total, nextCursor },
-        } = saved;
-        setSuccess(resData);
-        setCursor(nextCursor);
-        setMax(total);
-        setPage((p) => p + 1);
-      }
+      setLoading();
       try {
         const result = await getData("products", {
           params: {
             sort: "ratings:desc",
             collection,
-            limit: 4,
+            limit: 4 + notinclude.length,
             categories,
             startAfter,
           },
         });
 
-        saveToLocal(
-          `${LOCALSTORAGE_KEY.slot}${categories}${collection}${startAfter}`
-        )(result, 1 / (24 * 4));
         const {
           data: resData,
           pagination: { total, nextCursor },
@@ -67,7 +59,7 @@ function ContainerSlot({
         setError(error);
       }
     })();
-  }, [startAfter]);
+  }, [startAfter, categories]);
   // pagination logic
   useEffect(() => {
     const timer = setInterval(() => {
@@ -77,7 +69,7 @@ function ContainerSlot({
         return;
       }
       setStartAfter(cursor);
-    }, 5 * 60 * 1000);
+    }, 2 * 60 * 1000);
     return () => clearInterval(timer);
   }, [cursor]);
   return (
@@ -91,7 +83,7 @@ function ContainerSlot({
       >
         {isLoading
           ? [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
-          : data?.map(
+          : renderList?.map(
               ({
                 name,
                 description,

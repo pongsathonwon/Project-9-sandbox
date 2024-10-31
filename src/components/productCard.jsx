@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import StarRating from "./StarRating";
 
 const ProductCard = ({
@@ -11,9 +11,13 @@ const ProductCard = ({
   permalink,
 }) => {
   const isDiscounted = promotionalPrice < price;
+  const location = useLocation();
+  const qString = location.pathname.includes("/clothing")
+    ? `?prev=${location.pathname}`
+    : "";
   return (
     <Link
-      to={`/productdetail/${permalink}`}
+      to={`/productdetail/${permalink}${qString}`}
       className="w-[267px] flex flex-col justify-start items-start gap-4 relative"
     >
       {/* Product Image */}

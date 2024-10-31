@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { genClothingList, navlist } from "./navlist";
 import CartIcon from "../Icon/CartIcon";
 import { useCartContext } from "../../context/CartsContextProvider";
@@ -15,7 +15,8 @@ function Navbar({ children }) {
   const { setOpen } = useModalContext();
   const { isEmptyCart } = useCartContext();
   const { wishList } = useWishContext();
-  const { account, signIn, logout, setIsShow } = useAuthContext();
+  const { account, signIn, logout } = useAuthContext();
+  const location = useLocation();
   const leftProps = account
     ? {
         label: "logout",
@@ -48,10 +49,24 @@ function Navbar({ children }) {
               WDB
             </NavLink>
           </div>
-          <ul className="hidden text-white gap-6 text-base items-center capitalize md:flex">
+          <ul className="hidden text-white gap-6 text-base items-center capitalize lg:flex">
             {navlist.map(({ label, path }) => (
               <li className="navlink" key={path}>
-                <NavLink to={genClothingList(path)}>{label}</NavLink>
+                <NavLink
+                  to={genClothingList(path)}
+                  className={`${
+                    path
+                      .split(",")
+                      .reduce(
+                        (acc, c) => acc || location.pathname.includes(c),
+                        false
+                      )
+                      ? "text-primary-500"
+                      : ""
+                  }`}
+                >
+                  {label}
+                </NavLink>
               </li>
             ))}
           </ul>

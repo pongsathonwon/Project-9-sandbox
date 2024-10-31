@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import axios, { AxiosError } from "axios";
 
 const baseUrl = "https://api.storefront.wdb.skooldio.dev";
@@ -24,7 +23,6 @@ export const getData = async (url, options = {}) => {
 // in validate body return valid body or Error
 // thus checking body before fire http req
 export const postData = async (url, body, options = {}) => {
-  console.log(body);
   if (body instanceof Error) {
     console.log("body validation error");
     console.error(body);
@@ -50,7 +48,6 @@ export const postData = async (url, body, options = {}) => {
 export const deleteData = async (url, options = {}) => {
   try {
     const res = await axios.delete(`${baseUrl}/${url}`, options);
-    console.info(res);
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {

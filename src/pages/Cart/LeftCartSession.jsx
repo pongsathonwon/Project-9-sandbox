@@ -56,7 +56,7 @@ function LeftCartSession() {
               Go ahead & explore stuff
             </p>
           </div>
-          <Link to="/clothing/all-items" replace={true}>
+          <Link to="/clothing/all-men" replace={true}>
             <CartBtn btnLabel="Continue shopping" />
           </Link>
         </div>

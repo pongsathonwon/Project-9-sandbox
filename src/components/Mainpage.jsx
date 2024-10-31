@@ -24,7 +24,7 @@ const Mainpage = () => {
         <section className="py-16 px-[1.125rem] lg:px-32 items-center">
           <ContainerSlot
             collection="new-arrivals"
-            containerLabel="Feature Products"
+            containerLabel="Featured Products"
             containerLabelPosition="center"
           />
         </section>

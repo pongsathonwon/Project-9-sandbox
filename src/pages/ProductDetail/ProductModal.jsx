@@ -1,6 +1,6 @@
 import React from "react";
 import { numberWithCommas } from "../../utils/productDetail";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 function ProductModal({
   showModal,
@@ -8,6 +8,11 @@ function ProductModal({
   selectedProduct,
   setSelectedProduct,
   setShowModal,
+  cat,
+}) {
+  const [q, _] = useSearchParams();
+  const prev = q.get("prev");
+  const navigate = useNavigate();
   productChoice,
 }) {
   React.useEffect(() => {
@@ -20,6 +25,7 @@ function ProductModal({
       });
     }}, [showModal]);
     console.log(selectedProduct);
+
   return (
     <>
       {showModal && (
@@ -93,7 +99,7 @@ function ProductModal({
             </div>
             <div className="flex flex-col items-start gap-4 self-stretch xl:flex-row ">
               <Link
-                to="/cart"
+                to={prev ? `/cart?prev=${prev}` : "/cart"}
                 className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] bg-[#222] text-white font-['Poppins'] leading-5 cursor-pointer xl:w-full"
               >
                 <button
@@ -106,7 +112,14 @@ function ProductModal({
               </Link>
               <button
                 className="flex justify-center items-center gap-2 self-stretch pt-[0.4375rem] pb-[0.4375rem] px-2 h-[3.375rem] border border-[#e1e1e1] bg-white text-[#222] font-['Poppins'] leading-5 cursor-pointer xl:w-full"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  if (prev) {
+                    navigate(prev);
+                  } else {
+                    navigate(`/clothing/${cat.join() ?? "all-men"}`);
+                  }
+                }}
               >
                 Continue shopping
               </button>

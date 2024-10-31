@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingScreen from "./LoadingScreen";
 import ProductModal from "./ProductModal";
-import { getUniqueValue, getWeightSize } from "../../utils/productDetail"
+import { getUniqueValue, getWeightSize } from "../../utils/productDetail";
 import { useParams } from "react-router-dom";
 import ContainerSlot from "../../components/ContainerSlot";
 import { useWishContext } from "../../context/WishContaxtProvider";
@@ -133,6 +133,7 @@ function ProductDetail() {
             selectedImage={productdetail.imageUrls[selectedImage]}
             selectedProduct={selectedProduct}
             setShowModal={setShowModal}
+            cat={productdetail.categories}
             productChoice={productChoice}
             setSelectedProduct={setSelectedProduct}
           />
