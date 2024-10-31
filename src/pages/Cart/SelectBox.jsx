@@ -26,6 +26,7 @@ const getButtonStyles = (disabled) => {
 };
 
 function SelectBox({
+  label = "select",
   value = "Select option",
   disabled = false,
   possible,
@@ -60,7 +61,7 @@ function SelectBox({
       </button>
 
       {isOpen && (
-        <div className="absolute w-full mt-1 bg-white border border-secondary-300 rounded-md shadow-lg">
+        <div className="absolute w-full mt-1 bg-white border border-secondary-300 rounded-md shadow-lg z-20">
           <ul
             className="py-1 max-h-60 overflow-auto"
             style={{ scrollbarWidth: "thin" }}
@@ -68,7 +69,7 @@ function SelectBox({
           >
             {possible.map((p) => (
               <li
-                key={p}
+                key={label + p}
                 className={`px-4 py-2 cursor-pointer ${
                   p === value
                     ? "bg-primary-50 text-black"

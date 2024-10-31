@@ -8,11 +8,9 @@ function ProductModal({
   selectedProduct,
   setSelectedProduct,
   setShowModal,
+
   cat,
-}) {
-  const [q, _] = useSearchParams();
-  const prev = q.get("prev");
-  const navigate = useNavigate();
+
   productChoice,
 }) {
   React.useEffect(() => {
@@ -23,8 +21,12 @@ function ProductModal({
           size: "",
         };
       });
-    }}, [showModal]);
-    console.log(selectedProduct);
+    }
+  }, [showModal]);
+  console.log(selectedProduct);
+  const [q, _] = useSearchParams();
+  const prev = q.get("prev");
+  const navigate = useNavigate();
 
   return (
     <>

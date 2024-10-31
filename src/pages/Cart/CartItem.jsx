@@ -31,7 +31,7 @@ function CartItem({
     .filter(({ color, remains }) => color === curColor && remains !== 0)
     .map(({ size }) => size)
     .sort();
-
+  const [number, setNumber] = React.useState(quantity);
   if (isLoading) {
     return (
       <div className="flex flex-col w-full lg:flex-row gap-10">
@@ -85,44 +85,53 @@ function CartItem({
         <div className="flex flex-col gap-2 2xl:flex-row justify-between">
           <div className="flex flex-col gap-4 lg:flex-row lg:gap-2 lg:min-w-[23rem] xl:gap-4">
             {/* color dropdown */}
-            <div className="flex flex-col gap-2 z-10">
+            <div className="flex flex-col gap-2 z-10 lg:flex-1 lg:max-w-32">
               <span className="text-secondary-700">color</span>
               <SelectBox
+                label="color"
                 value={curColor}
-                onChange={(v) => setCurColor(v)}
+                onChange={(v) => {
+                  setCurColor(v);
+                  setNumber(0);
+                }}
                 possible={colorList}
               />
             </div>
-            <div className="flex gap-4 lg:gap-2 xl:gap-4">
+            <div className="flex gap-4 lg:gap-2 xl:gap-4 lg:flex-2">
               {/* size dropdown */}
-              {sizeList[0] !== "" && (
-                <div className="flex flex-col gap-2">
+              {sizeList[0] !== "" && sizeList[0] && (
+                <div className="flex flex-col gap-2 flex-1 lg:max-w-32">
                   <span className="text-secondary-700">size</span>
                   <SelectBox
+                    label="size"
                     value={curSize}
                     possible={sizeList}
-                    onChange={(v) => setCurSize(v)}
+                    onChange={(v) => {
+                      setCurSize(v);
+                      setNumber(0);
+                    }}
                   />
                 </div>
               )}
               {/* amount dropdown */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 flex-1 lg:max-w-32">
                 <span className="text-secondary-700">quantity</span>
                 <SelectBox
+                  label="qunantity"
                   onChange={async (v) =>
                     await updateCartByItem(id, {
                       skuCode,
                       quantity: Number(v),
                     })
                   }
-                  value={quantity}
+                  value={number}
                   possible={[...Array(remains ?? 0)].map((_, i) => i + 1)}
                 />
               </div>
             </div>
           </div>
           <span className="text-2xl font-bold mt-auto ml-auto">
-            THB: {numberWithCommas(promotionalPrice * quantity)}
+            THB:{numberWithCommas(promotionalPrice * quantity)}
           </span>
         </div>
       </div>

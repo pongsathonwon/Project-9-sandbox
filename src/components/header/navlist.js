@@ -36,3 +36,12 @@ export const tertiaryNavlist = (collectionPath) => {
     path: `${path}&${collectionPath}`,
   }));
 };
+
+export const genLabel = (url = "") => {
+  if (url.includes("accessories")) return "accessories";
+  if (url.includes("shoes")) return "shoes";
+  if (url.includes("shirts")) return "shirts";
+  if (url.includes("men")) return "men";
+  if (url.includes("ladies")) return "women";
+  return "";
+};
